@@ -9,7 +9,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import ytextract from "./yt-extract.png";
 import ctc from "./ctc.png";
 import Link from "next/link";
