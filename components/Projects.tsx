@@ -9,7 +9,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import ytextract from "./yt-extract.png";
+import ytextract from "./yt.png";
 import ctc from "./ctc.png";
 import Link from "next/link";
 
