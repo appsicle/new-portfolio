@@ -17,10 +17,10 @@ const skills: Skill[] = [
   { name: "React", icon: Code, color: "#61DAFB" },
   { name: "Next.js", icon: Globe, color: "#ffffff" },
   { name: "TypeScript", icon: Code, color: "#3178C6" },
+  { name: "Python", icon: Zap, color: "#8B5CF6" },
   { name: "Node.js", icon: Server, color: "#339933" },
   { name: "GraphQL", icon: Database, color: "#E535AB" },
   { name: "SQL", icon: Database, color: "#336791" },
-  { name: "v0", icon: Zap, color: "#8B5CF6" },
 ];
 
 export default function About() {

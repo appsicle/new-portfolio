@@ -65,9 +65,6 @@ export default function Projects() {
           <h2 className="inline-block text-3xl font-bold gradient-text mb-4">
             Featured Projects
           </h2>
-          <p className="text-foreground/70 max-w-2xl mx-auto">
-            A selection of my recent work and passion projects. Each project showcases different skills and technologies.
-          </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-10">
