@@ -20,7 +20,7 @@ interface Project {
   title: string;
   description: string;
   image: StaticImageData;
-  tags: string[];
+  tags?: string[];
   link: string;
   github?: string;
 }
@@ -39,7 +39,6 @@ const projects: Project[] = [
     description:
       "A pro-bono tech consulting firm serving Orange county nonprofits. Built a platform that connects nonprofits with student developers to create impactful technology solutions.",
     image: ctc,
-    tags: ["Vue.js", "Express", "PostgreSQL", "Tailwind"],
     link: "https://ctc-uci.com",
     github: "https://github.com/ctc-uci",
   },
