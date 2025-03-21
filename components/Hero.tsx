@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import { Badge } from "@/components/ui/badge";
 import { ArrowDownIcon } from "lucide-react";
 import Link from "next/link";
+import GitHubCalendar from "react-github-calendar";
 
 const technologies = [
   "React",
@@ -107,16 +108,6 @@ export default function Hero() {
               <span className="gradient-text">Albert Zhang</span>
             </motion.h1>
 
-            <motion.p
-              className="text-xl md:text-2xl text-foreground/80 mb-8 max-w-2xl mx-auto font-light"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.4, duration: 0.8 }}
-            >
-              Building beautiful, functional, and performant web applications
-              with modern technologies
-            </motion.p>
-
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -137,7 +128,13 @@ export default function Hero() {
                 </motion.div>
               ))}
             </motion.div>
-
+            <span>
+              <GitHubCalendar
+                colorScheme="dark"
+                blockSize={10}
+                username="appsicle"
+              />
+            </span>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
