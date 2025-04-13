@@ -114,8 +114,8 @@ export default function Footer() {
               className="space-y-2"
             >
               {[
-                { name: "Projects", href: "#projects" },
-                { name: "About", href: "#about" },
+                { name: "Projects", href: "#projects", external: false },
+                { name: "About", href: "#about", external: false },
                 // { 
                 //   name: "Resume", 
                 //   href: "https://docs.google.com/document/d/e/2PACX-1vThj05LkyKj_BboimiYdlOvSN_luOGZU8oZF0_4HflwukXAJGM6X_kOCGt8ISwlym6pd74ktOh9yd6q/pub",
