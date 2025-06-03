@@ -58,9 +58,7 @@ const config: Config = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
       fontFamily: {
-        'space-grotesk': ['var(--font-space-grotesk)'],
-        'poppins': ['var(--font-poppins)'],
-        'inter': ['var(--font-inter)'],
+        'sans': ['var(--font-plus-jakarta-sans)', 'sans-serif'],
       },
       animation: {
         'gradient-xy': 'gradient-xy 3s ease infinite',

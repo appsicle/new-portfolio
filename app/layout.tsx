@@ -1,27 +1,7 @@
 import "./globals.css";
-import { Inter, Poppins, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-
-const inter = Inter({ 
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap"
-});
-
-const poppins = Poppins({ 
-  weight: ["300", "400", "500", "600", "700"],
-  subsets: ["latin"],
-  variable: "--font-poppins",
-  display: "swap"
-});
-
-const spaceGrotesk = Space_Grotesk({
-  subsets: ["latin"],
-  variable: "--font-space-grotesk",
-  display: "swap"
-});
 
 export const metadata = {
   title: "Albert Zhang | Software Engineer & Web Developer",
@@ -65,8 +45,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={`${inter.variable} ${poppins.variable} ${spaceGrotesk.variable}`}>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: `html { --font-plus-jakarta-sans: 'Plus Jakarta Sans', sans-serif; }` }} />
+      </head>
+      <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="min-h-screen flex flex-col">
             <Navigation />
