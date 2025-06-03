@@ -18,68 +18,10 @@ const technologies = [
 ];
 
 export default function Hero() {
-  const heroRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      if (!heroRef.current) return;
-
-      const { clientX, clientY } = e;
-      const { left, top, width, height } =
-        heroRef.current.getBoundingClientRect();
-
-      const x = (clientX - left) / width;
-      const y = (clientY - top) / height;
-
-      heroRef.current.style.setProperty("--mouse-x", `${x}`);
-      heroRef.current.style.setProperty("--mouse-y", `${y}`);
-    };
-
-    window.addEventListener("mousemove", handleMouseMove);
-
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
-
   return (
     <section
-      ref={heroRef}
-      className="relative min-h-screen flex items-center justify-center hero-gradient grid-background overflow-hidden"
-      style={
-        {
-          "--mouse-x": "0.5",
-          "--mouse-y": "0.5",
-        } as React.CSSProperties
-      }
+      className="relative min-h-screen flex items-center justify-center bg-background py-12 md:py-24"
     >
-      {/* Animated particles */}
-      <div className="absolute inset-0 z-0">
-        {[...Array(20)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute rounded-full bg-primary/20"
-            style={{
-              width: Math.random() * 40 + 10,
-              height: Math.random() * 40 + 10,
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              x: [0, Math.random() * 100 - 50],
-              y: [0, Math.random() * 100 - 50],
-              opacity: [0, 0.5, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: Math.random() * 10 + 10,
-              repeat: Infinity,
-              ease: "linear",
-            }}
-          />
-        ))}
-      </div>
-
       <div className="container mx-auto px-6 z-10">
         <div className="flex flex-col items-center">
           <motion.div
@@ -94,18 +36,18 @@ export default function Hero() {
               transition={{ duration: 0.5 }}
               className="mb-6 inline-block"
             >
-              <Badge className="px-4 py-1 text-sm font-medium bg-primary/10 text-primary border-none">
+              <Badge variant="secondary" className="px-4 py-1 text-sm font-medium">
                 Software Engineer
               </Badge>
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-4 font-space-grotesk glow-text"
+              className="text-5xl md:text-7xl font-bold mb-8 text-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.2, duration: 0.8 }}
             >
-              <span className="gradient-text">Albert Zhang</span>
+              Albert Zhang
             </motion.h1>
 
             <motion.div
@@ -122,19 +64,19 @@ export default function Hero() {
                   transition={{ delay: 0.7 + index * 0.1, duration: 0.5 }}
                   whileHover={{ y: -5, scale: 1.05 }}
                 >
-                  <Badge className="bg-background/30 backdrop-blur-sm border border-primary/20 hover:border-primary/50 text-foreground px-4 py-1.5 text-sm transition-all duration-300">
+                  <Badge variant="outline" className="px-3 py-1 text-xs">
                     {tech}
                   </Badge>
                 </motion.div>
               ))}
             </motion.div>
-            <span>
+            <div className="mb-12 flex justify-center">
               <GitHubCalendar
-                colorScheme="dark"
+                colorScheme="dark" // Consider changing to "light" if preferred for minimalist
                 blockSize={10}
                 username="appsicle"
               />
-            </span>
+            </div>
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
@@ -142,7 +84,9 @@ export default function Hero() {
             >
               <Link href="#projects">
                 <motion.button
-                  className="flex items-center gap-2 mx-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-full font-medium transition-all duration-300 glow-border"
+                  className="flex items-center gap-2 mx-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-medium"
+                  // Using Button component from ui/button would be more consistent
+                  // For now, direct styling is applied as per instructions for this file
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
                 >
@@ -154,18 +98,6 @@ export default function Hero() {
           </motion.div>
         </div>
       </div>
-
-      {/* 3D tilt effect based on mouse position */}
-      <div
-        className="absolute inset-0 z-0 opacity-40"
-        style={{
-          backgroundImage: `radial-gradient(
-            circle at calc(var(--mouse-x) * 100%) calc(var(--mouse-y) * 100%), 
-            rgba(139, 92, 246, 0.15), 
-            transparent 40%
-          )`,
-        }}
-      />
     </section>
   );
 }

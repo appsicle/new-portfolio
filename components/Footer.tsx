@@ -27,12 +27,8 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="relative py-16 overflow-hidden">
-      {/* Background elements */}
-      <div className="absolute inset-0 grid-background opacity-10" />
-      <div className="absolute inset-0 bg-gradient-to-b from-background to-background/95" />
-      
-      <div className="container relative z-10 mx-auto px-6">
+    <footer className="py-12 md:py-16 bg-background border-t border-border">
+      <div className="container mx-auto px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Logo and tagline */}
           <div className="space-y-4">
@@ -43,7 +39,7 @@ export default function Footer() {
               viewport={{ once: true }}
               className="flex items-center"
             >
-              <Link href="/" className="font-space-grotesk text-2xl font-bold gradient-text">
+              <Link href="/" className="text-xl font-bold text-primary">
                 AZ
               </Link>
             </motion.div>
@@ -53,7 +49,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-foreground/70 max-w-md"
+              className="text-muted-foreground text-sm max-w-md"
             >
               Building beautiful, functional, and performant web applications with modern technologies.
             </motion.p>
@@ -63,7 +59,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="flex space-x-4 pt-2"
+              className="flex space-x-3 pt-2" // Reduced space-x for tighter icons
             >
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -72,11 +68,8 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="p-2 rounded-full bg-background/50 border border-border/30 hover:border-primary/50 transition-all duration-300"
-                  whileHover={{ 
-                    scale: 1.1,
-                    backgroundColor: `${social.color}20`,
-                  }}
+                  className="p-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors duration-300"
+                  whileHover={{ scale: 1.1 }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, scale: 0 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -88,7 +81,7 @@ export default function Footer() {
                   }}
                   viewport={{ once: true }}
                 >
-                  <social.icon size={18} style={{ color: social.color }} />
+                  <social.icon size={18} className="text-secondary-foreground" />
                 </motion.a>
               ))}
             </motion.div>
@@ -101,7 +94,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-lg font-bold font-space-grotesk"
+              className="text-base font-semibold text-foreground"
             >
               Quick Links
             </motion.h3>
@@ -116,11 +109,6 @@ export default function Footer() {
               {[
                 { name: "Projects", href: "#projects", external: false },
                 { name: "About", href: "#about", external: false },
-                // { 
-                //   name: "Resume", 
-                //   href: "https://docs.google.com/document/d/e/2PACX-1vThj05LkyKj_BboimiYdlOvSN_luOGZU8oZF0_4HflwukXAJGM6X_kOCGt8ISwlym6pd74ktOh9yd6q/pub",
-                //   external: true
-                // },
               ].map((link, index) => (
                 <motion.li
                   key={link.name}
@@ -133,7 +121,7 @@ export default function Footer() {
                     href={link.href}
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-foreground/70 hover:text-primary transition-colors duration-300 flex items-center gap-1 group"
+                    className="text-muted-foreground hover:text-primary text-sm transition-colors duration-300 flex items-center gap-1 group"
                   >
                     {link.name}
                     {link.external && (
@@ -152,7 +140,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-lg font-bold font-space-grotesk"
+              className="text-base font-semibold text-foreground"
             >
               Get In Touch
             </motion.h3>
@@ -162,7 +150,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-foreground/70"
+              className="text-muted-foreground text-sm"
             >
               Have a project in mind or want to chat? Feel free to reach out!
             </motion.p>
@@ -173,7 +161,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="inline-block text-primary hover:underline"
+              className="inline-block text-primary hover:underline text-sm"
             >
               aalbertzhang@gmail.com
             </motion.a>
@@ -185,7 +173,7 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
-          className="border-t border-border/10 mt-12 pt-6 text-center text-sm text-foreground/50"
+          className="border-t border-border mt-10 pt-8 text-center text-xs text-muted-foreground"
         >
           <p>© {new Date().getFullYear()} Albert Zhang. All rights reserved.</p>
         </motion.div>

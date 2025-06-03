@@ -4,65 +4,65 @@
  
 @layer base {
   :root {
-    --background: 39 77% 95%; /* Cream */
-    --foreground: 39 10% 20%; /* Dark Brownish-Gray */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 10%; /* Very Dark Gray (main text) */
 
-    --card: 39 60% 97%; /* Very Light Cream */
-    --card-foreground: 39 10% 20%; /* Dark Brownish-Gray */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 0 0% 10%; /* Very Dark Gray */
  
-    --popover: 39 60% 97%; /* Very Light Cream */
-    --popover-foreground: 39 10% 20%; /* Dark Brownish-Gray */
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 0 0% 10%; /* Very Dark Gray */
  
-    --primary: 195 53% 79%; /* Soft Blue */
-    --primary-foreground: 210 30% 15%; /* Dark Blue/Gray */
+    --primary: 210 15% 25%; /* Dark Desaturated Slate Blue (interactive elements) */
+    --primary-foreground: 0 0% 98%; /* Nearly White (text on primary) */
  
-    --secondary: 39 77% 90%; /* Slightly darker cream */
-    --secondary-foreground: 39 10% 25%; /* Slightly lighter than main foreground */
+    --secondary: 0 0% 96%; /* Light Gray (subtle backgrounds) */
+    --secondary-foreground: 0 0% 20%; /* Dark Gray (text on secondary) */
  
-    --muted: 39 30% 85%; /* Light Grayish Cream */
-    --muted-foreground: 39 15% 45%; /* Medium Grayish Brown */
+    --muted: 0 0% 90%; /* Light Gray (borders, dividers) */
+    --muted-foreground: 0 0% 35%; /* Medium-Dark Gray (secondary text) */
  
-    --accent: 195 53% 79%; /* Soft Blue */
-    --accent-foreground: 210 30% 15%; /* Dark Blue/Gray */
+    --accent: 210 15% 25%; /* Dark Desaturated Slate Blue (consistent with primary) */
+    --accent-foreground: 0 0% 98%; /* Nearly White (text on accent) */
  
-    --destructive: 0 70% 70%; /* Soft Red */
-    --destructive-foreground: 0 0% 100%; /* White */
+    --destructive: 0 70% 55%; /* Standard Red, slightly desaturated */
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 39 30% 85%; /* Light Grayish Cream */
-    --input: 39 30% 90%; /* Slightly lighter than border for input backgrounds */
-    --ring: 195 53% 79%; /* Soft Blue */
+    --border: 0 0% 90%; /* Light Gray */
+    --input: 0 0% 97%; /* Very Light Gray input background, slightly off-white */
+    --ring: 210 15% 35%; /* Slightly lighter Desaturated Slate Blue for focus rings */
  
-    --radius: 1rem;
+    --radius: 0.3rem;
   }
  
   .light {
-    --background: 39 77% 95%; /* Cream */
-    --foreground: 39 10% 20%; /* Dark Brownish-Gray */
+    --background: 0 0% 100%; /* White */
+    --foreground: 0 0% 10%; /* Very Dark Gray (main text) */
  
-    --card: 39 60% 97%; /* Very Light Cream */
-    --card-foreground: 39 10% 20%; /* Dark Brownish-Gray */
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 0 0% 10%; /* Very Dark Gray */
  
-    --popover: 39 60% 97%; /* Very Light Cream */
-    --popover-foreground: 39 10% 20%; /* Dark Brownish-Gray */
+    --popover: 0 0% 100%; /* White */
+    --popover-foreground: 0 0% 10%; /* Very Dark Gray */
  
-    --primary: 195 53% 79%; /* Soft Blue */
-    --primary-foreground: 210 30% 15%; /* Dark Blue/Gray */
+    --primary: 210 15% 25%; /* Dark Desaturated Slate Blue (interactive elements) */
+    --primary-foreground: 0 0% 98%; /* Nearly White (text on primary) */
  
-    --secondary: 39 77% 90%; /* Slightly darker cream */
-    --secondary-foreground: 39 10% 25%; /* Slightly lighter than main foreground */
+    --secondary: 0 0% 96%; /* Light Gray (subtle backgrounds) */
+    --secondary-foreground: 0 0% 20%; /* Dark Gray (text on secondary) */
  
-    --muted: 39 30% 85%; /* Light Grayish Cream */
-    --muted-foreground: 39 15% 45%; /* Medium Grayish Brown */
+    --muted: 0 0% 90%; /* Light Gray (borders, dividers) */
+    --muted-foreground: 0 0% 35%; /* Medium-Dark Gray (secondary text) */
  
-    --accent: 195 53% 79%; /* Soft Blue */
-    --accent-foreground: 210 30% 15%; /* Dark Blue/Gray */
+    --accent: 210 15% 25%; /* Dark Desaturated Slate Blue (consistent with primary) */
+    --accent-foreground: 0 0% 98%; /* Nearly White (text on accent) */
  
-    --destructive: 0 70% 70%; /* Soft Red */
-    --destructive-foreground: 0 0% 100%; /* White */
+    --destructive: 0 70% 55%; /* Standard Red, slightly desaturated */
+    --destructive-foreground: 0 0% 98%;
  
-    --border: 39 30% 85%; /* Light Grayish Cream */
-    --input: 39 30% 90%; /* Slightly lighter than border for input backgrounds */
-    --ring: 195 53% 79%; /* Soft Blue */
+    --border: 0 0% 90%; /* Light Gray */
+    --input: 0 0% 97%; /* Very Light Gray input background, slightly off-white */
+    --ring: 210 15% 35%; /* Slightly lighter Desaturated Slate Blue for focus rings */
   }
 }
  
@@ -166,7 +166,7 @@
 
 .card-hover:hover {
   transform: translateY(-5px);
-  box-shadow: 0 6px 18px -3px hsl(var(--primary) / 0.3);
+  box-shadow: none;
 }
 
 /* Scrollbar styling */
