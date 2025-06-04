@@ -30,27 +30,29 @@ export default function About() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section id="about" ref={ref} className="py-16 md:py-24 bg-background">
-      <div className="container mx-auto px-6">
+    <section id="about" ref={ref} className="py-20 sm:py-24 lg:py-32 bg-background">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center mb-16"
         >
-          <h2 className="text-3xl font-bold text-foreground mb-4">
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground mb-4">
             About Me
           </h2>
-          <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
+          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto font-medium">
             Software engineer passionate about building innovative web applications and exploring new technologies.
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.2 }}
+          <motion.div // Image column
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.3 }}
             className="relative"
           >
             <div className="relative mx-auto md:ml-auto md:mr-0 w-64 h-64 md:w-80 md:h-80">
@@ -83,21 +85,22 @@ export default function About() {
             </div>
           </motion.div>
           
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ duration: 0.8, delay: 0.4 }}
+          <motion.div // Text card column
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.2 }}
+            transition={{ duration: 0.7, delay: 0.5 }} // Slightly later delay for the second column
           >
             <Card className="bg-card border border-border overflow-hidden">
               <CardContent className="p-8">
-                <h3 className="text-xl font-semibold mb-3 text-foreground">My Background</h3>
-                <p className="text-muted-foreground mb-6 leading-relaxed">
+                <h3 className="text-xl font-bold mb-3 text-foreground">My Background</h3>
+                <p className="text-muted-foreground text-base font-medium leading-relaxed mb-6 md:mb-8">
                   I am a software engineer with experience in modern web technologies. I specialize in building responsive, 
                   performant web applications with a focus on user experience and clean code. My passion lies in creating 
                   innovative solutions that solve real-world problems.
                 </p>
                 
-                <h4 className="text-lg font-semibold mb-3 text-foreground">Technical Skills</h4>
+                <h4 className="text-lg font-bold mb-3 text-foreground">Technical Skills</h4>
                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-2">
                   {skills.map((skill, index) => (
                     <motion.div
@@ -113,7 +116,7 @@ export default function About() {
                           className="text-secondary-foreground"
                         />
                       </div>
-                      <span className="text-muted-foreground">
+                      <span className="text-muted-foreground text-sm font-medium">
                         {skill.name}
                       </span>
                     </motion.div>

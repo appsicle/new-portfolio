@@ -20,9 +20,9 @@ const technologies = [
 export default function Hero() {
   return (
     <section
-      className="relative min-h-screen flex items-center justify-center bg-background py-12 md:py-24"
+      className="relative min-h-screen flex items-center justify-center bg-background py-24 sm:py-32 lg:py-40"
     >
-      <div className="container mx-auto px-6 z-10">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12 z-10">
         <div className="flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -42,18 +42,18 @@ export default function Hero() {
             </motion.div>
 
             <motion.h1
-              className="text-5xl md:text-7xl font-bold mb-8 text-foreground"
+              className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-8 md:mb-10 text-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2, duration: 0.8 }}
+              transition={{ duration: 0.7, delay: 0.1 }}
             >
               Albert Zhang
             </motion.h1>
 
             <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6, duration: 0.8 }}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.3 }}
               className="flex flex-wrap justify-center gap-2 mb-12"
             >
               {technologies.map((tech, index) => (
@@ -80,7 +80,7 @@ export default function Hero() {
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1.2, duration: 0.8 }}
+              transition={{ duration: 0.7, delay: 0.5 }}
             >
               <Link href="#projects">
                 <motion.button

@@ -47,8 +47,8 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200..800&display=swap" rel="stylesheet" />
-        <style dangerouslySetInnerHTML={{ __html: `html { --font-plus-jakarta-sans: 'Plus Jakarta Sans', sans-serif; }` }} />
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <style dangerouslySetInnerHTML={{ __html: `html { --font-inter: 'Inter', sans-serif; }` }} />
       </head>
       <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>

@@ -5,64 +5,64 @@
 @layer base {
   :root {
     --background: 0 0% 100%; /* White */
-    --foreground: 0 0% 10%; /* Very Dark Gray (main text) */
+    --foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
 
     --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 10%; /* Very Dark Gray */
+    --card-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
  
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 10%; /* Very Dark Gray */
+    --popover-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
  
-    --primary: 210 15% 25%; /* Dark Desaturated Slate Blue (interactive elements) */
-    --primary-foreground: 0 0% 98%; /* Nearly White (text on primary) */
+    --primary: 212 100% 47%; /* Bright Blue (like #0070f3) */
+    --primary-foreground: 0 0% 98%; /* Nearly White */
  
-    --secondary: 0 0% 96%; /* Light Gray (subtle backgrounds) */
-    --secondary-foreground: 0 0% 20%; /* Dark Gray (text on secondary) */
+    --secondary: 0 0% 97%; /* Very Light Gray (subtle backgrounds if needed) */
+    --secondary-foreground: 0 0% 15%; /* Dark Gray (text on secondary) */
  
     --muted: 0 0% 90%; /* Light Gray (borders, dividers) */
-    --muted-foreground: 0 0% 35%; /* Medium-Dark Gray (secondary text) */
+    --muted-foreground: 0 0% 40%; /* Medium Gray (secondary/muted text) */
  
-    --accent: 210 15% 25%; /* Dark Desaturated Slate Blue (consistent with primary) */
-    --accent-foreground: 0 0% 98%; /* Nearly White (text on accent) */
+    --accent: 212 100% 47%; /* Bright Blue */
+    --accent-foreground: 0 0% 98%; /* Nearly White */
  
     --destructive: 0 70% 55%; /* Standard Red, slightly desaturated */
     --destructive-foreground: 0 0% 98%;
 
     --border: 0 0% 90%; /* Light Gray */
-    --input: 0 0% 97%; /* Very Light Gray input background, slightly off-white */
-    --ring: 210 15% 35%; /* Slightly lighter Desaturated Slate Blue for focus rings */
+    --input: 0 0% 97%; /* Very Light Gray input background */
+    --ring: 212 100% 55%; /* Slightly lighter/softer blue for rings */
  
     --radius: 0.3rem;
   }
  
   .light {
     --background: 0 0% 100%; /* White */
-    --foreground: 0 0% 10%; /* Very Dark Gray (main text) */
+    --foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
  
     --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 10%; /* Very Dark Gray */
+    --card-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
  
     --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 10%; /* Very Dark Gray */
+    --popover-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
  
-    --primary: 210 15% 25%; /* Dark Desaturated Slate Blue (interactive elements) */
-    --primary-foreground: 0 0% 98%; /* Nearly White (text on primary) */
+    --primary: 212 100% 47%; /* Bright Blue (like #0070f3) */
+    --primary-foreground: 0 0% 98%; /* Nearly White */
  
-    --secondary: 0 0% 96%; /* Light Gray (subtle backgrounds) */
-    --secondary-foreground: 0 0% 20%; /* Dark Gray (text on secondary) */
+    --secondary: 0 0% 97%; /* Very Light Gray (subtle backgrounds if needed) */
+    --secondary-foreground: 0 0% 15%; /* Dark Gray (text on secondary) */
  
     --muted: 0 0% 90%; /* Light Gray (borders, dividers) */
-    --muted-foreground: 0 0% 35%; /* Medium-Dark Gray (secondary text) */
+    --muted-foreground: 0 0% 40%; /* Medium Gray (secondary/muted text) */
  
-    --accent: 210 15% 25%; /* Dark Desaturated Slate Blue (consistent with primary) */
-    --accent-foreground: 0 0% 98%; /* Nearly White (text on accent) */
+    --accent: 212 100% 47%; /* Bright Blue */
+    --accent-foreground: 0 0% 98%; /* Nearly White */
  
     --destructive: 0 70% 55%; /* Standard Red, slightly desaturated */
     --destructive-foreground: 0 0% 98%;
  
     --border: 0 0% 90%; /* Light Gray */
-    --input: 0 0% 97%; /* Very Light Gray input background, slightly off-white */
-    --ring: 210 15% 35%; /* Slightly lighter Desaturated Slate Blue for focus rings */
+    --input: 0 0% 97%; /* Very Light Gray input background */
+    --ring: 212 100% 55%; /* Slightly lighter/softer blue for rings */
   }
 }
  
@@ -72,7 +72,7 @@
   }
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-plus-jakarta-sans);
+    font-family: var(--font-inter);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
@@ -161,12 +161,12 @@
 
 /* Animated card hover effect */
 .card-hover {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
 }
 
 .card-hover:hover {
-  transform: translateY(-5px);
-  box-shadow: none;
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
 }
 
 /* Scrollbar styling */

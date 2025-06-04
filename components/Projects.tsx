@@ -52,20 +52,21 @@ export default function Projects() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
   
   return (
-    <section id="projects" ref={ref} className="py-16 md:py-24 bg-background">
-      <div className="container mx-auto px-6">
+    <section id="projects" ref={ref} className="py-16 sm:py-20 lg:py-28 bg-background">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.6 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, amount: 0.2 }}
+          transition={{ duration: 0.7, delay: 0.1 }}
           className="text-center mb-12 md:mb-16"
         >
-          <h2 className="text-3xl font-bold text-foreground">
+          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground">
             Featured Projects
           </h2>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-10">
+        <div className="grid md:grid-cols-2 gap-8 md:gap-10 lg:gap-12">
           {projects.map((project, index) => (
             <ProjectCard key={index} project={project} index={index} />
           ))}
@@ -78,7 +79,7 @@ export default function Projects() {
 function ProjectCard({ project, index }: { project: Project; index: number }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 50 }}
+      initial={{ opacity: 0, y: 20 }} // Changed y from 50 to 20 for consistency
       whileInView={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, delay: index * 0.2 }}
       viewport={{ once: true, amount: 0.3 }}
@@ -97,17 +98,17 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </div>
           </CardHeader>
           
-          <CardContent className="p-6">
+          <CardContent className="p-6 md:p-8">
             <motion.div
               initial={{ y: 10, opacity: 0 }}
               whileInView={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-xl font-semibold mb-2 text-foreground">
+              <h3 className="text-xl md:text-2xl font-bold text-foreground mb-3">
                 {project.title}
               </h3>
-              <p className="text-muted-foreground mb-4 text-sm">
+              <p className="text-muted-foreground text-sm leading-relaxed mb-4">
                 {project.description}
               </p>
               
@@ -119,7 +120,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
             </motion.div>
           </CardContent>
           
-          <CardFooter className="px-6 pb-6 pt-0 flex gap-3">
+          <CardFooter className="px-6 md:px-8 pb-6 md:pb-8 pt-0 flex gap-3">
             <Button asChild variant="default" size="sm" className="gap-2">
               <Link href={project.link} target="_blank" rel="noopener noreferrer">
                 <ExternalLink size={14} />

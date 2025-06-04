@@ -27,8 +27,8 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="py-12 md:py-16 bg-background border-t border-border">
-      <div className="container mx-auto px-6">
+    <footer className="py-16 sm:py-20 bg-background border-t border-border">
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
           {/* Logo and tagline */}
           <div className="space-y-4">
@@ -173,7 +173,7 @@ export default function Footer() {
           whileInView={{ opacity: 1 }}
           transition={{ duration: 0.5, delay: 0.3 }}
           viewport={{ once: true }}
-          className="border-t border-border mt-10 pt-8 text-center text-xs text-muted-foreground"
+          className="border-t border-border mt-16 pt-8 text-center text-xs text-muted-foreground"
         >
           <p>© {new Date().getFullYear()} Albert Zhang. All rights reserved.</p>
         </motion.div>

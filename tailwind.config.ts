@@ -58,7 +58,7 @@ const config: Config = {
   			sm: 'calc(var(--radius) - 4px)'
   		},
       fontFamily: {
-        'sans': ['var(--font-plus-jakarta-sans)', 'sans-serif'],
+        'sans': ['var(--font-inter)', 'sans-serif'],
       },
       animation: {
         'gradient-xy': 'gradient-xy 3s ease infinite',
