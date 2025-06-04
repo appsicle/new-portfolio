@@ -2,6 +2,14 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
+import { Plus_Jakarta_Sans } from "next/font/google";
+
+const jakarta = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-jakarta",
+  weight: ["400", "500", "600", "700", "800"],
+});
 
 export const metadata = {
   title: "Albert Zhang | Software Engineer & Web Developer",
@@ -45,11 +53,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <head>
-        <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
-        <style dangerouslySetInnerHTML={{ __html: `html { --font-jakarta: 'Plus Jakarta Sans', sans-serif; }` }} />
-      </head>
+    <html lang="en" suppressHydrationWarning className={jakarta.variable}>
       <body className="font-sans">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <div className="min-h-screen flex flex-col">

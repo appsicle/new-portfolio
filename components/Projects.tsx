@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useRef } from "react";
-import { motion, useInView } from "framer-motion";
+import { useRef } from "react";
+import { motion } from "framer-motion";
 import Image from "next/image";
 import {
   Card,
@@ -49,7 +49,6 @@ import { Badge } from "@/components/ui/badge";
 
 export default function Projects() {
   const ref = useRef(null);
-  const isInView = useInView(ref, { once: true, amount: 0.2 });
   
   return (
     <section id="projects" ref={ref} className="py-16 sm:py-20 lg:py-28 bg-background">
