@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, X, Github, Linkedin, Mail } from 'lucide-react';
+import { Menu, X, Github, Linkedin, Mail } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
@@ -16,7 +16,11 @@ const menuItems = [
 
 const socialLinks = [
   { icon: Github, href: "https://github.com/appsicle", ariaLabel: "GitHub" },
-  { icon: Linkedin, href: "https://linkedin.com/in/albertzhang100", ariaLabel: "LinkedIn" },
+  {
+    icon: Linkedin,
+    href: "https://linkedin.com/in/albertzhang100",
+    ariaLabel: "LinkedIn",
+  },
   { icon: Mail, href: "mailto:aalbertzhang@gmail.com", ariaLabel: "Email" },
 ];
 
@@ -28,26 +32,22 @@ export default function Navigation() {
     const handleScroll = () => {
       setScrolled(window.scrollY > 20);
     };
-    
+
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
-    <nav className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      scrolled ? "bg-background/90 backdrop-blur-sm py-4 shadow-sm" : "bg-transparent py-5"
-    }`}>
-      <div className="container mx-auto px-6">
+    <nav
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        scrolled
+          ? "bg-background/90 backdrop-blur-sm py-4 shadow-sm"
+          : "bg-transparent py-5"
+      }`}
+    >
+      <div className="container mx-auto px-6 mt-4">
         <div className="flex items-center justify-between">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.5 }}
-          >
-            <Link href="/" className="text-2xl font-bold text-primary">
-              AZ
-            </Link>
-          </motion.div>
+          <div></div>
 
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
@@ -56,20 +56,20 @@ export default function Navigation() {
                   key={item.name}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  transition={{ duration: 0.3, delay: index * 0.2 }}
                 >
                   <Link
                     href={item.href}
                     locale={undefined}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
-                    className="font-medium text-muted-foreground hover:text-primary transition-colors"
+                    className="font-medium text-muted-foreground hover:text-primary transition-colors text-lg"
                   >
                     {item.name}
                   </Link>
                 </motion.div>
               ))}
             </div>
-            
+
             <div className="flex items-center space-x-4 pl-6 border-l border-border">
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -81,16 +81,16 @@ export default function Navigation() {
                   className="text-muted-foreground hover:text-primary transition-colors duration-300"
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
-                  transition={{ 
-                    type: "spring", 
-                    stiffness: 260, 
-                    damping: 20, 
-                    delay: 0.5 + (index * 0.1) 
+                  transition={{
+                    type: "spring",
+                    stiffness: 260,
+                    damping: 20,
+                    delay: 0.5 + index * 0.1,
                   }}
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <social.icon size={18} />
+                  <social.icon size={24} />
                 </motion.a>
               ))}
             </div>
@@ -111,7 +111,7 @@ export default function Navigation() {
 
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border"
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -137,8 +137,8 @@ export default function Navigation() {
                   </Link>
                 </motion.div>
               ))}
-              
-              <motion.div 
+
+              <motion.div
                 className="flex items-center space-x-5 pt-4 border-t border-border"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
@@ -164,4 +164,3 @@ export default function Navigation() {
     </nav>
   );
 }
-

@@ -1,48 +1,23 @@
 "use client";
 
-import { useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-import { Badge } from "@/components/ui/badge";
 import { ArrowDownIcon } from "lucide-react";
 import Link from "next/link";
 import GitHubCalendar from "react-github-calendar";
 
-const technologies = [
-  "React",
-  "Next.js",
-  "TypeScript",
-  "Node.js",
-  "GraphQL",
-  "SQL",
-  "Python",
-];
-
 export default function Hero() {
   return (
-    <section
-      className="relative min-h-screen flex items-center justify-center bg-background py-24 sm:py-32 lg:py-40"
-    >
+    <section className="relative min-h-screen flex items-center justify-center bg-background py-24 sm:py-32 lg:py-40">
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 z-10">
         <div className="flex flex-col items-center">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-center max-w-4xl"
+            className="text-center max-w-5xl w-full"
           >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ duration: 0.5 }}
-              className="mb-6 inline-block"
-            >
-              <Badge variant="secondary" className="px-4 py-1 text-sm font-medium">
-                Software Engineer
-              </Badge>
-            </motion.div>
-
             <motion.h1
-              className="text-5xl md:text-6xl lg:text-7xl font-extrabold tracking-tighter mb-8 md:mb-10 text-foreground"
+              className="text-[72px] font-bold tracking-tight mb-3 text-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
@@ -50,48 +25,41 @@ export default function Hero() {
               Albert Zhang
             </motion.h1>
 
-            <motion.div
+            <motion.p
+              className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light mb-12 max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.3 }}
-              className="flex flex-wrap justify-center gap-2 mb-12"
+              transition={{ duration: 0.7, delay: 0.2 }}
             >
-              {technologies.map((tech, index) => (
-                <motion.div
-                  key={tech}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.7 + index * 0.1, duration: 0.5 }}
-                  whileHover={{ y: -5, scale: 1.05 }}
-                >
-                  <Badge variant="outline" className="px-3 py-1 text-xs">
-                    {tech}
-                  </Badge>
-                </motion.div>
-              ))}
-            </motion.div>
-            <div className="mb-12 flex justify-center">
-              <GitHubCalendar
-                colorScheme="dark" // Consider changing to "light" if preferred for minimalist
-                blockSize={10}
-                username="appsicle"
-              />
-            </div>
+              Software Engineer & Full-Stack Developer
+            </motion.p>
+
+            <GitHubCalendar
+              colorScheme="light"
+              blockSize={15}
+              blockMargin={3}
+              username="appsicle"
+              fontSize={15}
+              year={2025}
+              showWeekdayLabels={true}
+            />
+
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.7, delay: 0.5 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
             >
               <Link href="#projects">
                 <motion.button
-                  className="flex items-center gap-2 mx-auto bg-primary hover:bg-primary/90 text-primary-foreground px-6 py-3 rounded-lg font-medium"
-                  // Using Button component from ui/button would be more consistent
-                  // For now, direct styling is applied as per instructions for this file
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  className="group flex items-center gap-3 mx-auto bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-4 rounded-lg font-medium text-base transition-all duration-200 shadow-lg hover:shadow-xl"
+                  whileHover={{ scale: 1.02 }}
+                  whileTap={{ scale: 0.98 }}
                 >
                   View My Work
-                  <ArrowDownIcon size={16} />
+                  <ArrowDownIcon
+                    size={18}
+                    className="transition-transform duration-200 group-hover:translate-y-0.5"
+                  />
                 </motion.button>
               </Link>
             </motion.div>
