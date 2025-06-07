@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { ArrowDownIcon } from "lucide-react";
 import Link from "next/link";
 import GitHubCalendar from "react-github-calendar";
+import useResponsiveValue from "@/lib/hooks/useResponsiveValue";
 
 export default function Hero() {
   return (
@@ -36,10 +37,10 @@ export default function Hero() {
 
             <GitHubCalendar
               colorScheme="light"
-              blockSize={15}
+              blockSize={useResponsiveValue({ base: 10, md: 12, lg: 15 }, 10)}
               blockMargin={3}
               username="appsicle"
-              fontSize={15}
+              fontSize={useResponsiveValue({ base: 10, md: 12, lg: 15 }, 10)}
               year={2025}
               showWeekdayLabels={true}
             />
