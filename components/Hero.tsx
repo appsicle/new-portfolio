@@ -17,7 +17,7 @@ export default function Hero() {
             className="text-center max-w-5xl w-full"
           >
             <motion.h1
-              className="text-[72px] font-bold tracking-tight mb-3 text-foreground"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-3 text-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.1 }}
@@ -26,7 +26,7 @@ export default function Hero() {
             </motion.h1>
 
             <motion.p
-              className="text-lg sm:text-xl md:text-2xl text-muted-foreground font-light mb-12 max-w-2xl mx-auto leading-relaxed"
+              className="text-base sm:text-lg md:text-xl lg:text-2xl text-muted-foreground font-light mb-12 max-w-2xl mx-auto leading-relaxed"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
