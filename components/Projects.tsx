@@ -92,7 +92,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 alt={project.title}
                 width={600}
                 height={400}
-                className="w-full h-56 object-cover"
+                className="w-full h-40 sm:h-48 md:h-56 object-cover"
               />
             </div>
           </CardHeader>
