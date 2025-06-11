@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import profile from "./profile.jpeg";
-import { Code, Globe, Server, Database, Zap, Flower2 } from "lucide-react";
+import { Code, Globe, Server, Database, Zap, Flower2, Play } from "lucide-react";
 
 interface Skill {
   name: string;
@@ -14,7 +14,7 @@ interface Skill {
 }
 
 const skills: Skill[] = [
-  { name: "Remotion", icon: Code, color: "#61DAFB" },
+  { name: "Remotion", icon: Play, color: "#61DAFB" },
   { name: "React", icon: Code, color: "#61DAFB" },
   { name: "Next.js", icon: Globe, color: "#ffffff" },
   { name: "TypeScript", icon: Code, color: "#3178C6" },
@@ -253,8 +253,12 @@ export default function About() {
                   className="text-muted-foreground text-base font-medium leading-relaxed mb-8 md:mb-10"
                   style={{ textShadow: "0 1px 1px rgba(139, 69, 19, 0.05)" }}
                 >
-                  At Parallel Distribution, building content
-                  creator agents to arbitrage views across Tiktok.
+                  At Parallel Distribution, building content creator agents to
+                  arbitrage views across Tiktok.
+                  <br />
+                  <br />
+                  I am interested in video rendering, creator economy, AI agents, and
+                  scraping projects.
                 </p>
 
                 <h4

@@ -38,7 +38,7 @@ const projects: Project[] = [
   {
     title: "Commit the Change",
     description:
-      "Worked with a group of friends to start a club during Covid. We built apps for nonprofits in Orange County. I started this by cold emailing every nonprofit in the area.",
+      "Worked with a group of college friends to start a club during Covid. We built apps for nonprofits in Orange County. This gave life meaning during the pandemic.",
     image: ctc,
     link: "https://ctc-uci.com",
     github: "https://github.com/ctc-uci",

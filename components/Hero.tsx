@@ -275,7 +275,7 @@ const CalendarDay = memo(
               damping: 20,
             }}
           >
-            <PlantElement level={day.level} size={blockSize} />
+            <PlantElement level={day.level} size={blockSize * 1.5} />
           </motion.div>
         )}
       </motion.div>
@@ -493,7 +493,7 @@ const AnimatedGitHubCalendar = memo(
                           key={day.date}
                           day={day}
                           cellIndex={cellIndex}
-                          blockSize={blockSize || 8}
+                          blockSize={blockSize || 12}
                           getPlantStage={getPlantStage}
                           getGardenShadow={getGardenShadow}
                           dimmed={dimmed}
@@ -519,7 +519,7 @@ const AnimatedGitHubCalendar = memo(
             transition={{ duration: 0.4, delay: 0.5 }}
           >
             <span className="text-xs font-medium" style={{ color: "#5D4037" }}>
-              Garden Growth:
+              Github Garden:
             </span>
             <div className="flex gap-2">
               {[0, 1, 2, 3, 4].map((level) => {
@@ -536,7 +536,7 @@ const AnimatedGitHubCalendar = memo(
                       }}
                       title={stage.description}
                     >
-                      <PlantElement level={level} size={8} />
+                      <PlantElement level={level} size={30} />
                     </div>
                     <span
                       className="text-xs text-center"
