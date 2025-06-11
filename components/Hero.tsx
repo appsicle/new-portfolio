@@ -31,11 +31,11 @@ const PlantElement = memo(
     };
 
     const Stage0 = (
-      <svg {...svgProps} opacity={0.7}>
+      <svg {...svgProps} style={{ opacity: 0.9 }}>
         {/* Pot rim */}
-        <circle cx="12" cy="12" r="11" fill="#8D6E63" />
+        <circle cx="12" cy="12" r="11" fill="#E5D3C9" />
         {/* Soil */}
-        <circle cx="12" cy="12" r="9" fill="#5D4037" />
+        <circle cx="12" cy="12" r="9" fill="#D4BBA9" />
       </svg>
     );
 
@@ -402,6 +402,54 @@ const AnimatedGitHubCalendar = memo(
       "Dec",
     ];
 
+    // ------------------- contribution stats -------------------
+    const stats = useMemo(() => {
+      if (!contributions?.length) return null;
+
+      const days = contributions;
+
+      const totalCommits = days.reduce((sum, d) => sum + d.count, 0);
+
+      const today = new Date();
+      const startOfYear = new Date(today.getFullYear(), 0, 1);
+      const daysElapsed =
+        Math.floor((today.getTime() - startOfYear.getTime()) / 86_400_000) + 1;
+
+      const averagePerDay = totalCommits / daysElapsed;
+
+      const maxCommitsDay = Math.max(...days.map((d) => d.count));
+
+      const sortedDays = [...days].sort((a, b) => a.date.localeCompare(b.date));
+
+      let longestStreak = 0;
+      let current = 0;
+      for (const day of sortedDays) {
+        if (day.count > 0) {
+          current += 1;
+          longestStreak = Math.max(longestStreak, current);
+        } else {
+          current = 0;
+        }
+      }
+
+      let currentStreak = 0;
+      for (let i = sortedDays.length - 1; i >= 0; i--) {
+        if (sortedDays[i].count > 0) {
+          currentStreak += 1;
+        } else {
+          break;
+        }
+      }
+
+      return {
+        totalCommits,
+        averagePerDay,
+        maxCommitsDay,
+        currentStreak,
+        longestStreak,
+      };
+    }, [contributions]);
+
     return (
       <div className="relative">
         <div className="relative flex flex-col items-center gap-4 p-8">
@@ -505,6 +553,22 @@ const AnimatedGitHubCalendar = memo(
               </div>
             </div>
           </div>
+
+          {/* Contribution stats subtext */}
+          {stats && (
+            <motion.p
+              className="ml-5 text-xs sm:text-sm text-muted-foreground self-start mt-3"
+              style={{ paddingLeft: (blockSize || 8) + 12 }}
+              initial={{ opacity: 0, y: 4 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.55 }}
+            >
+              <span>{stats.totalCommits.toLocaleString()}</span> commits so far
+              this year · Avg
+              <span> {stats.averagePerDay.toFixed(1)}</span>
+              /day
+            </motion.p>
+          )}
 
           {/* Simplified garden progression legend */}
           <motion.div
