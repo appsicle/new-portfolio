@@ -57,6 +57,12 @@ const config: Config = {
   			md: 'calc(var(--radius) - 2px)',
   			sm: 'calc(var(--radius) - 4px)'
   		},
+      backgroundImage: {
+        'grid-subtle': "linear-gradient(to right, hsl(var(--border)) 1px, transparent 1px), linear-gradient(to bottom, hsl(var(--border)) 1px, transparent 1px)",
+      },
+      backgroundSize: {
+        'grid-size': "1.5rem 1.5rem",
+      },
       fontFamily: {
         'sans': ['var(--font-jakarta)', 'sans-serif'],
       },

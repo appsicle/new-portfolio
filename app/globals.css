@@ -1,71 +1,77 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
- 
+
+html {
+  scroll-behavior: smooth;
+}
+
 @layer base {
   :root {
-    --background: 35 100% 97%; /* Cream */
-    --foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
+    /* Studio Ghibli Nature Theme - Light Mode */
+    --background: 42 48% 95%; /* Soft cream like morning mist */
+    --foreground: 20 25% 15%; /* Deep forest brown */
 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
- 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
- 
-    --primary: 212 100% 47%; /* Bright Blue (like #0070f3) */
-    --primary-foreground: 0 0% 98%; /* Nearly White */
- 
-    --secondary: 0 0% 97%; /* Very Light Gray (subtle backgrounds if needed) */
-    --secondary-foreground: 0 0% 15%; /* Dark Gray (text on secondary) */
- 
-    --muted: 0 0% 90%; /* Light Gray (borders, dividers) */
-    --muted-foreground: 0 0% 40%; /* Medium Gray (secondary/muted text) */
- 
-    --accent: 212 100% 47%; /* Bright Blue */
-    --accent-foreground: 0 0% 98%; /* Nearly White */
- 
-    --destructive: 0 70% 55%; /* Standard Red, slightly desaturated */
-    --destructive-foreground: 0 0% 98%;
+    --card: 45 45% 97%; /* Birch bark white */
+    --card-foreground: 20 25% 15%; /* Deep forest brown */
 
-    --border: 0 0% 90%; /* Light Gray */
-    --input: 0 0% 97%; /* Very Light Gray input background */
-    --ring: 212 100% 55%; /* Slightly lighter/softer blue for rings */
- 
-    --radius: 0.3rem;
+    --popover: 45 45% 97%; /* Birch bark white */
+    --popover-foreground: 20 25% 15%; /* Deep forest brown */
+
+    --primary: 122 35% 45%; /* Forest green */
+    --primary-foreground: 45 45% 97%; /* Birch bark white */
+
+    --secondary: 32 35% 85%; /* Warm wood beige */
+    --secondary-foreground: 20 25% 25%; /* Rich brown */
+
+    --muted: 32 25% 88%; /* Light wood grain */
+    --muted-foreground: 20 15% 45%; /* Soft brown */
+
+    --accent: 85 60% 55%; /* Fresh leaf green */
+    --accent-foreground: 20 25% 15%; /* Deep forest brown */
+
+    --destructive: 0 65% 50%; /* Natural red berry */
+    --destructive-foreground: 45 45% 97%;
+
+    --border: 32 20% 82%; /* Subtle wood border */
+    --input: 42 40% 92%; /* Soft input background */
+    --ring: 122 35% 45%; /* Forest green focus ring */
+
+    --radius: 0.75rem; /* More organic rounded corners */
   }
- 
-  .light {
-    --background: 0 0% 100%; /* White */
-    --foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
- 
-    --card: 0 0% 100%; /* White */
-    --card-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
- 
-    --popover: 0 0% 100%; /* White */
-    --popover-foreground: 0 0% 7%; /* Very Dark Gray / Near Black */
- 
-    --primary: 212 100% 47%; /* Bright Blue (like #0070f3) */
-    --primary-foreground: 0 0% 98%; /* Nearly White */
- 
-    --secondary: 0 0% 97%; /* Very Light Gray (subtle backgrounds if needed) */
-    --secondary-foreground: 0 0% 15%; /* Dark Gray (text on secondary) */
- 
-    --muted: 0 0% 90%; /* Light Gray (borders, dividers) */
-    --muted-foreground: 0 0% 40%; /* Medium Gray (secondary/muted text) */
- 
-    --accent: 212 100% 47%; /* Bright Blue */
-    --accent-foreground: 0 0% 98%; /* Nearly White */
- 
-    --destructive: 0 70% 55%; /* Standard Red, slightly desaturated */
-    --destructive-foreground: 0 0% 98%;
- 
-    --border: 0 0% 90%; /* Light Gray */
-    --input: 0 0% 97%; /* Very Light Gray input background */
-    --ring: 212 100% 55%; /* Slightly lighter/softer blue for rings */
+
+  .dark {
+    /* Studio Ghibli Nature Theme - Dark Mode (Evening Forest) */
+    --background: 20 20% 8%; /* Deep forest night */
+    --foreground: 45 30% 85%; /* Moonlit cream */
+
+    --card: 20 20% 12%; /* Dark tree bark */
+    --card-foreground: 45 30% 85%; /* Moonlit cream */
+
+    --popover: 20 20% 12%; /* Dark tree bark */
+    --popover-foreground: 45 30% 85%; /* Moonlit cream */
+
+    --primary: 122 40% 55%; /* Moonlit forest green */
+    --primary-foreground: 20 20% 8%; /* Deep forest night */
+
+    --secondary: 20 15% 18%; /* Dark wood */
+    --secondary-foreground: 45 25% 75%; /* Soft moonlight */
+
+    --muted: 20 12% 22%; /* Muted dark wood */
+    --muted-foreground: 45 15% 55%; /* Dim moonlight */
+
+    --accent: 85 50% 45%; /* Darker leaf green */
+    --accent-foreground: 45 30% 85%; /* Moonlit cream */
+
+    --destructive: 0 60% 45%; /* Dark berry red */
+    --destructive-foreground: 45 30% 85%;
+
+    --border: 20 15% 25%; /* Dark wood border */
+    --input: 20 18% 15%; /* Dark input background */
+    --ring: 122 40% 55%; /* Moonlit forest green focus ring */
   }
 }
- 
+
 @layer base {
   * {
     @apply border-border;
@@ -77,76 +83,165 @@
   }
 }
 
-/* Modern Gradient Background */
-/*
-.hero-gradient {
-  background: linear-gradient(125deg, #13151a 0%, #20232a 100%);
+/* Studio Ghibli Nature Backgrounds */
+.nature-background {
+  background: radial-gradient(
+      circle at 20% 30%,
+      rgba(139, 69, 19, 0.05) 0%,
+      transparent 60%
+    ),
+    radial-gradient(
+      circle at 80% 70%,
+      rgba(25, 118, 210, 0.08) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 50% 50%,
+      rgba(76, 175, 80, 0.06) 0%,
+      transparent 70%
+    ),
+    linear-gradient(135deg, rgba(255, 248, 225, 0.4), rgba(245, 245, 220, 0.2));
   position: relative;
-  overflow: hidden;
 }
 
-.hero-gradient::before {
+.nature-background::before {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background: 
-    radial-gradient(circle at 20% 35%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-    radial-gradient(circle at 80% 10%, rgba(236, 72, 153, 0.1) 0%, transparent 50%);
-  z-index: 0;
+  background-image: radial-gradient(
+      circle at 15% 25%,
+      rgba(139, 69, 19, 0.03) 1px,
+      transparent 1px
+    ),
+    radial-gradient(
+      circle at 85% 75%,
+      rgba(76, 175, 80, 0.03) 1px,
+      transparent 1px
+    );
+  background-size: 40px 40px, 60px 60px;
+  pointer-events: none;
 }
-*/
 
-/* Animated background grid */
-/*
+/* Enhanced Nature Grid Background */
 .grid-background {
-  background-size: 50px 50px;
-  background-image: 
-    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-  animation: grid-move 15s linear infinite;
+  background-image: linear-gradient(
+      to right,
+      rgba(139, 69, 19, 0.08) 1px,
+      transparent 1px
+    ),
+    linear-gradient(to bottom, rgba(139, 69, 19, 0.08) 1px, transparent 1px);
+  background-size: 2rem 2rem;
+  position: relative;
 }
 
-@keyframes grid-move {
-  0% {
-    background-position: 0px 0px;
-  }
-  100% {
-    background-position: 50px 50px;
-  }
-}
-*/
-
-/* Glow effects */
-/*
-.glow-text {
-  text-shadow: 0 0 10px rgba(139, 92, 246, 0.5), 0 0 20px rgba(139, 92, 246, 0.3);
-}
-
-.glow-border {
-  box-shadow: 0 0 15px rgba(139, 92, 246, 0.3);
-  transition: box-shadow 0.3s ease;
-}
-
-.glow-border:hover {
-  box-shadow: 0 0 25px rgba(139, 92, 246, 0.5);
-}
-*/
-
-/* Animated gradient text */
-/*
-.gradient-text {
-  background: linear-gradient(90deg, #8b5cf6, #ec4899, #3b82f6);
-  background-size: 200% auto;
-  background-clip: text;
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  animation: gradient-text 5s ease infinite;
+.grid-background::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 25% 25%,
+      rgba(76, 175, 80, 0.03) 0%,
+      transparent 50%
+    ),
+    radial-gradient(
+      circle at 75% 75%,
+      rgba(25, 118, 210, 0.02) 0%,
+      transparent 50%
+    );
+  pointer-events: none;
 }
 
-@keyframes gradient-text {
+/* Organic Card Styling */
+.nature-card {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 248, 225, 0.9),
+    rgba(245, 245, 220, 0.7)
+  );
+  border: 1.5px solid rgba(139, 69, 19, 0.15);
+  box-shadow: 0 4px 12px rgba(139, 69, 19, 0.1),
+    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(8px);
+  position: relative;
+  overflow: hidden;
+}
+
+.nature-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+      circle at 30% 30%,
+      rgba(255, 255, 255, 0.2) 0%,
+      transparent 70%
+    ),
+    linear-gradient(
+      45deg,
+      transparent 40%,
+      rgba(139, 69, 19, 0.02) 50%,
+      transparent 60%
+    );
+  pointer-events: none;
+}
+
+/* Wood Texture Button */
+.wood-button {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 69, 19, 0.8),
+    rgba(101, 67, 33, 0.9)
+  );
+  border: 1px solid rgba(139, 69, 19, 0.3);
+  box-shadow: 0 2px 8px rgba(139, 69, 19, 0.3),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.wood-button::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+      90deg,
+      transparent 40%,
+      rgba(255, 255, 255, 0.05) 50%,
+      transparent 60%
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 1px,
+      rgba(139, 69, 19, 0.1) 1px,
+      rgba(139, 69, 19, 0.1) 2px
+    );
+  pointer-events: none;
+}
+
+.wood-button:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(139, 69, 19, 0.9),
+    rgba(101, 67, 33, 1)
+  );
+  box-shadow: 0 4px 16px rgba(139, 69, 19, 0.4),
+    inset 0 1px 3px rgba(255, 255, 255, 0.15);
+}
+
+/* River Flow Animation */
+@keyframes river-flow {
   0% {
     background-position: 0% 50%;
   }
@@ -157,33 +252,120 @@
     background-position: 0% 50%;
   }
 }
-*/
 
-/* Animated card hover effect */
-.card-hover {
-  transition: transform 0.2s ease-out, box-shadow 0.2s ease-out;
+.river-accent {
+  background: linear-gradient(
+    90deg,
+    rgba(25, 118, 210, 0.2),
+    rgba(74, 144, 226, 0.3),
+    rgba(25, 118, 210, 0.2)
+  );
+  background-size: 200% auto;
+  animation: river-flow 6s ease-in-out infinite;
 }
 
-.card-hover:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.05);
+/* Leaf Floating Animation */
+@keyframes leaf-float {
+  0%,
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+  25% {
+    transform: translateY(-5px) rotate(1deg);
+  }
+  50% {
+    transform: translateY(-3px) rotate(-1deg);
+  }
+  75% {
+    transform: translateY(-7px) rotate(0.5deg);
+  }
 }
 
-/* Scrollbar styling */
+.leaf-float {
+  animation: leaf-float 4s ease-in-out infinite;
+}
+
+/* Enhanced Hover Effects */
+.nature-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.nature-hover:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 8px 24px rgba(139, 69, 19, 0.15),
+    0 4px 12px rgba(76, 175, 80, 0.1);
+}
+
+/* Scrollbar with Nature Theme */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 12px;
 }
 
 ::-webkit-scrollbar-track {
-  background: hsl(var(--background));
+  background: linear-gradient(
+    180deg,
+    rgba(245, 245, 220, 0.5),
+    rgba(255, 248, 225, 0.3)
+  );
+  border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: hsl(var(--muted));
-  border-radius: 5px;
+  background: linear-gradient(
+    180deg,
+    rgba(139, 69, 19, 0.6),
+    rgba(101, 67, 33, 0.8)
+  );
+  border-radius: 6px;
+  border: 2px solid rgba(245, 245, 220, 0.3);
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: hsl(var(--primary));
+  background: linear-gradient(
+    180deg,
+    rgba(139, 69, 19, 0.8),
+    rgba(101, 67, 33, 1)
+  );
 }
 
+/* Organic Text Selection */
+::selection {
+  background: rgba(76, 175, 80, 0.3);
+  color: rgba(20, 25, 15, 1);
+}
+
+/* Smooth Transitions */
+* {
+  transition: color 0.3s ease, background-color 0.3s ease,
+    border-color 0.3s ease;
+}
+
+/* Focus Styles with Nature Theme */
+:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+/* Nature-inspired input styling */
+input,
+textarea {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 248, 225, 0.8),
+    rgba(245, 245, 220, 0.6)
+  );
+  border: 1.5px solid rgba(139, 69, 19, 0.2);
+  transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgba(76, 175, 80, 0.5);
+  box-shadow: 0 0 0 3px rgba(76, 175, 80, 0.1), 0 2px 8px rgba(139, 69, 19, 0.1);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 248, 225, 1),
+    rgba(245, 245, 220, 0.8)
+  );
+}

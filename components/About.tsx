@@ -5,7 +5,7 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import profile from "./profile.jpeg";
-import { Code, Globe, Server, Database, Zap } from "lucide-react";
+import { Code, Globe, Server, Database, Zap, Flower2 } from "lucide-react";
 
 interface Skill {
   name: string;
@@ -30,24 +30,82 @@ export default function About() {
   const isInView = useInView(ref, { once: true, amount: 0.2 });
 
   return (
-    <section id="about" ref={ref} className="py-20 sm:py-24 lg:py-32 bg-background">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
+    <section 
+      id="about" 
+      ref={ref} 
+      className="py-24 sm:py-28 lg:py-36 relative"
+      style={{
+        background: `
+          linear-gradient(135deg, rgba(245, 245, 220, 0.7), rgba(255, 248, 225, 0.5)),
+          radial-gradient(circle at 30% 40%, rgba(76, 175, 80, 0.04) 0%, transparent 60%),
+          radial-gradient(circle at 70% 20%, rgba(139, 69, 19, 0.03) 0%, transparent 50%)
+        `
+      }}
+    >
+      {/* Nature decorative elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute top-20 right-16 w-6 h-6 rounded-full opacity-20 leaf-float"
+          style={{ backgroundColor: '#4CAF50' }}
+        />
+        <div 
+          className="absolute bottom-32 left-12 w-4 h-4 rounded-full opacity-25"
+          style={{ backgroundColor: '#8BC34A' }}
+        />
+        <div 
+          className="absolute top-1/2 left-20 w-3 h-3 rounded-full opacity-30"
+          style={{ backgroundColor: '#81C784' }}
+        />
+        <div 
+          className="absolute bottom-16 right-1/3 w-5 h-5 rounded-full opacity-15"
+          style={{ backgroundColor: '#A5D6A7' }}
+        />
+      </div>
+      
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.7, delay: 0.1 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-foreground mb-4">
-            About Me
-          </h2>
-          <p className="text-muted-foreground text-lg leading-relaxed max-w-2xl mx-auto font-medium">
-            Software engineer passionate about building innovative web applications and exploring new technologies.
+          <div className="flex items-center justify-center mb-6">
+            <motion.div
+              className="p-3 rounded-full mr-4 leaf-float"
+              style={{
+                background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 69, 19, 0.1))',
+                border: '1.5px solid rgba(76, 175, 80, 0.3)'
+              }}
+              initial={{ scale: 0, rotate: -20 }}
+              whileInView={{ scale: 1, rotate: 0 }}
+              transition={{ type: "spring", stiffness: 200, delay: 0.3 }}
+            >
+              <Flower2 size={28} className="text-green-600" />
+            </motion.div>
+            <h2 
+              className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground"
+              style={{
+                textShadow: '0 2px 4px rgba(139, 69, 19, 0.1)',
+                background: 'linear-gradient(135deg, #2E7D32, #4CAF50, #8BC34A)',
+                backgroundClip: 'text',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent'
+              }}
+            >
+              About Me
+            </h2>
+          </div>
+          <p 
+            className="text-muted-foreground text-lg leading-relaxed max-w-3xl mx-auto font-medium"
+            style={{ textShadow: '0 1px 2px rgba(139, 69, 19, 0.05)' }}
+          >
+            Like a craftsman shaping wood or a gardener nurturing plants, I cultivate software solutions 
+            with patience, creativity, and attention to the natural flow of user experience.
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12 items-center">
+        <div className="grid md:grid-cols-2 gap-16 items-center">
           <motion.div // Image column
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -55,16 +113,34 @@ export default function About() {
             transition={{ duration: 0.7, delay: 0.3 }}
             className="relative"
           >
-            <div className="relative mx-auto md:ml-auto md:mr-0 w-64 h-64 md:w-80 md:h-80">
-              <div className="relative w-full h-full rounded-full overflow-hidden border-2 border-border">
-                <Image
-                  src={profile}
-                  alt="Albert Zhang"
-                  fill
-                  className="object-cover"
-                  sizes="(max-width: 768px) 256px, 320px"
-                  priority
-                />
+            <div className="relative mx-auto md:ml-auto md:mr-0 w-72 h-72 md:w-96 md:h-96">
+              {/* Organic border with nature elements */}
+              <div 
+                className="relative w-full h-full rounded-full overflow-hidden"
+                style={{
+                  background: `
+                    linear-gradient(135deg, rgba(255, 248, 225, 0.9), rgba(245, 245, 220, 0.7)),
+                    radial-gradient(circle at 30% 30%, rgba(76, 175, 80, 0.1) 0%, transparent 70%)
+                  `,
+                  border: '3px solid rgba(139, 69, 19, 0.2)',
+                  boxShadow: `
+                    0 12px 40px rgba(139, 69, 19, 0.15),
+                    inset 0 2px 8px rgba(255, 255, 255, 0.3),
+                    0 8px 24px rgba(76, 175, 80, 0.1)
+                  `,
+                  padding: '8px'
+                }}
+              >
+                <div className="w-full h-full rounded-full overflow-hidden">
+                  <Image
+                    src={profile}
+                    alt="Albert Zhang"
+                    fill
+                    className="object-cover"
+                    sizes="(max-width: 768px) 288px, 384px"
+                    priority
+                  />
+                </div>
               </div>
               
               <motion.div
@@ -72,7 +148,19 @@ export default function About() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.6, duration: 0.5 }}
               >
-                <Badge variant="secondary" className="absolute -right-4 -top-4 text-sm shadow-none">Software Engineer</Badge>
+                <Badge 
+                  variant="secondary" 
+                  className="absolute -right-6 -top-6 text-sm shadow-lg leaf-float"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(46, 125, 50, 0.8))',
+                    color: 'white',
+                    border: '1px solid rgba(46, 125, 50, 0.3)',
+                    boxShadow: '0 4px 12px rgba(76, 175, 80, 0.3)',
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  Software Engineer
+                </Badge>
               </motion.div>
               
               <motion.div
@@ -80,7 +168,19 @@ export default function About() {
                 animate={isInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ delay: 0.8, duration: 0.5 }}
               >
-                <Badge variant="secondary" className="absolute -left-4 -bottom-4 text-sm shadow-none">Web Developer</Badge>
+                <Badge 
+                  variant="secondary" 
+                  className="absolute -left-6 -bottom-6 text-sm shadow-lg leaf-float"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.8), rgba(101, 67, 33, 0.9))',
+                    color: 'white',
+                    border: '1px solid rgba(139, 69, 19, 0.3)',
+                    boxShadow: '0 4px 12px rgba(139, 69, 19, 0.3)',
+                    textShadow: '0 1px 2px rgba(0, 0, 0, 0.1)'
+                  }}
+                >
+                  Digital Craftsman
+                </Badge>
               </motion.div>
             </div>
           </motion.div>
@@ -89,34 +189,101 @@ export default function About() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.2 }}
-            transition={{ duration: 0.7, delay: 0.5 }} // Slightly later delay for the second column
+            transition={{ duration: 0.7, delay: 0.5 }}
           >
-            <Card className="bg-card border border-border overflow-hidden">
-              <CardContent className="p-8">
-                <h3 className="text-xl font-bold mb-3 text-foreground">My Background</h3>
-                <p className="text-muted-foreground text-base font-medium leading-relaxed mb-6 md:mb-8">
-                  I am a software engineer with experience in modern web technologies. I specialize in building responsive, 
-                  performant web applications with a focus on user experience and clean code. My passion lies in creating 
-                  innovative solutions that solve real-world problems.
+            <Card 
+              className="nature-card nature-hover overflow-hidden relative"
+              style={{
+                background: `
+                  linear-gradient(135deg, rgba(255, 248, 225, 0.95), rgba(245, 245, 220, 0.9)),
+                  radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 70%)
+                `,
+                border: '1.5px solid rgba(139, 69, 19, 0.15)',
+                boxShadow: `
+                  0 12px 40px rgba(139, 69, 19, 0.12),
+                  inset 0 2px 8px rgba(255, 255, 255, 0.3),
+                  0 8px 24px rgba(76, 175, 80, 0.08)
+                `,
+                backdropFilter: 'blur(12px)'
+              }}
+            >
+              {/* Subtle wood texture */}
+              <div 
+                className="absolute inset-0 opacity-10 pointer-events-none"
+                style={{
+                  background: `
+                    repeating-linear-gradient(
+                      45deg,
+                      transparent,
+                      transparent 2px,
+                      rgba(139, 69, 19, 0.03) 2px,
+                      rgba(139, 69, 19, 0.03) 4px
+                    )
+                  `
+                }}
+              />
+              
+              <CardContent className="p-10 md:p-12 relative">
+                <h3 
+                  className="text-2xl font-bold mb-6 text-foreground"
+                  style={{
+                    textShadow: '0 1px 2px rgba(139, 69, 19, 0.1)',
+                    color: '#2E7D32'
+                  }}
+                >
+                  My Digital Garden
+                </h3>
+                <p 
+                  className="text-muted-foreground text-base font-medium leading-relaxed mb-8 md:mb-10"
+                  style={{ textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)' }}
+                >
+                  I am a software engineer who approaches coding like tending a garden - with patience, 
+                  creativity, and respect for organic growth. I specialize in cultivating responsive, 
+                  performant web applications that grow naturally from user needs, creating digital 
+                  ecosystems that flourish and adapt over time.
                 </p>
                 
-                <h4 className="text-lg font-bold mb-3 text-foreground">Technical Skills</h4>
-                <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-2">
+                <h4 
+                  className="text-xl font-bold mb-6 text-foreground"
+                  style={{
+                    textShadow: '0 1px 2px rgba(139, 69, 19, 0.1)',
+                    color: '#2E7D32'
+                  }}
+                >
+                  Tools of the Trade
+                </h4>
+                <div className="grid grid-cols-2 sm:grid-cols-3 gap-5 mb-4">
                   {skills.map((skill, index) => (
                     <motion.div
                       key={skill.name}
                       initial={{ opacity: 0, y: 20 }}
                       animate={isInView ? { opacity: 1, y: 0 } : {}}
                       transition={{ delay: 0.6 + index * 0.1, duration: 0.5 }}
-                      className="flex items-center gap-2"
+                      className="flex items-center gap-3 p-3 rounded-lg nature-hover leaf-float"
+                      style={{
+                        background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.08), rgba(139, 69, 19, 0.04))',
+                        border: '1px solid rgba(76, 175, 80, 0.15)'
+                      }}
                     >
-                      <div className="p-1 bg-secondary rounded-md">
+                      <div 
+                        className="p-2 rounded-md"
+                        style={{
+                          background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.15), rgba(139, 69, 19, 0.08))',
+                          border: '1px solid rgba(76, 175, 80, 0.2)'
+                        }}
+                      >
                         <skill.icon 
-                          size={18} 
-                          className="text-secondary-foreground"
+                          size={20} 
+                          className="text-green-700"
                         />
                       </div>
-                      <span className="text-muted-foreground text-sm font-medium">
+                      <span 
+                        className="text-muted-foreground text-sm font-medium"
+                        style={{
+                          color: '#2E7D32',
+                          textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)'
+                        }}
+                      >
                         {skill.name}
                       </span>
                     </motion.div>

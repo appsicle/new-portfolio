@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, X, Github, Linkedin, Mail } from "lucide-react";
+import { Menu, X, Github, Linkedin, Mail, Leaf } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
@@ -41,13 +41,46 @@ export default function Navigation() {
     <nav
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
         scrolled
-          ? "bg-background/90 backdrop-blur-sm py-4 shadow-sm"
-          : "bg-transparent py-5"
+          ? "backdrop-blur-md py-3 shadow-lg"
+          : "py-4"
       }`}
+      style={scrolled ? {
+        background: `
+          linear-gradient(135deg, rgba(255, 248, 225, 0.95), rgba(245, 245, 220, 0.9)),
+          radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.05) 0%, transparent 60%),
+          radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.05) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.05) 0%, transparent 70%)
+        `,
+        borderBottom: '1px solid rgba(139, 69, 19, 0.1)',
+        boxShadow: '0 4px 20px rgba(139, 69, 19, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.3)'
+      } : {
+        background: `
+          linear-gradient(135deg, rgba(255, 248, 225, 0.7), rgba(245, 245, 220, 0.5)),
+          radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.06) 0%, transparent 60%),
+          radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.06) 0%, transparent 50%),
+          radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.06) 0%, transparent 70%),
+          radial-gradient(circle at 10% 80%, rgba(255, 193, 7, 0.03) 0%, transparent 40%)
+        `
+      }}
     >
-      <div className="container mx-auto px-6 mt-4">
+      <div className="container mx-auto px-6 mt-2">
         <div className="flex items-center justify-between">
-          <div></div>
+          {/* Nature Logo/Icon */}
+          <motion.div
+            initial={{ opacity: 0, rotate: -10 }}
+            animate={{ opacity: 1, rotate: 0 }}
+            className="flex items-center space-x-2 leaf-float"
+          >
+            <div 
+              className="p-2 rounded-full"
+              style={{
+                background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 69, 19, 0.1))',
+                border: '1px solid rgba(76, 175, 80, 0.3)'
+              }}
+            >
+              <Leaf size={20} className="text-green-600" />
+            </div>
+          </motion.div>
 
           <div className="hidden md:flex items-center space-x-8">
             <div className="flex space-x-6">
@@ -62,15 +95,29 @@ export default function Navigation() {
                     href={item.href}
                     locale={undefined}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
-                    className="font-medium text-muted-foreground hover:text-primary transition-colors text-lg"
+                    className="relative font-medium text-muted-foreground hover:text-primary transition-all duration-300 text-lg px-3 py-2 rounded-lg nature-hover"
+                    style={{
+                      textShadow: '0 1px 2px rgba(139, 69, 19, 0.1)'
+                    }}
                   >
                     {item.name}
+                    <span 
+                      className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 hover:w-full"
+                      style={{
+                        background: 'linear-gradient(90deg, rgba(76, 175, 80, 0.7), rgba(139, 69, 19, 0.5))'
+                      }}
+                    />
                   </Link>
                 </motion.div>
               ))}
             </div>
 
-            <div className="flex items-center space-x-4 pl-6 border-l border-border">
+            <div 
+              className="flex items-center space-x-4 pl-6 border-l"
+              style={{
+                borderColor: 'rgba(139, 69, 19, 0.2)'
+              }}
+            >
               {socialLinks.map((social, index) => (
                 <motion.a
                   key={social.ariaLabel}
@@ -78,7 +125,11 @@ export default function Navigation() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.ariaLabel}
-                  className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                  className="text-muted-foreground hover:text-primary transition-all duration-300 p-2 rounded-lg nature-hover"
+                  style={{
+                    background: 'rgba(139, 69, 19, 0.05)',
+                    border: '1px solid rgba(139, 69, 19, 0.1)'
+                  }}
                   initial={{ opacity: 0, scale: 0 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{
@@ -87,22 +138,34 @@ export default function Navigation() {
                     damping: 20,
                     delay: 0.5 + index * 0.1,
                   }}
-                  whileHover={{ scale: 1.2 }}
+                  whileHover={{ 
+                    scale: 1.1,
+                    backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                    borderColor: 'rgba(76, 175, 80, 0.3)'
+                  }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <social.icon size={24} />
+                  <social.icon size={20} />
                 </motion.a>
               ))}
             </div>
           </div>
 
           <motion.button
-            className="md:hidden text-foreground hover:text-primary transition-colors duration-300"
+            className="md:hidden text-foreground hover:text-primary transition-all duration-300 p-2 rounded-lg nature-hover"
+            style={{
+              background: 'rgba(139, 69, 19, 0.05)',
+              border: '1px solid rgba(139, 69, 19, 0.1)'
+            }}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             whileTap={{ scale: 0.9 }}
+            whileHover={{
+              backgroundColor: 'rgba(76, 175, 80, 0.1)',
+              borderColor: 'rgba(76, 175, 80, 0.3)'
+            }}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
           </motion.button>
@@ -112,13 +175,21 @@ export default function Navigation() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border"
+            className="md:hidden absolute top-full left-0 right-0 nature-card backdrop-blur-md border-t"
+            style={{
+              background: `
+                linear-gradient(135deg, rgba(255, 248, 225, 0.98), rgba(245, 245, 220, 0.95)),
+                radial-gradient(circle at 50% 0%, rgba(139, 69, 19, 0.03) 0%, transparent 70%)
+              `,
+              borderColor: 'rgba(139, 69, 19, 0.15)',
+              boxShadow: '0 8px 32px rgba(139, 69, 19, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.3)'
+            }}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="container mx-auto px-6 py-4 space-y-4">
+            <div className="container mx-auto px-6 py-6 space-y-4">
               {menuItems.map((item, index) => (
                 <motion.div
                   key={item.name}
@@ -130,7 +201,12 @@ export default function Navigation() {
                     href={item.href}
                     locale={undefined}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
-                    className="block py-2 text-lg font-medium text-muted-foreground hover:text-primary transition-colors duration-300"
+                    className="block py-3 px-4 text-lg font-medium text-muted-foreground hover:text-primary transition-all duration-300 rounded-lg nature-hover"
+                    style={{
+                      background: 'rgba(139, 69, 19, 0.03)',
+                      border: '1px solid rgba(139, 69, 19, 0.08)',
+                      textShadow: '0 1px 2px rgba(139, 69, 19, 0.05)'
+                    }}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
@@ -139,22 +215,37 @@ export default function Navigation() {
               ))}
 
               <motion.div
-                className="flex items-center space-x-5 pt-4 border-t border-border"
+                className="flex items-center justify-center space-x-5 pt-4 mt-6 border-t"
+                style={{
+                  borderColor: 'rgba(139, 69, 19, 0.15)'
+                }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
               >
-                {socialLinks.map((social) => (
-                  <a
+                {socialLinks.map((social, index) => (
+                  <motion.a
                     key={social.ariaLabel}
                     href={social.href}
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.ariaLabel}
-                    className="text-muted-foreground hover:text-primary transition-colors duration-300"
+                    className="text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg nature-hover"
+                    style={{
+                      background: 'rgba(139, 69, 19, 0.05)',
+                      border: '1px solid rgba(139, 69, 19, 0.1)'
+                    }}
+                    whileHover={{
+                      scale: 1.1,
+                      backgroundColor: 'rgba(76, 175, 80, 0.1)',
+                      borderColor: 'rgba(76, 175, 80, 0.3)'
+                    }}
+                    initial={{ scale: 0 }}
+                    animate={{ scale: 1 }}
+                    transition={{ delay: 0.4 + index * 0.1 }}
                   >
-                    <social.icon size={20} />
-                  </a>
+                    <social.icon size={22} />
+                  </motion.a>
                 ))}
               </motion.div>
             </div>

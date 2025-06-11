@@ -2,7 +2,7 @@
 
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Github, Linkedin, Mail, ExternalLink } from "lucide-react";
+import { Github, Linkedin, Mail, ExternalLink, Heart, Sprout } from "lucide-react";
 
 const socialLinks = [
   { 
@@ -27,27 +27,82 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="py-16 sm:py-20 bg-background border-t border-border">
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-12 md:gap-8">
+    <footer 
+      className="py-20 sm:py-24 relative border-t"
+      style={{
+        background: `
+          linear-gradient(135deg, rgba(245, 245, 220, 0.8), rgba(255, 248, 225, 0.6)),
+          radial-gradient(circle at 30% 20%, rgba(139, 69, 19, 0.04) 0%, transparent 60%),
+          radial-gradient(circle at 70% 80%, rgba(76, 175, 80, 0.03) 0%, transparent 50%)
+        `,
+        borderColor: 'rgba(139, 69, 19, 0.15)'
+      }}
+    >
+      {/* Nature decorative elements */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute top-12 left-20 w-3 h-3 rounded-full opacity-25 leaf-float"
+          style={{ backgroundColor: '#4CAF50' }}
+        />
+        <div 
+          className="absolute bottom-16 right-24 w-4 h-4 rounded-full opacity-20"
+          style={{ backgroundColor: '#8BC34A' }}
+        />
+        <div 
+          className="absolute top-1/2 right-16 w-2 h-2 rounded-full opacity-30"
+          style={{ backgroundColor: '#81C784' }}
+        />
+      </div>
+      
+      <div className="container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
           {/* Logo and tagline */}
-          <div className="space-y-4">
-            <motion.p
+          <div className="space-y-6">
+            <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-muted-foreground text-sm max-w-md"
+              className="flex items-center space-x-3"
             >
-              Building beautiful, functional, and performant web applications with modern technologies.
+              <div 
+                className="p-3 rounded-full leaf-float"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 69, 19, 0.1))',
+                  border: '1.5px solid rgba(76, 175, 80, 0.3)'
+                }}
+              >
+                <Sprout size={24} className="text-green-600" />
+              </div>
+              <span 
+                className="text-xl font-bold"
+                style={{
+                  color: '#2E7D32',
+                  textShadow: '0 1px 2px rgba(139, 69, 19, 0.1)'
+                }}
+              >
+                Albert Zhang
+              </span>
+            </motion.div>
+            
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              viewport={{ once: true }}
+              className="text-muted-foreground text-base max-w-md leading-relaxed"
+              style={{ textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)' }}
+            >
+              Cultivating beautiful, functional, and sustainable digital experiences 
+              that grow and flourish like nature itself.
             </motion.p>
             
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
               viewport={{ once: true }}
-              className="flex space-x-3 pt-2" // Reduced space-x for tighter icons
+              className="flex space-x-4 pt-2"
             >
               {socialLinks.map((social, index) => (
                 <motion.a
@@ -56,8 +111,17 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="p-2 rounded-md bg-secondary hover:bg-secondary/80 transition-colors duration-300"
-                  whileHover={{ scale: 1.1 }}
+                  className="p-3 rounded-lg transition-all duration-300 nature-hover"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.08), rgba(76, 175, 80, 0.05))',
+                    border: '1px solid rgba(139, 69, 19, 0.15)',
+                    color: '#2E7D32'
+                  }}
+                  whileHover={{ 
+                    scale: 1.1,
+                    backgroundColor: 'rgba(76, 175, 80, 0.15)',
+                    borderColor: 'rgba(76, 175, 80, 0.3)'
+                  }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, scale: 0 }}
                   whileInView={{ opacity: 1, scale: 1 }}
@@ -65,26 +129,30 @@ export default function Footer() {
                     type: "spring", 
                     stiffness: 260, 
                     damping: 20, 
-                    delay: 0.3 + (index * 0.1) 
+                    delay: 0.4 + (index * 0.1) 
                   }}
                   viewport={{ once: true }}
                 >
-                  <social.icon size={18} className="text-secondary-foreground" />
+                  <social.icon size={20} />
                 </motion.a>
               ))}
             </motion.div>
           </div>
           
           {/* Quick links */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-base font-semibold text-foreground"
+              className="text-lg font-semibold"
+              style={{
+                color: '#2E7D32',
+                textShadow: '0 1px 2px rgba(139, 69, 19, 0.1)'
+              }}
             >
-              Quick Links
+              Explore
             </motion.h3>
             
             <motion.ul
@@ -92,7 +160,7 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="space-y-2"
+              className="space-y-4"
             >
               {[
                 { name: "Projects", href: "#projects", external: false },
@@ -109,11 +177,16 @@ export default function Footer() {
                     href={link.href}
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-muted-foreground hover:text-primary text-sm transition-colors duration-300 flex items-center gap-1 group"
+                    className="text-muted-foreground hover:text-primary text-base transition-all duration-300 flex items-center gap-2 group p-2 rounded-lg nature-hover"
+                    style={{
+                      background: 'rgba(139, 69, 19, 0.03)',
+                      border: '1px solid rgba(139, 69, 19, 0.08)',
+                      textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)'
+                    }}
                   >
                     {link.name}
                     {link.external && (
-                      <ExternalLink size={12} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <ExternalLink size={14} className="opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
                     )}
                   </Link>
                 </motion.li>
@@ -122,15 +195,19 @@ export default function Footer() {
           </div>
           
           {/* Contact */}
-          <div className="space-y-4">
+          <div className="space-y-6">
             <motion.h3
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
-              className="text-base font-semibold text-foreground"
+              className="text-lg font-semibold"
+              style={{
+                color: '#2E7D32',
+                textShadow: '0 1px 2px rgba(139, 69, 19, 0.1)'
+              }}
             >
-              Get In Touch
+              Let&apos;s Connect
             </motion.h3>
             
             <motion.p
@@ -138,9 +215,10 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
-              className="text-muted-foreground text-sm"
+              className="text-muted-foreground text-base leading-relaxed"
+              style={{ textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)' }}
             >
-              Have a project in mind or want to chat? Feel free to reach out!
+              Have an idea you&apos;d like to bring to life? Let&apos;s cultivate something beautiful together.
             </motion.p>
             
             <motion.a
@@ -149,7 +227,13 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="inline-block text-primary hover:underline text-sm"
+              className="inline-block text-primary hover:underline text-base font-medium p-3 rounded-lg nature-hover"
+              style={{
+                background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 69, 19, 0.05))',
+                border: '1px solid rgba(76, 175, 80, 0.2)',
+                color: '#2E7D32',
+                textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)'
+              }}
             >
               aalbertzhang@gmail.com
             </motion.a>
@@ -159,11 +243,17 @@ export default function Footer() {
         <motion.div
           initial={{ opacity: 0 }}
           whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.3 }}
+          transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true }}
-          className="border-t border-border mt-16 pt-8 text-center text-xs text-muted-foreground"
+          className="border-t mt-20 pt-10 text-center"
+          style={{ borderColor: 'rgba(139, 69, 19, 0.15)' }}
         >
-          <p>© {new Date().getFullYear()} Albert Zhang. All rights reserved.</p>
+          <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
+            <span>© {new Date().getFullYear()} Albert Zhang.</span>
+            <span>Crafted with</span>
+            <Heart size={16} className="text-red-400 mx-1" />
+            <span>and sustainable code</span>
+          </div>
         </motion.div>
       </div>
     </footer>
