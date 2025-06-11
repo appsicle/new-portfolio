@@ -177,10 +177,8 @@ export default function Footer() {
                     href={link.href}
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-muted-foreground hover:text-primary text-base transition-all duration-300 flex items-center gap-2 group p-2 rounded-lg nature-hover"
+                    className="text-muted-foreground hover:text-primary text-base transition-all duration-300 flex items-center gap-2 group rounded-lg"
                     style={{
-                      background: 'rgba(139, 69, 19, 0.03)',
-                      border: '1px solid rgba(139, 69, 19, 0.08)',
                       textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)'
                     }}
                   >
@@ -227,10 +225,8 @@ export default function Footer() {
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
-              className="inline-block text-primary hover:underline text-base font-medium p-3 rounded-lg nature-hover"
+              className="inline-block text-primary hover:underline text-base font-medium rounded-lg r"
               style={{
-                background: 'linear-gradient(135deg, rgba(76, 175, 80, 0.1), rgba(139, 69, 19, 0.05))',
-                border: '1px solid rgba(76, 175, 80, 0.2)',
                 color: '#2E7D32',
                 textShadow: '0 1px 1px rgba(139, 69, 19, 0.05)'
               }}
