@@ -288,7 +288,9 @@ CalendarDay.displayName = "CalendarDay";
 // Custom Calendar Component with Performance Optimizations
 const AnimatedGitHubCalendar = memo(
   ({ contributions }: { contributions: any[] }) => {
-    const blockSize = useResponsiveValue({ base: 12, md: 14, lg: 16 }, 12);
+    // Smaller cells on very small viewports to ensure the calendar fits
+    const blockSize = useResponsiveValue({ base: 4, sm: 6, md: 10, lg: 12 }, 4);
+    const legendPlantSize = useResponsiveValue({ base: 22, sm: 30 }, 22);
 
     // Memoize expensive calculations
     const { weeks, getPlantStage, getGardenShadow } = useMemo(() => {
@@ -451,13 +453,10 @@ const AnimatedGitHubCalendar = memo(
     }, [contributions]);
 
     return (
-      <div className="relative">
-        <div className="relative flex flex-col items-center gap-4 p-8">
+      <div className="relative w-full">
+        <div className="relative flex w-full flex-col items-center gap-4 p-2 sm:p-8">
           {/* ------------- Month filter buttons ------------- */}
-          <div
-            className="flex gap-3 text-sm font-medium mb-3"
-            style={{ paddingLeft: (blockSize || 8) + 12 }}
-          >
+          <div className="mb-3 flex flex-wrap justify-center gap-2">
             {monthLabels.map((month, index) => {
               const active = filterMonth === index;
               return (
@@ -465,7 +464,7 @@ const AnimatedGitHubCalendar = memo(
                   type="button"
                   key={month}
                   onClick={() => toggleMonth(index)}
-                  className="w-12 text-center px-2 py-1 rounded-lg focus:outline-none"
+                  className="text-center rounded-lg px-2 py-1 text-xs sm:px-3 sm:py-1.5 sm:text-sm font-medium focus:outline-none"
                   style={{
                     color: active ? "#fff" : "#5D4037",
                     backgroundColor: active
@@ -485,9 +484,9 @@ const AnimatedGitHubCalendar = memo(
           </div>
 
           {/* Calendar grid with nature aesthetic */}
-          <div className="flex gap-2">
+          <div className="flex items-start gap-2">
             {/* ---------- Week-day filter buttons ----------- */}
-            <div className="flex flex-col gap-1 mr-3 translate-y-4">
+            <div className="hidden sm:flex mr-1 flex-col gap-1 sm:mr-3 translate-y-4">
               {["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].map(
                 (day, index) => {
                   const active = filterDay === index;
@@ -498,7 +497,7 @@ const AnimatedGitHubCalendar = memo(
                       onClick={() => toggleDay(index)}
                       className="text-xs font-medium flex items-center justify-center rounded-md p-1 focus:outline-none"
                       style={{
-                        height: (blockSize || 8) + "px",
+                        height: blockSize + "px",
                         color: active
                           ? "rgba(31, 36, 171, 0.9)"
                           : "rgba(31, 36, 171, 0.5)",
@@ -518,7 +517,7 @@ const AnimatedGitHubCalendar = memo(
 
             {/* Weeks grid with enhanced nature styling */}
             <div
-              className="p-4 rounded-2xl"
+              className="flex-1 rounded-2xl p-2 sm:p-4"
               style={{
                 background:
                   "linear-gradient(135deg, rgba(255, 248, 225, 0.85), rgba(245, 245, 220, 0.7))",
@@ -528,9 +527,12 @@ const AnimatedGitHubCalendar = memo(
                 border: "1px solid rgba(139, 69, 19, 0.15)",
               }}
             >
-              <div className="flex gap-1">
+              <div className="flex w-full justify-center gap-px sm:gap-1">
                 {weeks.map((week, weekIndex) => (
-                  <div key={weekIndex} className="flex flex-col gap-1">
+                  <div
+                    key={weekIndex}
+                    className="flex flex-col gap-px sm:gap-1"
+                  >
                     {week.map((day, dayIndex) => {
                       const cellIndex = weekIndex * 7 + dayIndex;
                       const dimmed =
@@ -541,7 +543,7 @@ const AnimatedGitHubCalendar = memo(
                           key={day.date}
                           day={day}
                           cellIndex={cellIndex}
-                          blockSize={blockSize || 12}
+                          blockSize={blockSize || 4}
                           getPlantStage={getPlantStage}
                           getGardenShadow={getGardenShadow}
                           dimmed={dimmed}
@@ -557,8 +559,8 @@ const AnimatedGitHubCalendar = memo(
           {/* Contribution stats subtext */}
           {stats && (
             <motion.p
-              className="ml-5 text-xs sm:text-sm text-muted-foreground self-start mt-3"
-              style={{ paddingLeft: (blockSize || 8) + 12 }}
+              className="self-start mt-3 ml-5 text-xs text-muted-foreground sm:text-sm"
+              style={{ paddingLeft: (blockSize || 4) + 12 }}
               initial={{ opacity: 0, y: 4 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.55 }}
@@ -572,7 +574,7 @@ const AnimatedGitHubCalendar = memo(
 
           {/* Simplified garden progression legend */}
           <motion.div
-            className="flex items-center gap-6 mt-6 px-6 py-3 rounded-xl"
+            className="flex flex-col items-center gap-2 mt-6 px-4 py-3 sm:flex-row sm:gap-6 sm:px-6 rounded-xl"
             style={{
               backgroundColor: "rgba(139, 69, 19, 0.08)",
               border: "1px solid rgba(139, 69, 19, 0.15)",
@@ -591,7 +593,7 @@ const AnimatedGitHubCalendar = memo(
                 return (
                   <div key={level} className="flex flex-col items-center gap-1">
                     <div
-                      className="w-8 h-8 rounded-sm border flex items-center justify-center relative"
+                      className="w-6 h-6 sm:w-8 sm:h-8 rounded-sm border flex items-center justify-center relative"
                       style={{
                         backgroundColor: stage.backgroundColor,
                         borderColor:
@@ -600,10 +602,13 @@ const AnimatedGitHubCalendar = memo(
                       }}
                       title={stage.description}
                     >
-                      <PlantElement level={level} size={30} />
+                      <PlantElement
+                        level={level}
+                        size={legendPlantSize || 22}
+                      />
                     </div>
                     <span
-                      className="text-xs text-center"
+                      className="text-center"
                       style={{ color: "#5D4037", fontSize: "10px" }}
                     >
                       {level === 0

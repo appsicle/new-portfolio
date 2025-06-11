@@ -4,6 +4,14 @@
 
 html {
   scroll-behavior: smooth;
+  font-size: clamp(
+    var(--fluid-type-min),
+    calc(
+      var(--fluid-type-min) + (var(--fluid-type-max) - var(--fluid-type-min)) *
+        ((100vw - var(--fluid-bp-min)px) / (var(--fluid-bp-max) - var(--fluid-bp-min)))
+    ),
+    var(--fluid-type-max)
+  );
 }
 
 @layer base {
@@ -38,6 +46,14 @@ html {
     --ring: 122 35% 45%; /* Forest green focus ring */
 
     --radius: 0.75rem; /* More organic rounded corners */
+
+    /* Minimum & maximum base font-size */
+    --fluid-type-min: 15px; /* ~0.9375rem on very small screens */
+    --fluid-type-max: 18px; /* 1.125rem on large desktops */
+
+    /* Viewport range where fluid scaling happens */
+    --fluid-bp-min: 320; /* px */
+    --fluid-bp-max: 1280; /* px */
   }
 
   .dark {
@@ -368,4 +384,15 @@ textarea:focus {
     rgba(255, 248, 225, 1),
     rgba(245, 245, 220, 0.8)
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* Fluid typography & container scaling for better mobile experience */
+/* ------------------------------------------------------------------ */
+
+/* Add fluid horizontal padding to Tailwind's .container so that
+   content breathes on mobile without wasting space on desktop. */
+.container {
+  padding-left: clamp(1rem, 4vw, 3rem);
+  padding-right: clamp(1rem, 4vw, 3rem);
 }
