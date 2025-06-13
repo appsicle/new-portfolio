@@ -12,7 +12,7 @@ const jakarta = Plus_Jakarta_Sans({
 });
 
 export const metadata = {
-  title: "Albert Zhang | Software Engineer & Web Developer",
+  title: "Albert Zhang",
   description:
     "Albert Zhang is a software engineer specializing in modern web development with React, Next.js, and TypeScript. View projects and skills.",
   keywords: [
