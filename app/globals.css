@@ -3,6 +3,8 @@
 @tailwind utilities;
 
 html {
+  height: 100%;
+  overflow-x: hidden;
   scroll-behavior: smooth;
   font-size: clamp(
     var(--fluid-type-min),
@@ -94,6 +96,8 @@ html {
   }
   body {
     @apply bg-background text-foreground;
+    height: 100%;
+    overflow-x: hidden;
     font-family: var(--font-jakarta);
     font-feature-settings: "rlig" 1, "calt" 1;
   }
