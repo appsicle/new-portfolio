@@ -5,7 +5,15 @@ import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import profile from "./profile.jpeg";
-import { Code, Globe, Server, Database, Zap, Flower2, Play } from "lucide-react";
+import {
+  Code,
+  Globe,
+  Server,
+  Database,
+  Zap,
+  Flower2,
+  Play,
+} from "lucide-react";
 
 interface Skill {
   name: string;
@@ -253,12 +261,10 @@ export default function About() {
                   className="text-muted-foreground text-base font-medium leading-relaxed mb-8 md:mb-10"
                   style={{ textShadow: "0 1px 1px rgba(139, 69, 19, 0.05)" }}
                 >
-                  At Parallel Distribution, building content creator agents to
-                  arbitrage views across Tiktok.
+                  building tools for short form content creation
                   <br />
-                  <br />
-                  I am interested in video rendering, creator economy, AI agents, and
-                  scraping projects.
+                  <br />I am interested in video rendering, creator economy, AI
+                  agents, and scraping projects.
                 </p>
 
                 <h4

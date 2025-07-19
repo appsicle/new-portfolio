@@ -1,6 +1,7 @@
 import Hero from "../components/Hero";
 import Projects from "../components/Projects";
 import About from "../components/About";
+import GitHubCalendar from "../components/GitHubCalendar";
 
 type ContributionLevel =
   | "NONE"
@@ -33,12 +34,12 @@ async function getContributions() {
 
   const contributions = data.contributions
     .flat()
-    .map((c: any) => ({
+    .map((c: { date: string; contributionCount: number; contributionLevel: ContributionLevel }) => ({
       date: c.date,
       count: c.contributionCount,
       level: levelMap[c.contributionLevel as ContributionLevel],
     }))
-    .filter((c: any) => c.date); // Filter out any invalid entries
+    .filter((c: { date: string; count: number; level: 0 | 1 | 2 | 3 | 4 }) => c.date); // Filter out any invalid entries
 
   return {
     total: data.totalContributions,
@@ -67,7 +68,9 @@ export default async function Home() {
         />
       </div>
       
-      <Hero contributions={contributions} />
+      <Hero contributions={contributions}>
+        <GitHubCalendar contributions={contributions} />
+      </Hero>
       <Projects />
       <About />
     </main>
