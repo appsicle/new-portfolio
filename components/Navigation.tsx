@@ -2,7 +2,7 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Menu, X, Github, Linkedin, Mail, Leaf } from "lucide-react";
+import { Menu, X, Github, Linkedin, Mail, Sparkles } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const menuItems = [
@@ -41,30 +41,21 @@ export default function Navigation() {
       style={
         scrolled
           ? {
-              background: `
-          linear-gradient(135deg, rgba(255, 248, 225, 0.95), rgba(245, 245, 220, 0.9)),
-          radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.05) 0%, transparent 60%),
-          radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.05) 0%, transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.05) 0%, transparent 70%)
-        `,
-              borderBottom: "1px solid rgba(139, 69, 19, 0.1)",
+              background:
+                "linear-gradient(180deg, rgba(24,24,27,0.6), rgba(24,24,27,0.3))",
+              borderBottom: "1px solid rgba(148, 163, 184, 0.15)",
               boxShadow:
-                "0 4px 20px rgba(139, 69, 19, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
+                "0 10px 30px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04)",
             }
           : {
-              background: `
-          linear-gradient(135deg, rgba(255, 248, 225, 0.7), rgba(245, 245, 220, 0.5)),
-          radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.06) 0%, transparent 60%),
-          radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.06) 0%, transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.06) 0%, transparent 70%),
-          radial-gradient(circle at 10% 80%, rgba(255, 193, 7, 0.03) 0%, transparent 40%)
-        `,
+              background:
+                "linear-gradient(180deg, rgba(24,24,27,0.4), rgba(24,24,27,0.15))",
             }
       }
     >
       <div className="container mx-auto px-6 mt-2">
         <div className="flex items-center justify-between">
-          {/* Nature Logo/Icon */}
+          {/* Logo */}
           <motion.div
             initial={{ opacity: 0, rotate: -10 }}
             animate={{ opacity: 1, rotate: 0 }}
@@ -74,11 +65,11 @@ export default function Navigation() {
               className="p-2 rounded-full"
               style={{
                 background:
-                  "linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 69, 19, 0.1))",
-                border: "1px solid rgba(76, 175, 80, 0.3)",
+                  "linear-gradient(135deg, rgba(147, 51, 234, 0.2), rgba(56, 189, 248, 0.15))",
+                border: "1px solid rgba(147, 51, 234, 0.3)",
               }}
             >
-              <Leaf size={20} className="text-green-600" />
+              <Sparkles size={20} className="text-violet-400" />
             </div>
           </motion.div>
 
@@ -96,17 +87,10 @@ export default function Navigation() {
                     locale={undefined}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
                     className="relative font-medium text-muted-foreground hover:text-primary transition-all duration-300 text-lg px-3 py-2 rounded-lg"
-                    style={{
-                      textShadow: "0 1px 2px rgba(139, 69, 19, 0.1)",
-                    }}
                   >
                     {item.name}
                     <span
-                      className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 hover:w-full"
-                      style={{
-                        background:
-                          "linear-gradient(90deg, rgba(76, 175, 80, 0.7), rgba(139, 69, 19, 0.5))",
-                      }}
+                      className="absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 hover:w-full bg-gradient-to-r from-violet-400 via-cyan-300 to-emerald-300"
                     />
                   </Link>
                 </motion.div>
@@ -151,8 +135,8 @@ export default function Navigation() {
           <motion.button
             className="md:hidden text-foreground hover:text-primary transition-all duration-300 p-2 rounded-lg nature-hover"
             style={{
-              background: "rgba(139, 69, 19, 0.05)",
-              border: "1px solid rgba(139, 69, 19, 0.1)",
+              background: "rgba(147, 51, 234, 0.08)",
+              border: "1px solid rgba(147, 51, 234, 0.2)",
             }}
             onClick={() => setIsOpen(!isOpen)}
             aria-label="Toggle menu"
@@ -160,8 +144,8 @@ export default function Navigation() {
             animate={{ opacity: 1 }}
             whileTap={{ scale: 0.9 }}
             whileHover={{
-              backgroundColor: "rgba(76, 175, 80, 0.1)",
-              borderColor: "rgba(76, 175, 80, 0.3)",
+              backgroundColor: "rgba(56, 189, 248, 0.12)",
+              borderColor: "rgba(147, 51, 234, 0.35)",
             }}
           >
             {isOpen ? <X size={24} /> : <Menu size={24} />}
@@ -174,13 +158,10 @@ export default function Navigation() {
           <motion.div
             className="md:hidden absolute top-full left-0 right-0 nature-card backdrop-blur-md border-t"
             style={{
-              background: `
-                linear-gradient(135deg, rgba(255, 248, 225, 0.98), rgba(245, 245, 220, 0.95)),
-                radial-gradient(circle at 50% 0%, rgba(139, 69, 19, 0.03) 0%, transparent 70%)
-              `,
-              borderColor: "rgba(139, 69, 19, 0.15)",
-              boxShadow:
-                "0 8px 32px rgba(139, 69, 19, 0.15), inset 0 1px 3px rgba(255, 255, 255, 0.3)",
+              background:
+                "linear-gradient(180deg, rgba(24,24,27,0.9), rgba(24,24,27,0.6))",
+              borderColor: "rgba(148, 163, 184, 0.2)",
+              boxShadow: "0 8px 32px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04)",
             }}
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
@@ -200,11 +181,6 @@ export default function Navigation() {
                     locale={undefined}
                     target={item.href.startsWith("http") ? "_blank" : undefined}
                     className="block py-3 px-4 text-lg font-medium text-muted-foreground hover:text-primary transition-all duration-300 rounded-lg nature-hover"
-                    style={{
-                      background: "rgba(139, 69, 19, 0.03)",
-                      border: "1px solid rgba(139, 69, 19, 0.08)",
-                      textShadow: "0 1px 2px rgba(139, 69, 19, 0.05)",
-                    }}
                     onClick={() => setIsOpen(false)}
                   >
                     {item.name}
@@ -214,9 +190,7 @@ export default function Navigation() {
 
               <motion.div
                 className="flex items-center justify-center space-x-5 pt-4 mt-6 border-t"
-                style={{
-                  borderColor: "rgba(139, 69, 19, 0.15)",
-                }}
+                style={{ borderColor: "rgba(148, 163, 184, 0.15)" }}
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 0.3, delay: 0.3 }}
@@ -230,13 +204,13 @@ export default function Navigation() {
                     aria-label={social.ariaLabel}
                     className="text-muted-foreground hover:text-primary transition-all duration-300 p-3 rounded-lg nature-hover"
                     style={{
-                      background: "rgba(139, 69, 19, 0.05)",
-                      border: "1px solid rgba(139, 69, 19, 0.1)",
+                      background: "rgba(147, 51, 234, 0.08)",
+                      border: "1px solid rgba(147, 51, 234, 0.2)",
                     }}
                     whileHover={{
                       scale: 1.1,
-                      backgroundColor: "rgba(76, 175, 80, 0.1)",
-                      borderColor: "rgba(76, 175, 80, 0.3)",
+                      backgroundColor: "rgba(56, 189, 248, 0.12)",
+                      borderColor: "rgba(147, 51, 234, 0.35)",
                     }}
                     initial={{ scale: 0 }}
                     animate={{ scale: 1 }}

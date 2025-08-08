@@ -22,33 +22,25 @@ export default function Hero({
 }) {
   return (
     <section className="relative min-h-screen flex items-center justify-center py-24 sm:py-32 lg:py-40 overflow-hidden">
-      {/* Extended nature-inspired background with subtle patterns */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-green-50 to-blue-50 opacity-70"></div>
-      <div
-        className="absolute inset-0"
-        style={{
-          background: `
-          radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.08) 0%, transparent 60%),
-          radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
-          radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.08) 0%, transparent 70%),
-          radial-gradient(circle at 10% 80%, rgba(255, 193, 7, 0.05) 0%, transparent 40%),
-          radial-gradient(circle at 90% 20%, rgba(139, 69, 19, 0.06) 0%, transparent 50%)
-        `,
-        }}
-      ></div>
-
-      {/* Additional organic texture overlay */}
-      <div
-        className="absolute inset-0 opacity-30"
-        style={{
-          background: `
-          radial-gradient(circle at 15% 25%, rgba(139, 69, 19, 0.02) 1px, transparent 1px),
-          radial-gradient(circle at 85% 75%, rgba(76, 175, 80, 0.02) 1px, transparent 1px),
-          radial-gradient(circle at 45% 60%, rgba(74, 144, 226, 0.02) 1px, transparent 1px)
-        `,
-          backgroundSize: "60px 60px, 80px 80px, 100px 100px",
-        }}
-      ></div>
+      {/* Neon motion background */}
+      <div className="absolute inset-0">
+        <div
+          className="absolute inset-0 animate-gradient-xy"
+          style={{
+            background:
+              "radial-gradient(1200px 800px at 10% -10%, rgba(120,119,198,0.25) 0%, transparent 60%), radial-gradient(1000px 700px at 110% 20%, rgba(56,189,248,0.25) 0%, transparent 55%), radial-gradient(800px 600px at 30% 120%, rgba(34,197,94,0.2) 0%, transparent 60%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 60px), repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 60px)",
+            maskImage:
+              "radial-gradient(ellipse at center, black 40%, transparent 80%)",
+          }}
+        />
+      </div>
 
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 z-10 relative">
         <div className="flex flex-col items-center">
@@ -59,7 +51,7 @@ export default function Hero({
             className="text-center max-w-5xl w-full"
           >
             <motion.h1
-              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-bold tracking-tight mb-3 text-foreground"
+              className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl font-extrabold tracking-tight mb-3 text-foreground"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
@@ -73,9 +65,17 @@ export default function Hero({
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.7, delay: 0.4 }}
             >
-              Software Engineer & Full-Stack Developer
+              Software Engineer · Full‑Stack · Video/AI
             </motion.p>
-
+            <motion.p
+              className="text-xs sm:text-sm text-muted-foreground font-light max-w-2xl mx-auto leading-relaxed mt-2"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.7, delay: 0.4 }}
+            >
+              Everytime there is a new AI model, I ask it to rebuild this
+              however it feels like. Currently: GPT-5
+            </motion.p>
             <motion.div
               className="min-h-[120px] flex justify-center items-center mb-8"
               initial={{ opacity: 0, y: 20 }}

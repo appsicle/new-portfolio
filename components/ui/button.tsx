@@ -10,13 +10,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: `
-          bg-gradient-to-r from-green-600 to-green-700 
-          text-white 
-          shadow-lg 
-          hover:shadow-xl 
-          hover:from-green-700 
-          hover:to-green-800
-          border border-green-600/30
+          bg-gradient-to-r from-violet-600 to-cyan-500
+          text-white
+          shadow-lg
+          hover:shadow-xl
+          hover:from-violet-500
+          hover:to-cyan-400
+          border border-violet-500/30
           before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/10 before:to-transparent before:pointer-events-none
         `,
         destructive: `
@@ -29,34 +29,34 @@ const buttonVariants = cva(
           border border-red-500/30
         `,
         outline: `
-          bg-gradient-to-r from-amber-50/80 to-yellow-50/60 
-          border-2 border-amber-200/50 
-          text-amber-800 
+          bg-gradient-to-r from-zinc-900/40 to-zinc-800/20
+          border-2 border-zinc-700/50
+          text-foreground
           shadow-md
-          hover:bg-gradient-to-r hover:from-amber-100/90 hover:to-yellow-100/70 
-          hover:border-amber-300/60
+          hover:bg-gradient-to-r hover:from-zinc-900/60 hover:to-zinc-800/40
+          hover:border-zinc-600/60
           hover:shadow-lg
           backdrop-blur-sm
         `,
         secondary: `
-          bg-gradient-to-r from-stone-100 to-amber-50 
-          text-stone-700 
+          bg-gradient-to-r from-cyan-500/20 to-emerald-500/20
+          text-foreground
           shadow-md
-          hover:bg-gradient-to-r hover:from-stone-200 hover:to-amber-100
-          border border-stone-200/50
+          hover:bg-gradient-to-r hover:from-cyan-500/30 hover:to-emerald-500/30
+          border border-cyan-400/30
         `,
         ghost: `
-          bg-transparent 
-          text-green-700 
-          hover:bg-gradient-to-r hover:from-green-50/80 hover:to-emerald-50/60
-          hover:text-green-800
+          bg-transparent
+          text-foreground
+          hover:bg-gradient-to-r hover:from-violet-500/10 hover:to-cyan-500/10
+          hover:text-foreground
           hover:backdrop-blur-sm
         `,
         link: `
-          text-green-700 
+          text-violet-400 
           underline-offset-4 
           hover:underline
-          hover:text-green-800
+          hover:text-violet-300
         `,
       },
       size: {

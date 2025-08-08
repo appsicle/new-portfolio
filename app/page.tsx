@@ -52,20 +52,11 @@ export default async function Home() {
 
   return (
     <main className="bg-background text-foreground relative overflow-hidden">
-      {/* Nature-inspired background elements for seamless flow */}
+      {/* Neon motion accents */}
       <div className="absolute inset-0 pointer-events-none">
-        <div 
-          className="absolute top-1/4 left-10 w-2 h-2 rounded-full opacity-20"
-          style={{ backgroundColor: '#4CAF50' }}
-        />
-        <div 
-          className="absolute top-3/4 right-20 w-3 h-3 rounded-full opacity-15"
-          style={{ backgroundColor: '#8BC34A' }}
-        />
-        <div 
-          className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 rounded-full opacity-25"
-          style={{ backgroundColor: '#81C784' }}
-        />
+        <div className="absolute top-1/4 left-10 w-2 h-2 rounded-full opacity-40 bg-violet-400" />
+        <div className="absolute top-3/4 right-20 w-3 h-3 rounded-full opacity-35 bg-cyan-300" />
+        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 rounded-full opacity-40 bg-emerald-300" />
       </div>
       
       <Hero contributions={contributions}>

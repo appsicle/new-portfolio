@@ -37,28 +37,16 @@ export default function Footer() {
     <footer
       className="py-20 sm:py-24 relative border-t"
       style={{
-        background: `
-          linear-gradient(135deg, rgba(245, 245, 220, 0.8), rgba(255, 248, 225, 0.6)),
-          radial-gradient(circle at 30% 20%, rgba(139, 69, 19, 0.04) 0%, transparent 60%),
-          radial-gradient(circle at 70% 80%, rgba(76, 175, 80, 0.03) 0%, transparent 50%)
-        `,
-        borderColor: "rgba(139, 69, 19, 0.15)",
+        background:
+          "linear-gradient(180deg, rgba(24,24,27,0.6), rgba(24,24,27,0.3))",
+        borderColor: "rgba(148, 163, 184, 0.15)",
       }}
     >
       {/* Nature decorative elements */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div
-          className="absolute top-12 left-20 w-3 h-3 rounded-full opacity-25 leaf-float"
-          style={{ backgroundColor: "#4CAF50" }}
-        />
-        <div
-          className="absolute bottom-16 right-24 w-4 h-4 rounded-full opacity-20"
-          style={{ backgroundColor: "#8BC34A" }}
-        />
-        <div
-          className="absolute top-1/2 right-16 w-2 h-2 rounded-full opacity-30"
-          style={{ backgroundColor: "#81C784" }}
-        />
+        <div className="absolute top-12 left-20 w-3 h-3 rounded-full opacity-25 leaf-float bg-violet-400" />
+        <div className="absolute bottom-16 right-24 w-4 h-4 rounded-full opacity-20 bg-cyan-300" />
+        <div className="absolute top-1/2 right-16 w-2 h-2 rounded-full opacity-30 bg-emerald-300" />
       </div>
 
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
@@ -72,21 +60,13 @@ export default function Footer() {
               viewport={{ once: true }}
               className="flex items-center space-x-3"
             >
-              <div
-                className="p-3 rounded-full leaf-float"
-                style={{
-                  background:
-                    "linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 69, 19, 0.1))",
-                  border: "1.5px solid rgba(76, 175, 80, 0.3)",
-                }}
-              >
-                <Sprout size={24} className="text-green-600" />
+              <div className="p-3 rounded-full leaf-float border border-violet-500/30 bg-violet-500/10">
+                <Sprout size={24} className="text-violet-400" />
               </div>
               <span
                 className="text-xl font-bold"
                 style={{
-                  color: "#2E7D32",
-                  textShadow: "0 1px 2px rgba(139, 69, 19, 0.1)",
+                  color: "hsl(var(--foreground))",
                 }}
               >
                 Albert Zhang
@@ -99,7 +79,6 @@ export default function Footer() {
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
               className="text-muted-foreground text-base max-w-md leading-relaxed"
-              style={{ textShadow: "0 1px 1px rgba(139, 69, 19, 0.05)" }}
             >
               I&apos;m a software engineer who builds functional, performant
               systems quickly.
@@ -119,17 +98,11 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={social.label}
-                  className="p-3 rounded-lg transition-all duration-300 nature-hover"
-                  style={{
-                    background:
-                      "linear-gradient(135deg, rgba(139, 69, 19, 0.08), rgba(76, 175, 80, 0.05))",
-                    border: "1px solid rgba(139, 69, 19, 0.15)",
-                    color: "#2E7D32",
-                  }}
+                  className="p-3 rounded-lg transition-all duration-300 nature-hover border border-violet-500/20 bg-violet-500/10 text-foreground"
                   whileHover={{
                     scale: 1.1,
-                    backgroundColor: "rgba(76, 175, 80, 0.15)",
-                    borderColor: "rgba(76, 175, 80, 0.3)",
+                    backgroundColor: "rgba(147, 51, 234, 0.15)",
+                    borderColor: "rgba(147, 51, 234, 0.35)",
                   }}
                   whileTap={{ scale: 0.95 }}
                   initial={{ opacity: 0, scale: 0 }}
@@ -156,10 +129,6 @@ export default function Footer() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="text-lg font-semibold"
-              style={{
-                color: "#2E7D32",
-                textShadow: "0 1px 2px rgba(139, 69, 19, 0.1)",
-              }}
             >
               Explore
             </motion.h3>
@@ -187,9 +156,6 @@ export default function Footer() {
                     target={link.external ? "_blank" : undefined}
                     rel={link.external ? "noopener noreferrer" : undefined}
                     className="text-muted-foreground hover:text-primary text-base transition-all duration-300 flex items-center gap-2 group rounded-lg"
-                    style={{
-                      textShadow: "0 1px 1px rgba(139, 69, 19, 0.05)",
-                    }}
                   >
                     {link.name}
                     {link.external && (
@@ -212,10 +178,6 @@ export default function Footer() {
               transition={{ duration: 0.5 }}
               viewport={{ once: true }}
               className="text-lg font-semibold"
-              style={{
-                color: "#2E7D32",
-                textShadow: "0 1px 2px rgba(139, 69, 19, 0.1)",
-              }}
             >
               Let&apos;s Connect
             </motion.h3>
@@ -226,7 +188,6 @@ export default function Footer() {
               transition={{ duration: 0.5, delay: 0.1 }}
               viewport={{ once: true }}
               className="text-muted-foreground text-base leading-relaxed"
-              style={{ textShadow: "0 1px 1px rgba(139, 69, 19, 0.05)" }}
             >
               Have an idea you&apos;d like to bring to life?
             </motion.p>
@@ -238,10 +199,6 @@ export default function Footer() {
               transition={{ duration: 0.5, delay: 0.2 }}
               viewport={{ once: true }}
               className="inline-block text-primary hover:underline text-base font-medium rounded-lg r"
-              style={{
-                color: "#2E7D32",
-                textShadow: "0 1px 1px rgba(139, 69, 19, 0.05)",
-              }}
             >
               aalbertzhang@gmail.com
             </motion.a>
@@ -254,7 +211,7 @@ export default function Footer() {
           transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true }}
           className="border-t mt-20 pt-10 text-center"
-          style={{ borderColor: "rgba(139, 69, 19, 0.15)" }}
+          style={{ borderColor: "rgba(148, 163, 184, 0.15)" }}
         >
           <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
             <span>© {new Date().getFullYear()} Albert Zhang.</span>

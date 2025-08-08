@@ -223,46 +223,46 @@ export default function GitHubCalendar({
     }
   }
 
-  // Studio Ghibli Garden-inspired color and styling mapping
+  // Neon Lab grid mapping
   const getPlantStage = (level: number) => {
     const stages = [
       {
-        backgroundColor: "rgba(141, 110, 99, 0.4)",
-        border: "1px solid #6D4C41",
-        description: "Empty pot, ready for planting",
+        backgroundColor: "rgba(39, 39, 42, 0.5)",
+        border: "1px solid rgba(148,163,184,0.25)",
+        description: "Idle",
       },
       {
-        backgroundColor: "#A5D6A7",
-        border: "1px solid #66BB6A",
-        description: "A tiny sprout emerges",
+        backgroundColor: "#22d3ee",
+        border: "1px solid rgba(34,211,238,0.6)",
+        description: "Warm-up",
       },
       {
-        backgroundColor: "#81C784",
-        border: "1px solid #4CAF50",
-        description: "Growing leaves and stem",
+        backgroundColor: "#34d399",
+        border: "1px solid rgba(52,211,153,0.6)",
+        description: "Flow",
       },
       {
-        backgroundColor: "#66BB6A",
-        border: "1px solid #43A047",
-        description: "Beautiful flower blooms",
+        backgroundColor: "#a78bfa",
+        border: "1px solid rgba(167,139,250,0.6)",
+        description: "Surge",
       },
       {
-        backgroundColor: "#4CAF50",
-        border: "1px solid #2E7D32",
-        description: "Magnificent full bloom!",
+        backgroundColor: "#f472b6",
+        border: "1px solid rgba(244,114,182,0.6)",
+        description: "Peak",
       },
     ];
     return stages[level] || stages[0];
   };
 
-  // Get shadow color for garden depth
+  // Shadow hues
   const getGardenShadow = (level: number) => {
     const shadows = [
-      "rgba(109, 76, 65, 0.3)",
-      "rgba(76, 175, 80, 0.2)",
-      "rgba(76, 175, 80, 0.3)",
-      "rgba(67, 160, 71, 0.4)",
-      "rgba(46, 125, 50, 0.5)",
+      "rgba(0,0,0,0.25)",
+      "rgba(34, 211, 238, 0.35)",
+      "rgba(52, 211, 153, 0.35)",
+      "rgba(167, 139, 250, 0.35)",
+      "rgba(244, 114, 182, 0.4)",
     ];
     return shadows[level] || shadows[0];
   };
@@ -319,7 +319,7 @@ export default function GitHubCalendar({
   return (
     <div className="relative w-full">
       <div className="relative flex w-full flex-col items-center gap-4 p-2 sm:p-8">
-        {/* Calendar grid with nature aesthetic */}
+        {/* Neon grid */}
         <div className="flex items-start gap-2">
           {/* Week-day labels */}
           <div className="hidden sm:flex mr-1 flex-col gap-1 sm:mr-3 translate-y-4">
@@ -330,8 +330,7 @@ export default function GitHubCalendar({
                   className="text-xs font-medium flex items-center justify-center rounded-md p-1"
                   style={{
                     height: blockSize + "px",
-                    color: "rgba(31, 36, 171, 0.5)",
-                    textShadow: "0 1px 2px rgba(25, 118, 210, 0.1)",
+                    color: "rgba(148, 163, 184, 0.7)",
                   }}
                 >
                   {day.charAt(0)}
@@ -340,16 +339,16 @@ export default function GitHubCalendar({
             )}
           </div>
 
-          {/* Weeks grid with enhanced nature styling */}
+          {/* Weeks grid */}
           <div
             className="flex-1 rounded-2xl p-2 sm:p-4"
             style={{
               background:
-                "linear-gradient(135deg, rgba(255, 248, 225, 0.85), rgba(245, 245, 220, 0.7))",
+                "linear-gradient(180deg, rgba(24,24,27,0.6), rgba(24,24,27,0.3))",
               boxShadow:
-                "inset 0 2px 4px rgba(139, 69, 19, 0.1), 0 4px 12px rgba(139, 69, 19, 0.08)",
+                "inset 0 2px 4px rgba(255,255,255,0.03), 0 4px 12px rgba(0,0,0,0.25)",
               backdropFilter: "blur(8px)",
-              border: "1px solid rgba(139, 69, 19, 0.15)",
+              border: "1px solid rgba(148,163,184,0.2)",
             }}
           >
             <div className="flex w-full justify-center gap-px sm:gap-1">
@@ -366,15 +365,15 @@ export default function GitHubCalendar({
                           height: blockSize + "px",
                           backgroundColor: day.isCurrentYear
                             ? stage.backgroundColor
-                            : "rgba(141, 110, 99, 0.3)",
+                            : "rgba(39,39,42, 0.3)",
                           border: day.isCurrentYear
                             ? stage.border
-                            : "2px solid rgba(109, 76, 65, 0.3)",
+                            : "2px solid rgba(148, 163, 184, 0.2)",
                           boxShadow: day.isCurrentYear
                             ? `0 2px 6px ${getGardenShadow(
                                 day.level
                               )}, inset 0 1px 2px rgba(255, 255, 255, 0.3)`
-                            : "0 1px 3px rgba(109, 76, 65, 0.2)",
+                            : "0 1px 3px rgba(0, 0, 0, 0.25)",
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
@@ -383,7 +382,7 @@ export default function GitHubCalendar({
                         title={`${day.date}: ${day.count} contributions - ${
                           day.isCurrentYear
                             ? stage.description
-                            : "Dormant season"
+                            : "Out of range"
                         }`}
                       >
                         {day.isCurrentYear && (
@@ -403,7 +402,7 @@ export default function GitHubCalendar({
           </div>
         </div>
 
-        {/* Contribution stats subtext */}
+        {/* Stats */}
         <p
           className="self-start mt-3 ml-5 text-xs text-muted-foreground sm:text-sm"
           style={{ paddingLeft: blockSize + 12 }}
@@ -414,17 +413,17 @@ export default function GitHubCalendar({
           /day
         </p>
 
-        {/* Simplified garden progression legend */}
+        {/* Legend */}
         <div
           className="flex flex-col items-center gap-2 mt-6 px-4 py-3 sm:flex-row sm:gap-6 sm:px-6 rounded-xl"
           style={{
-            backgroundColor: "rgba(139, 69, 19, 0.08)",
-            border: "1px solid rgba(139, 69, 19, 0.15)",
+            backgroundColor: "rgba(39,39,42, 0.4)",
+            border: "1px solid rgba(148,163,184,0.2)",
             backdropFilter: "blur(6px)",
           }}
         >
           <span className="text-xs font-medium" style={{ color: "#5D4037" }}>
-            Github Garden:
+            Contribution Levels:
           </span>
           <div className="flex gap-2">
             {[0, 1, 2, 3, 4].map((level) => {
@@ -435,8 +434,7 @@ export default function GitHubCalendar({
                     className="w-6 h-6 sm:w-8 sm:h-8 rounded-sm border flex items-center justify-center relative"
                     style={{
                       backgroundColor: stage.backgroundColor,
-                      borderColor:
-                        stage.border.match(/#[0-9A-F]{6}/i)?.[0] || "#6D4C41",
+                      borderColor: stage.border.match(/#[0-9A-F]{6}/i)?.[0] || "#64748b",
                       boxShadow: `0 2px 4px ${getGardenShadow(level)}`,
                     }}
                     title={stage.description}
@@ -445,17 +443,17 @@ export default function GitHubCalendar({
                   </div>
                   <span
                     className="text-center"
-                    style={{ color: "#5D4037", fontSize: "10px" }}
+                    style={{ color: "#94a3b8", fontSize: "10px" }}
                   >
                     {level === 0
-                      ? "Empty"
+                      ? "Idle"
                       : level === 1
-                      ? "Sprout"
+                      ? "Warm"
                       : level === 2
-                      ? "Growing"
+                      ? "Flow"
                       : level === 3
-                      ? "Blooming"
-                      : "Full Bloom"}
+                      ? "Surge"
+                      : "Peak"}
                   </span>
                 </div>
               );

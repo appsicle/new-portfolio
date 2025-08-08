@@ -57,45 +57,16 @@ export default function Projects() {
       ref={ref}
       className="py-20 sm:py-24 lg:py-32 relative overflow-hidden"
     >
-      {/* Background gradient layers */}
-      <div className="absolute inset-0 bg-gradient-to-br from-amber-50 via-green-50 to-blue-50 opacity-70 pointer-events-none" />
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(circle at 20% 30%, rgba(139, 69, 19, 0.08) 0%, transparent 60%),
-            radial-gradient(circle at 80% 70%, rgba(74, 144, 226, 0.08) 0%, transparent 50%),
-            radial-gradient(circle at 50% 50%, rgba(76, 175, 80, 0.08) 0%, transparent 70%),
-            radial-gradient(circle at 10% 80%, rgba(255, 193, 7, 0.05) 0%, transparent 40%),
-            radial-gradient(circle at 90% 20%, rgba(139, 69, 19, 0.06) 0%, transparent 50%)
-          `,
-        }}
-      />
-      <div
-        className="absolute inset-0 opacity-30 pointer-events-none"
-        style={{
-          background: `
-            radial-gradient(circle at 15% 25%, rgba(139, 69, 19, 0.02) 1px, transparent 1px),
-            radial-gradient(circle at 85% 75%, rgba(76, 175, 80, 0.02) 1px, transparent 1px),
-            radial-gradient(circle at 45% 60%, rgba(74, 144, 226, 0.02) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px, 80px 80px, 100px 100px",
-        }}
-      />
-      {/* Nature decorative elements */}
+      {/* Neon background layers */}
       <div className="absolute inset-0 pointer-events-none">
-        <div
-          className="absolute top-10 left-10 w-3 h-3 rounded-full opacity-30 leaf-float"
-          style={{ backgroundColor: "#8BC34A" }}
-        />
-        <div
-          className="absolute top-32 right-20 w-2 h-2 rounded-full opacity-40 leaf-float"
-          style={{ backgroundColor: "#4CAF50" }}
-        />
-        <div
-          className="absolute bottom-20 left-1/4 w-4 h-4 rounded-full opacity-25 leaf-float"
-          style={{ backgroundColor: "#81C784" }}
-        />
+        <div className="absolute inset-0 animate-gradient-xy" style={{
+          background:
+            "radial-gradient(1200px 800px at 10% -10%, rgba(120,119,198,0.18) 0%, transparent 60%), radial-gradient(1000px 700px at 110% 20%, rgba(56,189,248,0.18) 0%, transparent 55%), radial-gradient(800px 600px at 30% 120%, rgba(34,197,94,0.15) 0%, transparent 60%)"
+        }} />
+        <div className="absolute inset-0" style={{
+          background:
+            "repeating-linear-gradient(90deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 60px), repeating-linear-gradient(0deg, rgba(255,255,255,0.03) 0 1px, transparent 1px 60px)"
+        }} />
       </div>
 
       <div className="container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
@@ -108,28 +79,15 @@ export default function Projects() {
         >
           <div className="flex items-center justify-center mb-6 pb-4">
             <motion.div
-              className="p-3 rounded-full mr-4 leaf-float"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(76, 175, 80, 0.2), rgba(139, 69, 19, 0.1))",
-                border: "1.5px solid rgba(76, 175, 80, 0.3)",
-              }}
+              className="p-3 rounded-full mr-4 leaf-float border border-violet-500/30 bg-violet-500/10"
               initial={{ scale: 0, rotate: -20 }}
               whileInView={{ scale: 1, rotate: 0 }}
               transition={{ type: "spring", stiffness: 200, delay: 0.3 }}
             >
-              <TreePine size={28} className="text-green-600" />
+              <TreePine size={28} className="text-violet-400" />
             </motion.div>
             <h2
               className="text-4xl md:text-5xl font-extrabold tracking-tight text-foreground pb-2"
-              style={{
-                textShadow: "0 2px 4px rgba(139, 69, 19, 0.1)",
-                background:
-                  "linear-gradient(135deg, #2E7D32, #4CAF50, #8BC34A)",
-                backgroundClip: "text",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-              }}
             >
               Featured Projects
             </h2>
@@ -156,22 +114,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
       className="h-full"
     >
       <div className="h-full">
-        <Card
-          className="h-full overflow-hidden nature-hover group relative"
-          style={{
-            background: `
-              linear-gradient(135deg, rgba(255, 248, 225, 0.95), rgba(245, 245, 220, 0.9)),
-              radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.3) 0%, transparent 70%)
-            `,
-            border: "1.5px solid rgba(139, 69, 19, 0.15)",
-            boxShadow: `
-              0 8px 32px rgba(139, 69, 19, 0.1),
-              inset 0 1px 3px rgba(255, 255, 255, 0.3),
-              0 4px 12px rgba(76, 175, 80, 0.05)
-            `,
-            backdropFilter: "blur(8px)",
-          }}
-        >
+        <Card className="h-full overflow-hidden nature-hover group relative">
           {/* Wood grain texture overlay */}
           <div
             className="absolute inset-0 opacity-20 pointer-events-none"
@@ -205,13 +148,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 className="w-full h-48 sm:h-56 md:h-64 object-cover transition-transform duration-500 group-hover:scale-105"
               />
               {/* Nature overlay on image */}
-              <div
-                className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300"
-                style={{
-                  background:
-                    "linear-gradient(45deg, rgba(76, 175, 80, 0.3), rgba(139, 69, 19, 0.2))",
-                }}
-              />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-20 transition-opacity duration-300 bg-gradient-to-tr from-violet-500/40 to-cyan-300/30" />
             </div>
           </CardHeader>
 
@@ -264,13 +201,6 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               variant="default"
               size="default"
               className="gap-2 wood-button text-white font-medium flex-1"
-              style={{
-                background:
-                  "linear-gradient(135deg, rgba(76, 175, 80, 0.9), rgba(46, 125, 50, 1))",
-                border: "1px solid rgba(46, 125, 50, 0.3)",
-                boxShadow:
-                  "0 4px 12px rgba(76, 175, 80, 0.3), inset 0 1px 2px rgba(255, 255, 255, 0.2)",
-              }}
             >
               <Link
                 href={project.link}
@@ -290,11 +220,9 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
                 className="gap-2 nature-hover"
                 style={{
                   background:
-                    "linear-gradient(135deg, rgba(255, 248, 225, 0.9), rgba(245, 245, 220, 0.7))",
-                  borderColor: "rgba(139, 69, 19, 0.3)",
-                  color: "#5D4037",
-                  boxShadow:
-                    "0 2px 8px rgba(139, 69, 19, 0.1), inset 0 1px 2px rgba(255, 255, 255, 0.3)",
+                    "linear-gradient(135deg, rgba(24,24,27,0.6), rgba(24,24,27,0.3))",
+                  borderColor: "rgba(148,163,184,0.35)",
+                  color: "hsl(var(--foreground))",
                 }}
               >
                 <Link
