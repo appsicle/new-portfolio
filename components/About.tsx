@@ -4,7 +4,7 @@ import { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import profile from "./profile.jpeg";
+import profile from "./head.jpg";
 import {
   Code,
   Globe,
