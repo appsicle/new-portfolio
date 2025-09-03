@@ -32,7 +32,7 @@ const projects: Project[] = [
       "Ok, I built this before Gemini could one shot video analysis for free. It's a simple app that allows you to analyze a YouTube video based on the transcript.",
     image: ytextract,
     tags: ["React", "Next.js", "TypeScript", "AI"],
-    link: "https://ytextract.com",
+    link: "https://ytextract-wxtdc3umb-appsicles-projects.vercel.app",
     github: "https://github.com/appsicle/ytextract",
   },
   {
