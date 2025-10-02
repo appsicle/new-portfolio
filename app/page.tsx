@@ -1,5 +1,4 @@
 import Hero from "../components/Hero";
-import Projects from "../components/Projects";
 import About from "../components/About";
 import GitHubCalendar from "../components/GitHubCalendar";
 
@@ -51,18 +50,15 @@ export default async function Home() {
   const contributions = await getContributions();
 
   return (
-    <main className="bg-background text-foreground relative overflow-hidden">
-      {/* Neon motion accents */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-1/4 left-10 w-2 h-2 rounded-full opacity-40 bg-violet-400" />
-        <div className="absolute top-3/4 right-20 w-3 h-3 rounded-full opacity-35 bg-cyan-300" />
-        <div className="absolute bottom-1/4 left-1/3 w-1.5 h-1.5 rounded-full opacity-40 bg-emerald-300" />
-      </div>
-      
-      <Hero contributions={contributions}>
-        <GitHubCalendar contributions={contributions} />
-      </Hero>
-      <Projects />
+    <main>
+      <Hero />
+      <section className="panel-alt py-20 sm:py-24">
+        <div className="section-layout flex flex-col gap-10 text-left">
+          <div className="accent-line" aria-hidden />
+          <h2 className="text-2xl text-foreground">Activity</h2>
+          <GitHubCalendar contributions={contributions} />
+        </div>
+      </section>
       <About />
     </main>
   );

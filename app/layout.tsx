@@ -1,14 +1,17 @@
 import "./globals.css";
-import { ThemeProvider } from "@/components/theme-provider";
-import Navigation from "../components/Navigation";
 import Footer from "../components/Footer";
-import { Plus_Jakarta_Sans } from "next/font/google";
+import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
 
-const jakarta = Plus_Jakarta_Sans({
+const heading = Noto_Sans_JP({
   subsets: ["latin"],
-  display: "swap",
-  variable: "--font-jakarta",
-  weight: ["400", "500", "600", "700", "800"],
+  weight: ["300", "400", "500"],
+  variable: "--font-heading",
+});
+
+const body = Noto_Serif_JP({
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "500"],
+  variable: "--font-body",
 });
 
 export const metadata = {
@@ -23,7 +26,7 @@ export const metadata = {
     "Next.js",
     "TypeScript",
     "Portfolio",
-    "Frontend Developer"
+    "Frontend Developer",
   ],
   authors: [{ name: "Albert Zhang" }],
   creator: "Albert Zhang",
@@ -53,15 +56,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning className={jakarta.variable}>
-      <body className="font-sans">
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <div className="min-h-screen flex flex-col bg-background nature-background grid-background">
-            <Navigation />
-            <main className="flex-grow relative z-10">{children}</main>
-            <Footer />
-          </div>
-        </ThemeProvider>
+    <html lang="en" className={`dark ${heading.variable} ${body.variable}`}>
+      <body className="bg-background text-foreground">
+        <main>{children}</main>
+        <Footer />
       </body>
     </html>
   );

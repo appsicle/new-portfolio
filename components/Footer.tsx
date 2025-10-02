@@ -1,224 +1,37 @@
-"use client";
-
-import { motion } from "framer-motion";
 import Link from "next/link";
-import {
-  Github,
-  Linkedin,
-  Mail,
-  ExternalLink,
-  Sprout,
-  Coffee,
-} from "lucide-react";
 
 const socialLinks = [
-  {
-    icon: Github,
-    href: "https://github.com/appsicle",
-    label: "GitHub",
-    color: "#333",
-  },
-  {
-    icon: Linkedin,
-    href: "https://linkedin.com/in/albertzhang100",
-    label: "LinkedIn",
-    color: "#0077B5",
-  },
-  {
-    icon: Mail,
-    href: "mailto:aalbertzhang@gmail.com",
-    label: "Email",
-    color: "#EA4335",
-  },
+  { label: "GitHub", href: "https://github.com/appsicle" },
+  { label: "LinkedIn", href: "https://linkedin.com/in/albertzhang100" },
+  { label: "Email", href: "mailto:aalbertzhang@gmail.com" },
 ];
 
 export default function Footer() {
   return (
-    <footer
-      className="py-20 sm:py-24 relative border-t"
-      style={{
-        background:
-          "linear-gradient(180deg, rgba(24,24,27,0.6), rgba(24,24,27,0.3))",
-        borderColor: "rgba(148, 163, 184, 0.15)",
-      }}
-    >
-      {/* Nature decorative elements */}
-      <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-12 left-20 w-3 h-3 rounded-full opacity-25 leaf-float bg-violet-400" />
-        <div className="absolute bottom-16 right-24 w-4 h-4 rounded-full opacity-20 bg-cyan-300" />
-        <div className="absolute top-1/2 right-16 w-2 h-2 rounded-full opacity-30 bg-emerald-300" />
-      </div>
-
-      <div className="container mx-auto px-6 sm:px-8 lg:px-12 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-16 md:gap-12">
-          {/* Logo and tagline */}
-          <div className="space-y-6">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="flex items-center space-x-3"
-            >
-              <div className="p-3 rounded-full leaf-float border border-violet-500/30 bg-violet-500/10">
-                <Sprout size={24} className="text-violet-400" />
-              </div>
-              <span
-                className="text-xl font-bold"
-                style={{
-                  color: "hsl(var(--foreground))",
-                }}
-              >
-                Albert Zhang
-              </span>
-            </motion.div>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="text-muted-foreground text-base max-w-md leading-relaxed"
-            >
-              I&apos;m a software engineer who builds functional, performant
-              systems quickly.
-            </motion.p>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="flex space-x-4 pt-2"
-            >
-              {socialLinks.map((social, index) => (
-                <motion.a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="p-3 rounded-lg transition-all duration-300 nature-hover border border-violet-500/20 bg-violet-500/10 text-foreground"
-                  whileHover={{
-                    scale: 1.1,
-                    backgroundColor: "rgba(147, 51, 234, 0.15)",
-                    borderColor: "rgba(147, 51, 234, 0.35)",
-                  }}
-                  whileTap={{ scale: 0.95 }}
-                  initial={{ opacity: 0, scale: 0 }}
-                  whileInView={{ opacity: 1, scale: 1 }}
-                  transition={{
-                    type: "spring",
-                    stiffness: 260,
-                    damping: 20,
-                    delay: 0.4 + index * 0.1,
-                  }}
-                  viewport={{ once: true }}
-                >
-                  <social.icon size={20} />
-                </motion.a>
-              ))}
-            </motion.div>
-          </div>
-
-          {/* Quick links */}
-          <div className="space-y-6">
-            <motion.h3
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-lg font-semibold"
-            >
-              Explore
-            </motion.h3>
-
-            <motion.ul
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="space-y-4"
-            >
-              {[
-                { name: "Projects", href: "#projects", external: false },
-                { name: "About", href: "#about", external: false },
-              ].map((link, index) => (
-                <motion.li
-                  key={link.name}
-                  initial={{ opacity: 0, x: -10 }}
-                  whileInView={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.3, delay: 0.2 + index * 0.1 }}
-                  viewport={{ once: true }}
-                >
-                  <Link
-                    href={link.href}
-                    target={link.external ? "_blank" : undefined}
-                    rel={link.external ? "noopener noreferrer" : undefined}
-                    className="text-muted-foreground hover:text-primary text-base transition-all duration-300 flex items-center gap-2 group rounded-lg"
-                  >
-                    {link.name}
-                    {link.external && (
-                      <ExternalLink
-                        size={14}
-                        className="opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      />
-                    )}
-                  </Link>
-                </motion.li>
-              ))}
-            </motion.ul>
-          </div>
-
-          {/* Contact */}
-          <div className="space-y-6">
-            <motion.h3
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              viewport={{ once: true }}
-              className="text-lg font-semibold"
-            >
-              Let&apos;s Connect
-            </motion.h3>
-
-            <motion.p
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="text-muted-foreground text-base leading-relaxed"
-            >
-              Have an idea you&apos;d like to bring to life?
-            </motion.p>
-
-            <motion.a
-              href="mailto:aalbertzhang@gmail.com"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="inline-block text-primary hover:underline text-base font-medium rounded-lg r"
-            >
-              aalbertzhang@gmail.com
-            </motion.a>
-          </div>
+    <footer className="panel-dark py-20 text-sm">
+      <div className="section-layout flex flex-col gap-10 sm:flex-row sm:items-start sm:justify-between">
+        <div className="space-y-4">
+          <div className="accent-line" aria-hidden />
+          <p className="text-base">Albert Zhang</p>
+          <p className="text-xs tracking-[0.25em] text-white/60">
+            I&apos;m a software engineer who builds functional, performant systems quickly.
+          </p>
+          <p className="text-xs text-white/40">© {new Date().getFullYear()} Albert Zhang. All rights reserved.</p>
         </div>
 
-        <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 0.4 }}
-          viewport={{ once: true }}
-          className="border-t mt-20 pt-10 text-center"
-          style={{ borderColor: "rgba(148, 163, 184, 0.15)" }}
-        >
-          <div className="flex items-center justify-center space-x-2 text-sm text-muted-foreground">
-            <span>© {new Date().getFullYear()} Albert Zhang.</span>
-            <span>Crafted with</span>
-            <Coffee size={16} className="text-maroon-400 mx-1" />
-          </div>
-        </motion.div>
+        <div className="flex flex-col gap-2 text-sm text-white/80">
+          {socialLinks.map((link) => (
+            <Link
+              key={link.label}
+              href={link.href}
+              target={link.href.startsWith("http") ? "_blank" : undefined}
+              rel={link.href.startsWith("http") ? "noopener noreferrer" : undefined}
+              className="transition-opacity duration-200 hover:opacity-60"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </div>
       </div>
     </footer>
   );
