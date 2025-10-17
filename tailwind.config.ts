@@ -64,7 +64,7 @@ const config: Config = {
         'grid-size': "1.5rem 1.5rem",
       },
       fontFamily: {
-        'sans': ['var(--font-jakarta)', 'sans-serif'],
+        'sans': ['var(--font-modernist)', 'sans-serif'],
       },
       animation: {
         'gradient-xy': 'gradient-xy 3s ease infinite',

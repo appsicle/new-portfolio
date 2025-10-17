@@ -1,17 +1,10 @@
 import "./globals.css";
-import Footer from "../components/Footer";
-import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
+import localFont from "next/font/local";
 
-const heading = Noto_Sans_JP({
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-  variable: "--font-heading",
-});
-
-const body = Noto_Serif_JP({
-  subsets: ["latin"],
-  weight: ["200", "300", "400", "500"],
-  variable: "--font-body",
+const modernist = localFont({
+  src: "../public/fonts/Sk-Modernist-Regular.otf",
+  variable: "--font-modernist",
+  weight: "400",
 });
 
 export const metadata = {
@@ -56,10 +49,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${heading.variable} ${body.variable}`}>
+    <html lang="en" className={`dark ${modernist.variable}`}>
       <body className="bg-background text-foreground">
         <main>{children}</main>
-        <Footer />
       </body>
     </html>
   );

@@ -18,21 +18,21 @@ html {
 
 @layer base {
   :root {
-    --background: 30 15% 94%;
-    --foreground: 0 0% 20%;
-    --accent: 25 20% 45%;
-    --accent-muted: 30 12% 60%;
-    --muted: 25 10% 75%;
-    --muted-foreground: 25 8% 40%;
-    --card: 30 15% 94%;
-    --card-foreground: 0 0% 20%;
-    --panel: 30 15% 94%;
-    --panel-muted: 30 15% 94%;
-    --panel-alt: 30 15% 94%;
-    --panel-dark: 0 0% 18%;
-    --panel-dark-foreground: 30 10% 92%;
-    --border: 25 8% 78%;
-    --ring: 0 0% 25%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
+    --accent: 42 100% 70%;
+    --accent-muted: 42 60% 45%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 65%;
+    --card: 0 0% 5%;
+    --card-foreground: 0 0% 98%;
+    --panel: 0 0% 0%;
+    --panel-muted: 0 0% 3%;
+    --panel-alt: 0 0% 5%;
+    --panel-dark: 0 0% 8%;
+    --panel-dark-foreground: 0 0% 98%;
+    --border: 0 0% 20%;
+    --ring: 42 100% 70%;
     --fluid-type-min: 16px;
     --fluid-type-max: 19px;
     --fluid-bp-min: 320;
@@ -40,8 +40,8 @@ html {
   }
 
   .dark {
-    --background: 30 15% 94%;
-    --foreground: 0 0% 20%;
+    --background: 0 0% 0%;
+    --foreground: 0 0% 98%;
   }
 }
 
@@ -55,8 +55,8 @@ html {
     overflow-x: hidden;
     background-color: hsl(var(--background));
     color: hsl(var(--foreground));
-    font-family: var(--font-body);
-    font-weight: 300;
+    font-family: var(--font-modernist);
+    font-weight: 400;
     font-feature-settings: "rlig" 1, "calt" 1;
     letter-spacing: 0.01em;
     line-height: 1.75;
@@ -82,29 +82,14 @@ html {
   h2,
   h3,
   h4 {
-    font-family: var(--font-heading);
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 300;
-  }
-
-  h1 {
-    letter-spacing: 0.22em;
-    line-height: 1.15;
-  }
-
-  h2 {
-    letter-spacing: 0.18em;
-    line-height: 1.3;
-  }
-
-  h3 {
-    letter-spacing: 0.3em;
+    font-family: var(--font-modernist);
+    letter-spacing: 0.08em;
     font-weight: 400;
   }
 
+
   strong {
-    font-weight: 500;
+    font-weight: 600;
   }
 }
 
@@ -152,7 +137,7 @@ html {
 }
 
 ::selection {
-  background: hsla(25, 20%, 45%, 0.15);
+  background: hsla(42, 100%, 70%, 0.3);
   color: hsl(var(--foreground));
 }
 
