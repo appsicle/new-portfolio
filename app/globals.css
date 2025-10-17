@@ -78,12 +78,8 @@ html {
     outline-offset: 4px;
   }
 
-  h1,
-  h2,
-  h3,
-  h4 {
+  * {
     font-family: var(--font-modernist);
-    letter-spacing: 0.08em;
     font-weight: 400;
   }
 
