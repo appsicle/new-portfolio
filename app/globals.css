@@ -18,6 +18,28 @@ html {
 
 @layer base {
   :root {
+    --background: 0 0% 98%;
+    --foreground: 0 0% 9%;
+    --accent: 42 100% 50%;
+    --accent-muted: 42 60% 35%;
+    --muted: 0 0% 90%;
+    --muted-foreground: 0 0% 40%;
+    --card: 0 0% 96%;
+    --card-foreground: 0 0% 9%;
+    --panel: 0 0% 98%;
+    --panel-muted: 0 0% 96%;
+    --panel-alt: 0 0% 94%;
+    --panel-dark: 0 0% 92%;
+    --panel-dark-foreground: 0 0% 9%;
+    --border: 0 0% 85%;
+    --ring: 42 100% 50%;
+    --fluid-type-min: 16px;
+    --fluid-type-max: 19px;
+    --fluid-bp-min: 320;
+    --fluid-bp-max: 1280;
+  }
+
+  .dark {
     --background: 0 0% 0%;
     --foreground: 0 0% 98%;
     --accent: 42 100% 70%;
@@ -33,16 +55,13 @@ html {
     --panel-dark-foreground: 0 0% 98%;
     --border: 0 0% 20%;
     --ring: 42 100% 70%;
-    --fluid-type-min: 16px;
-    --fluid-type-max: 19px;
-    --fluid-bp-min: 320;
-    --fluid-bp-max: 1280;
   }
+}
 
-  .dark {
-    --background: 0 0% 0%;
-    --foreground: 0 0% 98%;
-  }
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 @layer base {
@@ -65,11 +84,6 @@ html {
   a {
     color: hsl(var(--foreground));
     text-decoration: none;
-    transition: opacity 180ms ease;
-  }
-
-  a:hover {
-    opacity: 0.7;
   }
 
   a:focus-visible,

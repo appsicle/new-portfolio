@@ -1,5 +1,7 @@
 import "./globals.css";
 import localFont from "next/font/local";
+import { ThemeProvider } from "@/components/theme-provider";
+import { AnimatedThemeToggler } from "@/components/animated-theme-toggler";
 
 const modernist = localFont({
   src: "../public/fonts/Sk-Modernist-Regular.otf",
@@ -49,9 +51,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={`dark ${modernist.variable}`}>
+    <html lang="en" className={modernist.variable} suppressHydrationWarning>
       <body className="bg-background text-foreground">
-        <main>{children}</main>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <AnimatedThemeToggler
+            className="fixed top-6 z-50 cursor-pointer text-foreground"
+            style={{ right: "clamp(1.5rem, 12vw, 12rem)" }}
+          />
+          <main>{children}</main>
+        </ThemeProvider>
       </body>
     </html>
   );

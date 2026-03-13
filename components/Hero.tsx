@@ -1,13 +1,11 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useEffect } from "react";
 import Link from "next/link";
-import Image from "next/image";
 import { Github01Icon, Linkedin02Icon, Mail01Icon } from "hugeicons-react";
 import ScrambleIn, { ScrambleInHandle } from "./fancy/text/scramble-in";
-import PixelateSvgFilter from "./fancy/filter/pixelate-svg-filter";
 import CenterUnderline from "./fancy/text/underline-center";
-import { useMousePosition } from "@/lib/hooks/use-mouse-position";
+import HalftoneImage from "./HalftoneImage";
 
 const experiences = [
   {
@@ -61,9 +59,6 @@ const socialLinks = [
 ];
 
 export default function Hero() {
-  const imageContainerRef = useRef<HTMLDivElement>(null);
-  const mousePosition = useMousePosition(imageContainerRef);
-  const [isHovering, setIsHovering] = useState(false);
   const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([]);
 
   useEffect(() => {
@@ -74,29 +69,6 @@ export default function Hero() {
       }, delay);
     });
   }, []);
-
-  // Calculate distance from center
-  const getPixelSize = () => {
-    if (!isHovering || !imageContainerRef.current) return 1;
-
-    const rect = imageContainerRef.current.getBoundingClientRect();
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-
-    // Calculate distance from center
-    const distanceX = Math.abs(mousePosition.x - centerX);
-    const distanceY = Math.abs(mousePosition.y - centerY);
-    const maxDistance = Math.sqrt(centerX * centerX + centerY * centerY);
-    const currentDistance = Math.sqrt(distanceX * distanceX + distanceY * distanceY);
-
-    // Invert: closer to center = more pixelated
-    const normalizedDistance = 1 - (currentDistance / maxDistance);
-    const pixelSize = Math.min(Math.max(normalizedDistance * 64, 1), 64) / 3;
-
-    return pixelSize;
-  };
-
-  const pixelSize = getPixelSize();
 
   return (
     <section className="panel flex min-h-screen items-center py-8 sm:py-12">
@@ -140,7 +112,7 @@ export default function Hero() {
                   >
                     <CenterUnderline>{exp.company}</CenterUnderline>
                   </Link>
-                  <span className="text-muted-foreground transition-opacity duration-200 group-hover:opacity-60">
+                  <span className="text-muted-foreground">
                     {exp.role}
                   </span>
                 </div>
@@ -149,24 +121,14 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Hero Image */}
-        <div
-          ref={imageContainerRef}
-          className="animate-fade-in-up animate-delay-200 relative w-full overflow-hidden rounded-lg"
-          onMouseEnter={() => setIsHovering(true)}
-          onMouseLeave={() => setIsHovering(false)}
-        >
-          <PixelateSvgFilter id="pixelate-filter" size={pixelSize} crossLayers />
-          <Image
-            src="/scenery.png"
-            alt="Beautiful scenery with cherry blossoms"
-            width={1920}
-            height={1080}
-            className="h-auto w-full object-cover transition-all duration-200"
-            style={{ maxHeight: '40vh', filter: isHovering ? "url(#pixelate-filter)" : "none" }}
-            priority
-          />
-        </div>
+        {/* Hero Image - Halftone */}
+        <HalftoneImage
+          src="/scenery.png"
+          alt="Scenery with halftone effect"
+          className="animate-fade-in-up animate-delay-200 overflow-hidden rounded-lg"
+          gridSize={6}
+          maxHeight="40vh"
+        />
 
         {/* Social Links */}
         <div className="animate-fade-in-up animate-delay-300 flex justify-center gap-6">
@@ -178,7 +140,7 @@ export default function Hero() {
                 href={social.href}
                 target={social.href.startsWith("http") ? "_blank" : undefined}
                 rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className="transition-opacity duration-200 hover:opacity-60"
+                className=""
                 aria-label={social.name}
               >
                 <Icon size={20} />
