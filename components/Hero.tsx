@@ -96,7 +96,7 @@ export default function Hero() {
           </div>
 
           {/* Right Side - Experience */}
-          <div className="flex flex-1 flex-col justify-center">
+          <div className="flex flex-1 flex-col items-end justify-center">
             <div className="animate-fade-in-up animate-delay-100 space-y-4 sm:space-y-6">
               {experiences.map((exp) => (
                 <div
@@ -131,7 +131,7 @@ export default function Hero() {
         />
 
         {/* Social Links */}
-        <div className="animate-fade-in-up animate-delay-300 flex justify-center gap-6">
+        <div className="animate-fade-in-up animate-delay-300 flex justify-end gap-6">
           {socialLinks.map((social) => {
             const Icon = social.icon;
             return (
