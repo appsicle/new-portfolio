@@ -16,6 +16,14 @@ interface HalftoneImageProps {
 const defaultDotColor = { light: "#2939C6", dark: "#3B5FFF" };
 const defaultBgColor = { light: "#fafafa", dark: "#000000" };
 
+// Acidic holographic palette — the gradient cycles through this and wraps,
+// so it can slide forever without a seam. Light mode gets deeper versions
+// of the same hues to hold contrast on the pale background.
+const HOLO_PALETTE = {
+  dark: ["#C8FF00", "#00FFB2", "#00CFFF", "#8A6CFF", "#FF5EDB"],
+  light: ["#86C400", "#00B584", "#0096D6", "#6E54E8", "#E03FBE"],
+};
+
 export default function HalftoneImage({
   src,
   alt,
@@ -112,7 +120,7 @@ export default function HalftoneImage({
 
     let active = true;
 
-    const frame = () => {
+    const frame = (now: number) => {
       if (!active) return;
 
       const ctx = canvas.getContext("2d");
@@ -156,7 +164,33 @@ export default function HalftoneImage({
       const invSigma = 1 / sigma;
       const hasInfluence = strength > 0.002;
 
-      ctx.fillStyle = activeDotColor;
+      // --- Holographic sheen ---
+      // A wrapped spectral gradient slides diagonally across the dot field
+      // (light traveling over holo foil) and its angle tilts with the cursor,
+      // like inspecting a knife skin. Three palette cycles span the gradient
+      // line so the visible canvas never sees a clamped edge while it slides.
+      const palette =
+        resolvedTheme === "dark" ? HOLO_PALETTE.dark : HOLO_PALETTE.light;
+      const diag = Math.hypot(w, h);
+      const tilt = ((s.x / w - 0.5) * 0.55) * s.influence;
+      const ang = -0.42 + tilt;
+      const dirX = Math.cos(ang);
+      const dirY = Math.sin(ang);
+      const slide = (now * 0.025) % diag; // full spectrum pass ≈ 60s
+      const x0 = w / 2 + dirX * (slide - 2 * diag);
+      const y0 = h / 2 + dirY * (slide - 2 * diag);
+      const grad = ctx.createLinearGradient(
+        x0,
+        y0,
+        x0 + dirX * 3 * diag,
+        y0 + dirY * 3 * diag
+      );
+      const n = palette.length;
+      for (let i = 0; i <= 3 * n; i++) {
+        grad.addColorStop(i / (3 * n), palette[i % n]);
+      }
+
+      ctx.fillStyle = grad;
       ctx.beginPath();
 
       for (let i = 0; i < count; i++) {

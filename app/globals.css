@@ -6,14 +6,8 @@ html {
   height: 100%;
   overflow-x: hidden;
   scroll-behavior: smooth;
-  font-size: clamp(
-    var(--fluid-type-min),
-    calc(
-      var(--fluid-type-min) + (var(--fluid-type-max) - var(--fluid-type-min)) *
-        ((100vw - var(--fluid-bp-min)px) / (var(--fluid-bp-max) - var(--fluid-bp-min)))
-    ),
-    var(--fluid-type-max)
-  );
+  /* Fluid type: 16px @ 320px viewport → 19px @ 1280px (slope 3/960 = 0.3125vw) */
+  font-size: clamp(16px, calc(15px + 0.3125vw), 19px);
 }
 
 @layer base {
@@ -33,10 +27,6 @@ html {
     --panel-dark-foreground: 0 0% 9%;
     --border: 0 0% 85%;
     --ring: 42 100% 50%;
-    --fluid-type-min: 16px;
-    --fluid-type-max: 19px;
-    --fluid-bp-min: 320;
-    --fluid-bp-max: 1280;
   }
 
   .dark {

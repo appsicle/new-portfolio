@@ -62,12 +62,12 @@ export default function Hero() {
   const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([]);
 
   useEffect(() => {
-    heroLines.forEach((_, index) => {
-      const delay = index * 50;
+    const timeouts = heroLines.map((_, index) =>
       setTimeout(() => {
         scrambleRefs.current[index]?.start();
-      }, delay);
-    });
+      }, index * 50)
+    );
+    return () => timeouts.forEach(clearTimeout);
   }, []);
 
   return (
@@ -79,7 +79,9 @@ export default function Hero() {
           <div className="flex flex-1 flex-col justify-center gap-4">
             <div className="accent-line animate-fade-in-up" aria-hidden />
 
-            <h1 className="flex flex-col text-2xl sm:text-3xl md:text-4xl lg:text-5xl">
+            {/* px-based fluid size (24px → 48px) so the heading keeps its designed
+                scale regardless of the fluid root font-size */}
+            <h1 className="flex flex-col text-[clamp(24px,calc(8px+3.9vw),48px)] leading-[1.15]">
               {heroLines.map((line, index) => (
                 <ScrambleIn
                   key={index}

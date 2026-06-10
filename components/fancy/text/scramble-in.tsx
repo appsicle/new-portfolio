@@ -1,6 +1,7 @@
 "use client"
 
 import {
+  Fragment,
   forwardRef,
   useCallback,
   useEffect,
@@ -123,25 +124,52 @@ const ScrambleIn = forwardRef<ScrambleInHandle, ScrambleInProps>(
       onComplete,
     ])
 
-    const renderText = () => {
-      const revealed = displayText.slice(0, visibleLetterCount)
-      const scrambled = displayText.slice(visibleLetterCount)
-
+    // Each character gets a slot sized by its final glyph (invisible), with the
+    // currently displayed character absolutely overlaid — the text never moves,
+    // so the animation produces zero layout shift. Characters are grouped by
+    // word so line breaks only occur at spaces.
+    const renderChar = (ch: string, i: number) => {
+      const shown = i < displayText.length ? displayText[i] : null
+      const isRevealed = i < visibleLetterCount
       return (
-        <>
-          <span className={className}>{revealed}</span>
-          <span className={scrambledClassName}>{scrambled}</span>
-        </>
+        <span key={i} className="relative inline-block">
+          <span className="invisible">{ch}</span>
+          {shown !== null && (
+            <span
+              className={`absolute inset-0 ${
+                isRevealed ? className : scrambledClassName
+              }`}
+            >
+              {shown}
+            </span>
+          )}
+        </span>
       )
     }
 
+    let charIndex = 0
+    const tokens = text.split(/(\s+)/).filter(Boolean)
+
     return (
-      <>
-        <span className="sr-only">{text}</span>
-        <span className="inline-block whitespace-pre-wrap" aria-hidden="true">
-          {renderText()}
+      <span className="inline-block whitespace-pre-wrap">
+        <span aria-hidden="true">
+          {tokens.map((token, t) => {
+            const start = charIndex
+            charIndex += token.length
+            const chars = token
+              .split("")
+              .map((ch, j) => renderChar(ch, start + j))
+            return /\s/.test(token[0]) ? (
+              <Fragment key={`s-${t}`}>{chars}</Fragment>
+            ) : (
+              <span key={`w-${t}`} className="inline-block whitespace-nowrap">
+                {chars}
+              </span>
+            )
+          })}
         </span>
-      </>
+        <span className="sr-only">{text}</span>
+      </span>
     )
   }
 )

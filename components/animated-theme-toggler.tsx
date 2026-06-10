@@ -1,6 +1,6 @@
 "use client"
 
-import { useCallback, useEffect, useRef, useState } from "react"
+import { useCallback, useRef } from "react"
 import { Moon, Sun } from "lucide-react"
 import { useTheme } from "next-themes"
 import { flushSync } from "react-dom"
@@ -18,9 +18,6 @@ export function AnimatedThemeToggler({
 }: AnimatedThemeTogglerProps) {
   const { resolvedTheme, setTheme } = useTheme()
   const buttonRef = useRef<HTMLButtonElement>(null)
-  const [mounted, setMounted] = useState(false)
-
-  useEffect(() => setMounted(true), [])
 
   const toggleTheme = useCallback(() => {
     const button = buttonRef.current
@@ -66,8 +63,8 @@ export function AnimatedThemeToggler({
     })
   }, [resolvedTheme, setTheme, duration])
 
-  if (!mounted) return null
-
+  // Icon swap is CSS-driven (html.dark class), so the button renders
+  // identically on server and client — no hydration gate, no pop-in
   return (
     <button
       type="button"
@@ -76,7 +73,8 @@ export function AnimatedThemeToggler({
       className={cn(className)}
       {...props}
     >
-      {resolvedTheme === "dark" ? <Sun size={18} /> : <Moon size={18} />}
+      <Sun size={18} className="hidden dark:block" />
+      <Moon size={18} className="dark:hidden" />
       <span className="sr-only">Toggle theme</span>
     </button>
   )
