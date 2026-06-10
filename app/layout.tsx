@@ -53,6 +53,7 @@ export default function RootLayout({
   return (
     <html lang="en" className={modernist.variable} suppressHydrationWarning>
       <body className="bg-background text-foreground">
+        <link rel="preload" href="/scenery.jpg" as="image" />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AnimatedThemeToggler
             className="fixed top-6 z-50 cursor-pointer text-foreground"

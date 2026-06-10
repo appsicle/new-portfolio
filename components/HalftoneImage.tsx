@@ -6,6 +6,8 @@ import { useTheme } from "next-themes";
 interface HalftoneImageProps {
   src: string;
   alt: string;
+  /** Intrinsic width/height of the source image — reserves layout space before load (no CLS) */
+  aspectRatio?: number;
   dotColor?: { light: string; dark: string };
   bgColor?: { light: string; dark: string };
   gridSize?: number;
@@ -27,6 +29,7 @@ const HOLO_PALETTE = {
 export default function HalftoneImage({
   src,
   alt,
+  aspectRatio,
   dotColor = defaultDotColor,
   bgColor = defaultBgColor,
   gridSize = 6,
@@ -45,6 +48,10 @@ export default function HalftoneImage({
   const mouseRef = useRef({ x: -9999, y: -9999, active: false });
   const smoothRef = useRef({ x: -9999, y: -9999, influence: 0 });
   const rafRef = useRef(0);
+  const runningRef = useRef(false);
+  const visibleRef = useRef(true);
+  const reducedRef = useRef(false);
+  const frameFnRef = useRef<(now: number) => void>(() => {});
   const [dimensions, setDimensions] = useState({ width: 0, height: 0 });
 
   // Sample image pixels and build the dot grid
@@ -118,13 +125,13 @@ export default function HalftoneImage({
 
     if (dotCountRef.current === 0) return;
 
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
     let active = true;
 
     const frame = (now: number) => {
       if (!active) return;
-
-      const ctx = canvas.getContext("2d");
-      if (!ctx) return;
 
       const w = dimensions.width;
       const h = dimensions.height;
@@ -134,7 +141,9 @@ export default function HalftoneImage({
       // --- Smooth cursor tracking ---
       const s = smoothRef.current;
       const m = mouseRef.current;
-      if (m.active) {
+      if (reducedRef.current) {
+        s.influence = 0;
+      } else if (m.active) {
         s.x += (m.x - s.x) * 0.25;
         s.y += (m.y - s.y) * 0.25;
         s.influence += (1 - s.influence) * 0.1;
@@ -176,7 +185,8 @@ export default function HalftoneImage({
       const ang = -0.42 + tilt;
       const dirX = Math.cos(ang);
       const dirY = Math.sin(ang);
-      const slide = (now * 0.025) % diag; // full spectrum pass ≈ 60s
+      // Full spectrum pass ≈ 60s; frozen entirely under reduced motion
+      const slide = reducedRef.current ? 0 : (now * 0.025) % diag;
       const x0 = w / 2 + dirX * (slide - 2 * diag);
       const y0 = h / 2 + dirY * (slide - 2 * diag);
       const grad = ctx.createLinearGradient(
@@ -247,15 +257,55 @@ export default function HalftoneImage({
       }
 
       ctx.fill();
-      rafRef.current = requestAnimationFrame(frame);
+
+      // The sheen is ambient, so keep animating while visible; park the
+      // loop entirely when offscreen or under reduced motion
+      if (visibleRef.current && !reducedRef.current) {
+        rafRef.current = requestAnimationFrame(frame);
+      } else {
+        runningRef.current = false;
+      }
     };
 
+    frameFnRef.current = frame;
+    runningRef.current = true;
     rafRef.current = requestAnimationFrame(frame);
     return () => {
       active = false;
+      runningRef.current = false;
       cancelAnimationFrame(rafRef.current);
     };
   }, [dimensions, activeDotColor, activeBgColor, gridSize, computeDots]);
+
+  const wake = useCallback(() => {
+    if (runningRef.current || !visibleRef.current) return;
+    runningRef.current = true;
+    rafRef.current = requestAnimationFrame(frameFnRef.current);
+  }, []);
+
+  // Reduced motion: freeze the sheen and park the loop on a static frame
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const update = () => {
+      reducedRef.current = mq.matches;
+      wake();
+    };
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, [wake]);
+
+  // Pause entirely while offscreen
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      visibleRef.current = entry.isIntersecting;
+      if (entry.isIntersecting) wake();
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, [wake]);
 
   // Load image
   useEffect(() => {
@@ -314,14 +364,35 @@ export default function HalftoneImage({
       aria-label={alt}
       onMouseMove={onMouseMove}
       onMouseLeave={onMouseLeave}
+      style={
+        aspectRatio
+          ? {
+              // Reserve the box via CSS before the image loads — no layout shift
+              position: "relative",
+              width: "100%",
+              aspectRatio: `${aspectRatio}`,
+              maxHeight,
+            }
+          : undefined
+      }
     >
       <canvas
         ref={canvasRef}
-        style={{
-          display: "block",
-          width: "100%",
-          height: dimensions.height || "auto",
-        }}
+        style={
+          aspectRatio
+            ? {
+                position: "absolute",
+                inset: 0,
+                display: "block",
+                width: "100%",
+                height: "100%",
+              }
+            : {
+                display: "block",
+                width: "100%",
+                height: dimensions.height || "auto",
+              }
+        }
       />
     </div>
   );

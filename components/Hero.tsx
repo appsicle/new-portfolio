@@ -125,11 +125,12 @@ export default function Hero() {
 
         {/* Hero Image - Halftone */}
         <HalftoneImage
-          src="/scenery.png"
+          src="/scenery.jpg"
           alt="Scenery with halftone effect"
           className="animate-fade-in-up animate-delay-200 overflow-hidden rounded-lg"
           gridSize={6}
           maxHeight="40vh"
+          aspectRatio={1456 / 816}
         />
 
         {/* Social Links */}
