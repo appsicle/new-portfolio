@@ -9,6 +9,12 @@ import HalftoneImage from "./HalftoneImage";
 
 const experiences = [
   {
+    year: "2026",
+    company: "Launchpoint",
+    role: "Founding Engineer",
+    href: "https://apps.apple.com/us/app/launchpoint-make-money/id6479632197",
+  },
+  {
     year: "2025",
     company: "Kashie",
     role: "Co-Founder (CTO)",
