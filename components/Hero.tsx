@@ -85,9 +85,9 @@ export default function Hero() {
           <div className="flex flex-1 flex-col justify-center gap-4">
             <div className="accent-line animate-fade-in-up" aria-hidden />
 
-            {/* px-based fluid size (24px → 48px) so the heading keeps its designed
+            {/* px-based fluid size (24px -> 42px) so the heading keeps its designed
                 scale regardless of the fluid root font-size */}
-            <h1 className="flex flex-col text-[clamp(24px,calc(8px+3.9vw),48px)] leading-[1.15]">
+            <h1 className="flex flex-col text-[clamp(24px,calc(10px+3vw),42px)] leading-[1.05]">
               {heroLines.map((line, index) => (
                 <ScrambleIn
                   key={index}
@@ -104,12 +104,12 @@ export default function Hero() {
           </div>
 
           {/* Right Side - Experience */}
-          <div className="flex flex-1 flex-col items-end justify-center">
-            <div className="animate-fade-in-up animate-delay-100 space-y-4 sm:space-y-6">
+          <div className="flex flex-1 flex-col items-end justify-start lg:pt-[2.875rem]">
+            <div className="animate-fade-in-up animate-delay-100 space-y-3 sm:space-y-4">
               {experiences.map((exp) => (
                 <div
                   key={`${exp.company}-${exp.year}`}
-                  className="group grid grid-cols-[60px_1fr_1fr] gap-3 text-xs sm:grid-cols-[80px_1fr_1fr] sm:gap-4 sm:text-sm"
+                  className="group grid grid-cols-[60px_1fr_1fr] gap-3 text-xs leading-tight sm:grid-cols-[80px_1fr_1fr] sm:gap-4 sm:text-[0.8rem]"
                 >
                   <span className="text-muted-foreground">{exp.year}</span>
                   <Link
