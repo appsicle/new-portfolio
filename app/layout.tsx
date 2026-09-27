@@ -51,12 +51,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={modernist.variable} suppressHydrationWarning>
+    <html
+      lang="en"
+      className={modernist.variable}
+      data-intro="night"
+      suppressHydrationWarning
+    >
       <body className="bg-background text-foreground">
-        <link rel="preload" href="/scenery.jpg" as="image" />
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AnimatedThemeToggler
-            className="fixed top-6 z-50 cursor-pointer text-foreground"
+            className="theme-toggle fixed top-6 z-50 cursor-pointer text-foreground"
             style={{ right: "clamp(1.5rem, 12vw, 12rem)" }}
           />
           <main>{children}</main>

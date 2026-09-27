@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 import Link from "next/link";
 import { Github01Icon, Linkedin02Icon, Mail01Icon } from "hugeicons-react";
 import ScrambleIn, { ScrambleInHandle } from "./fancy/text/scramble-in";
 import CenterUnderline from "./fancy/text/underline-center";
-import HalftoneImage from "./HalftoneImage";
+import HalftoneField, { createFieldControls } from "./HalftoneField";
+import DropIntro from "./DropIntro";
 
 const experiences = [
   {
@@ -66,24 +67,45 @@ const socialLinks = [
 
 export default function Hero() {
   const scrambleRefs = useRef<(ScrambleInHandle | null)[]>([]);
+  const controls = useRef(createFieldControls());
+  const sectionRef = useRef<HTMLElement>(null);
+  const panelRef = useRef<HTMLDivElement>(null);
+  const fieldRef = useRef<HTMLDivElement>(null);
+  // Content reveal, advanced on the beat by DropIntro:
+  // 0 hidden → 1 heading → 2 experience → 3 socials
+  const [step, setStep] = useState(0);
 
   useEffect(() => {
+    if (step === 0) {
+      scrambleRefs.current.forEach((r) => r?.reset());
+      return;
+    }
+    if (step !== 1) return;
     const timeouts = heroLines.map((_, index) =>
       setTimeout(() => {
         scrambleRefs.current[index]?.start();
       }, index * 50)
     );
     return () => timeouts.forEach(clearTimeout);
-  }, []);
+  }, [step]);
+
+  const reveal = (n: number) => (step >= n ? "beat-in" : "opacity-0");
 
   return (
-    <section className="panel flex min-h-screen items-center py-8 sm:py-12">
-      <div className="section-layout flex w-full flex-col gap-8 sm:gap-12">
+    <section
+      ref={sectionRef}
+      className="panel relative flex min-h-screen items-center py-8 sm:py-12"
+    >
+      <div ref={fieldRef} className="pointer-events-none absolute inset-0 z-0">
+        <HalftoneField controls={controls} className="block h-full w-full" />
+      </div>
+
+      <div className="section-layout relative z-10 flex w-full flex-col gap-8 sm:gap-12">
         {/* Name and Experience Section */}
         <div className="flex flex-col gap-8 lg:flex-row lg:gap-16">
           {/* Left Side - Hero Content */}
-          <div className="flex flex-1 flex-col justify-center gap-4">
-            <div className="accent-line animate-fade-in-up" aria-hidden />
+          <div className={`flex flex-1 flex-col justify-center gap-4 ${reveal(1)}`}>
+            <div className="accent-line" aria-hidden />
 
             {/* px-based fluid size (24px -> 42px) so the heading keeps its designed
                 scale regardless of the fluid root font-size */}
@@ -105,11 +127,12 @@ export default function Hero() {
 
           {/* Right Side - Experience */}
           <div className="flex flex-1 flex-col items-end justify-start lg:pt-[2.875rem]">
-            <div className="animate-fade-in-up animate-delay-100 space-y-3 sm:space-y-4">
-              {experiences.map((exp) => (
+            <div className="space-y-3 sm:space-y-4">
+              {experiences.map((exp, i) => (
                 <div
                   key={`${exp.company}-${exp.year}`}
-                  className="group grid grid-cols-[60px_1fr_1fr] gap-3 text-xs leading-tight sm:grid-cols-[80px_1fr_1fr] sm:gap-4 sm:text-[0.8rem]"
+                  className={`group grid grid-cols-[60px_1fr_1fr] gap-3 text-xs leading-tight sm:grid-cols-[80px_1fr_1fr] sm:gap-4 sm:text-[0.8rem] ${reveal(2)}`}
+                  style={{ animationDelay: `${i * 45}ms` }}
                 >
                   <span className="text-muted-foreground">{exp.year}</span>
                   <Link
@@ -129,18 +152,17 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Hero Image - Halftone */}
-        <HalftoneImage
-          src="/scenery.jpg"
-          alt="Scenery with halftone effect"
-          className="animate-fade-in-up animate-delay-200 overflow-hidden rounded-lg"
-          gridSize={6}
-          maxHeight="40vh"
-          aspectRatio={1456 / 816}
+        {/* Slot for the field — the canvas behind is clipped to this box */}
+        <div
+          ref={panelRef}
+          role="img"
+          aria-label="Generative holographic halftone field"
+          className="w-full rounded-lg"
+          style={{ aspectRatio: `${1456 / 816}`, maxHeight: "40vh" }}
         />
 
         {/* Social Links */}
-        <div className="animate-fade-in-up animate-delay-300 flex justify-end gap-6">
+        <div className={`flex justify-end gap-6 ${reveal(3)}`}>
           {socialLinks.map((social) => {
             const Icon = social.icon;
             return (
@@ -149,7 +171,6 @@ export default function Hero() {
                 href={social.href}
                 target={social.href.startsWith("http") ? "_blank" : undefined}
                 rel={social.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className=""
                 aria-label={social.name}
               >
                 <Icon size={20} />
@@ -158,6 +179,14 @@ export default function Hero() {
           })}
         </div>
       </div>
+
+      <DropIntro
+        controls={controls}
+        sectionRef={sectionRef}
+        panelRef={panelRef}
+        fieldRef={fieldRef}
+        onStep={setStep}
+      />
     </section>
   );
 }

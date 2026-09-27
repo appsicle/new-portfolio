@@ -177,3 +177,68 @@ html {
   animation-delay: 0.3s;
   opacity: 0;
 }
+
+/* ---- Drop intro ---- */
+
+/* Set on <html> until the field folds into the page */
+html[data-intro],
+html[data-intro] body {
+  overflow: hidden;
+  background-color: #000;
+}
+
+.theme-toggle {
+  transition: opacity 0.4s ease;
+}
+
+html[data-intro] .theme-toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* The gate's play button breathes like the orb it replaces */
+.drop-play:not(:disabled) {
+  animation: drop-play 2.8s ease-in-out infinite;
+}
+
+.drop-play:not(:disabled):hover {
+  animation-play-state: paused;
+}
+
+@keyframes drop-play {
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgb(255 255 255 / 0.35);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgb(255 255 255 / 0);
+  }
+}
+
+/* Content lands on the beat — faster and punchier than fade-in-up */
+.beat-in {
+  animation: beat-in 0.42s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+
+@keyframes beat-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+    filter: blur(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drop-play {
+    animation: none !important;
+  }
+
+  .beat-in {
+    animation-duration: 1ms;
+  }
+}
