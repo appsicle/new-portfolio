@@ -74,19 +74,24 @@ export default function Hero() {
   // Content reveal, advanced on the beat by DropIntro:
   // 0 hidden → 1 heading → 2 experience → 3 socials
   const [step, setStep] = useState(0);
+  const scrambledRef = useRef(false);
 
+  // Start the scramble the first time the heading is revealed. Steps can
+  // skip (a dropped frame or a background tab jumps 0 → 3), so key off
+  // "reached", not "equals 1", and don't cancel it when the step advances.
   useEffect(() => {
     if (step === 0) {
+      scrambledRef.current = false;
       scrambleRefs.current.forEach((r) => r?.reset());
       return;
     }
-    if (step !== 1) return;
-    const timeouts = heroLines.map((_, index) =>
+    if (scrambledRef.current) return;
+    scrambledRef.current = true;
+    heroLines.forEach((_, index) =>
       setTimeout(() => {
         scrambleRefs.current[index]?.start();
       }, index * 50)
     );
-    return () => timeouts.forEach(clearTimeout);
   }, [step]);
 
   const reveal = (n: number) => (step >= n ? "beat-in" : "opacity-0");
