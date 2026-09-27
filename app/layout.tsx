@@ -1,3 +1,4 @@
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
@@ -9,40 +10,39 @@ const modernist = localFont({
   weight: "400",
 });
 
-export const metadata = {
+const description =
+  "Albert Zhang is a software engineer in New York. Founding engineer at Launchpoint; previously Kashie, Parallel Distribution and Microsoft.";
+
+// OG/Twitter images and icons come from the file conventions in app/
+// (opengraph-image.png, twitter-image.png, icon.png, apple-icon.png, favicon.ico)
+export const metadata: Metadata = {
+  metadataBase: new URL("https://albertzhang.xyz"),
   title: "Albert Zhang",
-  description:
-    "Albert Zhang is a software engineer specializing in modern web development with React, Next.js, and TypeScript. View projects and skills.",
-  keywords: [
-    "Albert Zhang",
-    "Software Engineer",
-    "Web Developer",
-    "React Developer",
-    "Next.js",
-    "TypeScript",
-    "Portfolio",
-    "Frontend Developer",
-  ],
+  description,
   authors: [{ name: "Albert Zhang" }],
   creator: "Albert Zhang",
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://albertzhang.xyz",
-    title: "Albert Zhang | Software Engineer & Web Developer",
-    description: "Modern portfolio showcasing projects and skills in web development",
-    siteName: "Albert Zhang Portfolio",
+    url: "/",
+    title: "Albert Zhang",
+    description,
+    siteName: "Albert Zhang",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Albert Zhang | Software Engineer & Web Developer",
-    description: "Modern portfolio showcasing projects and skills in web development",
-    creator: "@albertzhang",
+    title: "Albert Zhang",
+    description,
   },
   robots: {
     index: true,
     follow: true,
   },
+};
+
+export const viewport: Viewport = {
+  themeColor: "#000000",
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
