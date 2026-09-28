@@ -6,14 +6,17 @@ import { DropAudio } from "@/lib/drop-audio";
 import {
   BASS_CUT,
   BEAT,
-  BEAT_LOOKS,
+  BEAT_DROPS,
   DIP,
   DROP_AT,
+  DROP_DROP,
+  FALL,
   QUIET_ENTRY,
   SETTLE,
   SETTLE_DURATION,
-  STAB_SHAPES,
+  STAB_DROPS,
   STABS,
+  type Drop,
 } from "@/lib/drop-timeline";
 
 type Phase = "gate" | "intro" | "settled";
@@ -21,6 +24,7 @@ type Phase = "gate" | "intro" | "settled";
 const clamp01 = (t: number) => (t < 0 ? 0 : t > 1 ? 1 : t);
 const easeOutExpo = (t: number) => (t >= 1 ? 1 : 1 - Math.pow(2, -10 * t));
 const easeInCubic = (t: number) => t * t * t;
+const easeInQuad = (t: number) => t * t;
 const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
 const lerpClip = (a: FieldClip, b: FieldClip, t: number): FieldClip => ({
   x: lerp(a.x, b.x, t),
@@ -32,6 +36,9 @@ const lerpClip = (a: FieldClip, b: FieldClip, t: number): FieldClip => ({
 
 /** Last step the content reveal reaches (heading → experience → socials) */
 const LAST_STEP = 3;
+
+/** Every droplet before the drop: one per stab, then the drop itself at d = 0 */
+const LANDINGS = [...STABS.map((at, i) => ({ at, drop: STAB_DROPS[i] })), { at: 0, drop: DROP_DROP }];
 
 interface DropIntroProps {
   controls: React.MutableRefObject<FieldControls>;
@@ -138,12 +145,12 @@ export default function DropIntro({
         const sec = sectionRef.current?.getBoundingClientRect();
         const pr = panelRef.current?.getBoundingClientRect();
         if (!sec || !pr) return;
-        controls.current.splash = {
+        controls.current.splashes.push({
           x: pr.left - sec.left + pr.width * fx,
           y: pr.top - sec.top + pr.height * fy,
           strength,
           radius,
-        };
+        });
       },
       seek: (d: number) => {
         document.documentElement.dataset.intro = "night";
@@ -196,7 +203,20 @@ export default function DropIntro({
     const splash = (key: string, x: number, y: number, strength: number, radius: number) => {
       if (key === lastSplash) return;
       lastSplash = key;
-      if (!reduced.matches) controls.current.splash = { x, y, strength, radius };
+      if (!reduced.matches) controls.current.splashes.push({ x, y, strength, radius });
+    };
+    /** Cue drops are placed relative to the view center, in short-side units */
+    const place = (drop: Drop, center: { x: number; y: number }) => {
+      const s = Math.min(window.innerWidth, window.innerHeight);
+      return { x: center.x + drop.x * s, y: center.y + drop.y * s };
+    };
+    const splashAll = (key: string, drops: Drop[], center: { x: number; y: number }) => {
+      if (key === lastSplash) return;
+      lastSplash = key;
+      if (reduced.matches) return;
+      for (const drop of drops) {
+        controls.current.splashes.push({ ...place(drop, center), strength: drop.strength, radius: drop.radius });
+      }
     };
 
     const loop = (now: number) => {
@@ -240,10 +260,8 @@ export default function DropIntro({
       k.flash = 0;
       k.glitch = 0;
       k.reveal = 1;
-      k.shape = 0;
-      k.shapeAge = 99;
-      k.kaleido = 0;
       k.coarse = 1;
+      k.bead = null;
 
       if (phase === "gate") {
         k.night = 1;
@@ -313,27 +331,36 @@ export default function DropIntro({
         k.zoom = 1 + 0.18 * clamp01(t / (BASS_CUT + DROP_AT));
         k.hue = t * 0.03;
       } else if (d < 0) {
-        // Bass cut: everything gets sucked into the orb; each stab kicks it
-        // and blooms a dotted figure out of it
+        // Bass cut: the field drains into the orb and the orb sinks, leaving
+        // still black water. Each stab is a droplet falling into it; the last
+        // and heaviest one lands on the drop.
         const c = easeInCubic(clamp01((d - BASS_CUT) / 0.55));
         k.collapse = c;
         k.energy = bass * (1 - c);
-        let pulse = 0;
-        let stab = -1;
-        STABS.forEach((s, i) => {
-          if (d < s) return;
-          stab = i;
-          pulse = Math.max(pulse, Math.exp(-(d - s) * 9));
+        k.orb = c * 12 * clamp01((STABS[0] - FALL - d) / 0.25);
+        k.zoom = 1.18;
+        LANDINGS.forEach(({ at, drop }) => {
+          if (d < at - FALL || d >= at) return;
+          const heavy = at === 0;
+          const pos = place(drop, viewCenter);
+          const t = (d - (at - FALL)) / FALL;
+          k.bead = {
+            x: pos.x,
+            y: lerp(viewClip.y - 40, pos.y, easeInQuad(t)),
+            r: heavy ? 9 : 5,
+            tail: (heavy ? 160 : 90) * t,
+          };
         });
-        const inhale = clamp01(-d / 0.18);
-        k.orb = (c * 12 + pulse * 70) * inhale;
-        k.glitch = pulse * 0.7;
-        k.zoom = 1.18 + 0.1 * pulse;
-        shake = pulse * 8;
-        if (stab >= 0) {
-          k.shape = STAB_SHAPES[stab];
-          k.shapeAge = d - STABS[stab];
+        // The most recent stab has landed: splash it once
+        let landed = -1;
+        STABS.forEach((at, i) => d >= at && (landed = i));
+        let pulse = 0;
+        if (landed >= 0) {
+          splashAll(`s${landed}`, [STAB_DROPS[landed]], viewCenter);
+          pulse = Math.exp(-(d - STABS[landed]) * 12);
         }
+        k.glitch = pulse * 0.25;
+        shake = pulse * 5;
       } else if (d < DIP) {
         // THE DROP — one hit per beat
         const beat = Math.floor(d / BEAT);
@@ -341,22 +368,17 @@ export default function DropIntro({
         const first = beat === 0;
         k.collapse = 0;
         k.orb = 0;
-        k.shock = age;
-        k.shockPower = first ? 2.4 : 1.1;
+        // The water does the work: the first beat also gets the big shockwave
+        k.shock = first ? age : 99;
+        k.shockPower = first ? 2.4 : 0;
         k.flash = first ? Math.exp(-age * 6) * 0.9 : 0;
         k.glitch = Math.exp(-age * 7) * (first ? 1 : 0.6);
         k.zoom = 1 + (first ? 0.25 : 0.12) * Math.exp(-age * 6);
         k.hue = 0.2 + beat * 0.23;
         k.energy = Math.max(0.55, bass);
         shake = (first ? 28 : 12) * Math.exp(-age * 9);
-        splash(`d${beat}`, viewCenter.x, viewCenter.y, first ? -4 : -2.2, first ? 4 : 3);
-        const look = BEAT_LOOKS[beat];
-        if (look) {
-          k.shape = look.shape;
-          k.shapeAge = age;
-          k.kaleido = look.kaleido ?? 0;
-          k.coarse = look.coarse ?? 1;
-        }
+        const drops = BEAT_DROPS[beat];
+        if (drops) splashAll(`d${beat}`, drops, viewCenter);
       } else if (d < SETTLE) {
         // Half-bar gap: the field goes chunky and dissolves back into the orb
         const t = d - DIP;

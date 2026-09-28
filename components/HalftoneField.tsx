@@ -42,28 +42,17 @@ export type FieldControls = {
   clip: FieldClip | null;
   /** orb / shockwave / zoom origin in css px; null = canvas center */
   center: { x: number; y: number } | null;
-  /** geometric figure drawn in dots (see Shape) */
-  shape: number;
-  /** seconds since the shape appeared; it expands and fades */
-  shapeAge: number;
-  /** mirror segments around the center; 0 = off */
-  kaleido: number;
   /** dot grid multiplier; >1 = chunky */
   coarse: number;
-  /** one-shot drop into the water (css px); consumed and cleared by the field */
-  splash: { x: number; y: number; strength: number; radius: number } | null;
+  /** a falling droplet (css px): head at x,y, radius r, streak of length tail above it */
+  bead: { x: number; y: number; r: number; tail: number } | null;
+  /** drops into the water (css px); push to queue, the field drains up to MAX_SPLASHES a frame */
+  splashes: Splash[];
 };
 
-export const Shape = {
-  none: 0,
-  ring: 1,
-  tunnel: 2,
-  diamond: 3,
-  cross: 4,
-  bars: 5,
-  spokes: 6,
-  triangle: 7,
-} as const;
+export type Splash = { x: number; y: number; strength: number; radius: number };
+
+const MAX_SPLASHES = 4;
 
 export const createFieldControls = (): FieldControls => ({
   energy: 0,
@@ -79,11 +68,9 @@ export const createFieldControls = (): FieldControls => ({
   night: 1,
   clip: null,
   center: null,
-  shape: 0,
-  shapeAge: 99,
-  kaleido: 0,
   coarse: 1,
-  splash: null,
+  bead: null,
+  splashes: [],
 });
 
 // Acidic holo palette; wraps so the gradient can slide forever without a seam.
@@ -147,7 +134,7 @@ uniform sampler2D uState;
 uniform ivec2 uCells;
 uniform vec4 uWake;       // cursor segment a.xy -> b.xy, in cells
 uniform vec2 uWakeParams; // radius (cells), strength
-uniform vec4 uSplash;     // x, y (cells), radius (cells), strength
+uniform vec4 uSplash[${MAX_SPLASHES}]; // x, y (cells), radius (cells), strength
 uniform float uDamp;
 out vec4 o;
 float h(ivec2 c) { return texelFetch(uState, clamp(c, ivec2(0), uCells - 1), 0).r; }
@@ -162,8 +149,12 @@ void main() {
   float t = clamp(dot(pa, ba) / max(dot(ba, ba), 1e-4), 0.0, 1.0);
   vec2 dw = pa - ba * t;
   n += uWakeParams.y * exp(-dot(dw, dw) / (uWakeParams.x * uWakeParams.x));
-  vec2 ds = p - uSplash.xy;
-  n += uSplash.w * exp(-dot(ds, ds) / (uSplash.z * uSplash.z));
+  for (int i = 0; i < ${MAX_SPLASHES}; i++) {
+    // Empty slots are all zeros; skip them (radius 0 would divide by zero)
+    if (uSplash[i].w == 0.0) continue;
+    vec2 ds = p - uSplash[i].xy;
+    n += uSplash[i].w * exp(-dot(ds, ds) / (uSplash[i].z * uSplash[i].z));
+  }
 
   o = vec4(n, st.r, 0.0, 1.0);
 }`;
@@ -176,7 +167,8 @@ uniform ivec2 uCells;
 uniform vec2 uSize, uCenter;
 uniform float uDpr, uTime, uGrid;
 uniform float uEnergy, uCollapse, uOrb, uShock, uShockPower, uFlash, uGlitch, uZoom, uReveal, uHue;
-uniform float uShape, uShapeAge, uKaleido, uCoarse;
+uniform float uCoarse;
+uniform vec4 uBead;
 uniform vec4 uClip;
 uniform float uRadius;
 uniform vec3 uBg;
@@ -199,58 +191,10 @@ vec3 pal(float u) {
   return mix(uPal[i], uPal[(i + 1) % 5], f);
 }
 
-float sdTriangle(vec2 p, float r) {
-  const float k = 1.7320508;
-  p.x = abs(p.x) - r;
-  p.y = p.y + r / k;
-  if (p.x + k * p.y > 0.0) p = vec2(p.x - k * p.y, -k * p.x - p.y) / 2.0;
-  p.x -= clamp(p.x, -2.0 * r, 0.0);
-  return -length(p) * sign(p.y);
-}
-
-// Geometric figures, sampled at dot centers so they come out as halftone.
-// They expand and fade with age.
-float shapeMask(vec2 q) {
-  if (uShape < 0.5 || uShapeAge > 1.5) return 0.0;
-  float R = min(uSize.x, uSize.y) * 0.3 * (1.0 + uShapeAge * 0.6);
-  float th = uGrid * 1.6;
-  float r = length(q);
-  int k = int(uShape + 0.5);
-  float d;
-  if (k == 1) {
-    d = abs(r - R) - th;
-  } else if (k == 2) {
-    float w = R * 0.28;
-    d = (abs(fract(r / w - uShapeAge * 2.0) - 0.5) - 0.18) * w;
-  } else if (k == 3) {
-    d = abs(abs(q.x) + abs(q.y) - R) - th;
-  } else if (k == 4) {
-    d = max(min(abs(q.x), abs(q.y)) - th * 1.5, r - R * 1.3);
-  } else if (k == 5) {
-    float w = R * 0.22;
-    d = (abs(fract(q.y / w + uShapeAge * 1.5) - 0.5) - 0.2) * w;
-  } else if (k == 6) {
-    float a = atan(q.y, q.x);
-    d = (abs(fract(a * 12.0 / 6.2831853) - 0.5) - 0.18) * r * 0.52;
-    d = max(d, uGrid * 3.0 - r);
-  } else {
-    d = abs(sdTriangle(vec2(q.x, -q.y), R * 0.8)) - th;
-  }
-  return (1.0 - smoothstep(-uGrid * 0.5, uGrid * 0.5, d)) * exp(-uShapeAge * 3.2);
-}
-
 // x = coverage, y = palette coordinate
 vec2 dotAt(vec2 p) {
   vec2 center = uCenter;
   vec2 z = (p - center) / uZoom + center;
-
-  // Kaleidoscope: fold the plane into mirrored wedges around the center
-  if (uKaleido > 0.5) {
-    vec2 kq = z - center;
-    float seg = 6.2831853 / uKaleido;
-    float a = abs(mod(atan(kq.y, kq.x), seg) - seg * 0.5);
-    z = center + length(kq) * vec2(cos(a), sin(a));
-  }
 
   // Water: the surface slope refracts the dots, its height swells them
   vec2 texel = 1.0 / vec2(uCells);
@@ -289,7 +233,7 @@ vec2 dotAt(vec2 p) {
   float diag = length(uSize);
   float sig = diag * pow(uGrid * 0.6 / diag, uCollapse);
   s *= exp(-cd * cd / (2.0 * sig * sig));
-  s = max(clamp(s + ring * 0.9 + wh * 0.9, 0.0, 1.0), shapeMask(c - center));
+  s = clamp(s + ring * 0.9 + wh * 0.9, 0.0, 1.0);
 
   float r = g * 0.62 * sqrt(s) * uReveal;
   float d = length(z - c);
@@ -299,6 +243,14 @@ vec2 dotAt(vec2 p) {
 
   float od = length(p - center);
   cov = max(cov, 1.0 - smoothstep(uOrb - 1.0, uOrb + 1.0, od));
+
+  // Falling droplet: a solid head with a thinning streak above it
+  if (uBead.z > 0.0) {
+    vec2 bq = p - uBead.xy;
+    float t = clamp(-bq.y / max(uBead.w, 1e-3), 0.0, 1.0);
+    float bd = length(bq - vec2(0.0, -uBead.w * t)) - uBead.z * (1.0 - t * 0.85);
+    cov = max(cov, (1.0 - smoothstep(-0.8, 0.8, bd)) * (1.0 - t * 0.6));
+  }
 
   float hue = dot(c, vec2(0.82, 0.57)) / length(uSize) + uTime * 0.02 + v * 0.7 + uHue + wh * 0.05;
   return vec2(cov, hue);
@@ -437,7 +389,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
     // Pointer → water. Moving drags a wake through it, pressing drops a
     // splash. Only while over the visible (clipped) region.
     const mouse = { x: 0, y: 0, px: 0, py: 0, inside: false, tracked: false };
-    let pressSplash: FieldControls["splash"] = null;
+    let pressSplash: Splash | null = null;
     const locate = (e: PointerEvent) => {
       const r = canvas.getBoundingClientRect();
       mouse.x = e.clientX - r.left;
@@ -468,6 +420,8 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
     let last = performance.now();
     const bg = [0, 0, 0];
     const palFlat = new Float32Array(15);
+    const splashFlat = new Float32Array(MAX_SPLASHES * 4);
+    const zeroSplash = new Float32Array(MAX_SPLASHES * 4);
 
     const frame = (now: number) => {
       raf = requestAnimationFrame(frame);
@@ -504,9 +458,11 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
         mouse.py = mouse.y;
         mouse.tracked = mouse.inside;
 
-        const drop = pressSplash ?? k.splash;
+        if (pressSplash) k.splashes.push(pressSplash);
         pressSplash = null;
-        k.splash = null;
+        const drops = k.splashes.splice(0, MAX_SPLASHES);
+        splashFlat.fill(0);
+        drops.forEach((d, i) => splashFlat.set([d.x / grid, d.y / grid, d.radius, d.strength], i * 4));
 
         simClock += dt;
         const steps = Math.min(4, Math.floor(simClock * SIM_HZ));
@@ -525,13 +481,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
           gl.bindTexture(gl.TEXTURE_2D, water[wi]);
           gl.uniform4f(waterProg.u("uWake"), wake[0], wake[1], wake[2], wake[3]);
           gl.uniform2f(waterProg.u("uWakeParams"), 1.8, first ? wakeStrength : 0);
-          gl.uniform4f(
-            waterProg.u("uSplash"),
-            (drop?.x ?? 0) / grid,
-            (drop?.y ?? 0) / grid,
-            drop?.radius ?? 1,
-            first && drop ? drop.strength : 0
-          );
+          gl.uniform4fv(waterProg.u("uSplash"), first ? splashFlat : zeroSplash);
           gl.drawArrays(gl.TRIANGLES, 0, 3);
           wi = 1 - wi;
         }
@@ -581,9 +531,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.uniform1f(u("uZoom"), k.zoom);
       gl.uniform1f(u("uReveal"), k.reveal);
       gl.uniform1f(u("uHue"), k.hue);
-      gl.uniform1f(u("uShape"), k.shape);
-      gl.uniform1f(u("uShapeAge"), k.shapeAge);
-      gl.uniform1f(u("uKaleido"), k.kaleido);
+      gl.uniform4f(u("uBead"), k.bead?.x ?? 0, k.bead?.y ?? 0, k.bead?.r ?? 0, k.bead?.tail ?? 0);
       gl.uniform1f(u("uCoarse"), k.coarse);
       gl.uniform4f(u("uClip"), clip.x, clip.y, clip.w, clip.h);
       gl.uniform1f(u("uRadius"), clip.r);
