@@ -6,35 +6,27 @@ import { useTheme } from "next-themes";
 /**
  * Generative halftone. No source image: a domain-warped noise field is
  * rendered at one texel per dot (pass 1), then pass 2 draws the dots and the
- * holographic color. usePanelWater drives the look through `controls` (mutated
- * in place each frame — no React renders involved).
+ * holographic color. usePanelClip positions it through `controls` (mutated in
+ * place each frame — no React renders involved).
  *
  * Underneath the dots is a water surface: a height field stepped with the 2D
- * wave equation at one cell per dot. Splashes (beats) and the cursor's wake
- * disturb it; waves travel, interfere and die out on their own. The dots ride
+ * wave equation at one cell per dot. It only moves when touched: clicks splash
+ * and the cursor drags a wake through it; waves travel, interfere and die out on their own. The dots ride
  * the surface — slope refracts them, height swells or shrinks them.
  */
 
 export type FieldClip = { x: number; y: number; w: number; h: number; r: number };
 
 export type FieldControls = {
-  /** palette offset */
-  hue: number;
   /** visible region in css px relative to the canvas; null = everything */
   clip: FieldClip | null;
-  /** drops into the water (css px); push to queue, the field drains up to MAX_SPLASHES a frame */
-  splashes: Splash[];
 };
 
-export type Splash = { x: number; y: number; strength: number; radius: number };
+type Splash = { x: number; y: number; strength: number; radius: number };
 
 const MAX_SPLASHES = 4;
 
-export const createFieldControls = (): FieldControls => ({
-  hue: 0,
-  clip: null,
-  splashes: [],
-});
+export const createFieldControls = (): FieldControls => ({ clip: null });
 
 // Acidic holo palette; wraps so the gradient can slide forever without a seam.
 // Light mode gets deeper versions of the same hues to hold contrast.
@@ -76,16 +68,14 @@ float fbm(vec2 p) {
 // marbled, liquid-metal contours.
 const FIELD_FRAG = `#version 300 es
 precision highp float;
-uniform float uTime;
 uniform float uGrid;
 out vec4 o;
 ${NOISE}
 void main() {
   vec2 c = (floor(gl_FragCoord.xy) + 0.5) * uGrid;
   vec2 q = c / 380.0;
-  float t = uTime;
-  vec2 w = vec2(fbm(q + vec2(0.0, t * 0.6)), fbm(q + vec2(5.2, 1.3) - t * 0.5));
-  vec2 w2 = vec2(fbm(q + 2.2 * w + vec2(1.7, 9.2) + t * 0.3),
+  vec2 w = vec2(fbm(q), fbm(q + vec2(5.2, 1.3)));
+  vec2 w2 = vec2(fbm(q + 2.2 * w + vec2(1.7, 9.2)),
                  fbm(q + 2.2 * w + vec2(8.3, 2.8)));
   o = vec4(fbm(q + 2.6 * w2), 0.0, 0.0, 1.0);
 }`;
@@ -128,8 +118,7 @@ precision highp float;
 uniform sampler2D uField;
 uniform ivec2 uCells;
 uniform vec2 uSize;
-uniform float uDpr, uTime, uGrid;
-uniform float uHue;
+uniform float uDpr, uGrid;
 uniform vec4 uClip;
 uniform float uRadius;
 uniform vec3 uBg;
@@ -174,7 +163,7 @@ vec2 dotAt(vec2 p) {
   // Fade tiny dots by radius too, or r = 0 still leaves half-coverage specks
   float cov = (1.0 - smoothstep(r - aa, r + aa, d)) * smoothstep(0.0, aa, r);
 
-  float hue = dot(c, vec2(0.82, 0.57)) / length(uSize) + uTime * 0.02 + v * 0.7 + uHue + wh * 0.05;
+  float hue = dot(c, vec2(0.82, 0.57)) / length(uSize) + v * 0.7 + wh * 0.05;
   return vec2(cov, hue);
 }
 
@@ -294,7 +283,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
     // Pointer → water. Moving drags a wake through it, pressing drops a
     // splash. Only while over the visible (clipped) region.
     const mouse = { x: 0, y: 0, px: 0, py: 0, inside: false, tracked: false };
-    let pressSplash: Splash | null = null;
+    const splashes: Splash[] = [];
     const locate = (e: PointerEvent) => {
       const r = canvas.getBoundingClientRect();
       mouse.x = e.clientX - r.left;
@@ -306,20 +295,18 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
     };
     const onDown = (e: PointerEvent) => {
       locate(e);
-      if (mouse.inside) pressSplash = { x: mouse.x, y: mouse.y, strength: -1.4, radius: 2.2 };
+      if (mouse.inside) splashes.push({ x: mouse.x, y: mouse.y, strength: -1.4, radius: 2.2 });
     };
     const onLeave = () => (mouse.inside = false);
     window.addEventListener("pointermove", locate, { passive: true });
     window.addEventListener("pointerdown", onDown, { passive: true });
     document.addEventListener("pointerleave", onLeave);
 
-    const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
     let visible = true;
     const io = new IntersectionObserver(([e]) => (visible = e.isIntersecting));
     io.observe(canvas);
 
     let raf = 0;
-    let ambient = 0;
     let simClock = 0;
     const SIM_HZ = 120;
     let last = performance.now();
@@ -331,9 +318,6 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       const dt = Math.min(0.1, (now - last) / 1000);
       last = now;
       if (!visible || document.hidden) return;
-      if (!reduced.matches) ambient += dt;
-
-      const k = controls.current;
 
       const dark = darkRef.current;
 
@@ -353,9 +337,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
         mouse.py = mouse.y;
         mouse.tracked = mouse.inside;
 
-        if (pressSplash) k.splashes.push(pressSplash);
-        pressSplash = null;
-        const drops = k.splashes.splice(0, MAX_SPLASHES);
+        const drops = splashes.splice(0, MAX_SPLASHES);
         splashFlat.fill(0);
         drops.forEach((d, i) => splashFlat.set([d.x / grid, d.y / grid, d.radius, d.strength], i * 4));
 
@@ -387,7 +369,6 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.viewport(0, 0, cols, rows);
       gl.disable(gl.SCISSOR_TEST);
       gl.useProgram(fieldProg.prog);
-      gl.uniform1f(fieldProg.u("uTime"), ambient * 0.06);
       gl.uniform1f(fieldProg.u("uGrid"), grid);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -396,7 +377,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clearColor(0, 0, 0, 0);
       gl.clear(gl.COLOR_BUFFER_BIT);
-      const clip = k.clip ?? { x: 0, y: 0, w, h, r: 0 };
+      const clip = controls.current.clip ?? { x: 0, y: 0, w, h, r: 0 };
       gl.enable(gl.SCISSOR_TEST);
       gl.scissor(
         Math.floor(clip.x * dpr) - 1,
@@ -413,9 +394,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.uniform2i(u("uCells"), cols, rows);
       gl.uniform2f(u("uSize"), w, h);
       gl.uniform1f(u("uDpr"), dpr);
-      gl.uniform1f(u("uTime"), ambient);
       gl.uniform1f(u("uGrid"), grid);
-      gl.uniform1f(u("uHue"), k.hue);
       gl.uniform4f(u("uClip"), clip.x, clip.y, clip.w, clip.h);
       gl.uniform1f(u("uRadius"), clip.r);
       gl.uniform3fv(u("uBg"), dark ? BG_DARK : BG_LIGHT);
