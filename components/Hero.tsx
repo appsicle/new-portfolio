@@ -6,7 +6,7 @@ import { Github01Icon, Linkedin02Icon, Mail01Icon } from "hugeicons-react";
 import ScrambleIn from "./fancy/text/scramble-in";
 import CenterUnderline from "./fancy/text/underline-center";
 import HalftoneField, { createFieldControls } from "./HalftoneField";
-import TrackPlayer from "./TrackPlayer";
+import { usePanelWater } from "@/hooks/use-panel-water";
 
 const experiences = [
   {
@@ -69,6 +69,7 @@ export default function Hero() {
   const controls = useRef(createFieldControls());
   const sectionRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
+  usePanelWater(controls, sectionRef, panelRef);
 
   return (
     <section
@@ -155,7 +156,6 @@ export default function Hero() {
         </div>
       </div>
 
-      <TrackPlayer controls={controls} sectionRef={sectionRef} panelRef={panelRef} />
     </section>
   );
 }

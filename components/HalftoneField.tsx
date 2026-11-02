@@ -6,7 +6,7 @@ import { useTheme } from "next-themes";
 /**
  * Generative halftone. No source image: a domain-warped noise field is
  * rendered at one texel per dot (pass 1), then pass 2 draws the dots and the
- * holographic color. TrackPlayer drives the look through `controls` (mutated
+ * holographic color. usePanelWater drives the look through `controls` (mutated
  * in place each frame — no React renders involved).
  *
  * Underneath the dots is a water surface: a height field stepped with the 2D
@@ -18,15 +18,10 @@ import { useTheme } from "next-themes";
 export type FieldClip = { x: number; y: number; w: number; h: number; r: number };
 
 export type FieldControls = {
-  /** 0..1 — dot size/contrast pump (usually bass) */
-  energy: number;
-  zoom: number;
   /** palette offset */
   hue: number;
   /** visible region in css px relative to the canvas; null = everything */
   clip: FieldClip | null;
-  /** zoom origin in css px; null = canvas center */
-  center: { x: number; y: number } | null;
   /** drops into the water (css px); push to queue, the field drains up to MAX_SPLASHES a frame */
   splashes: Splash[];
 };
@@ -36,11 +31,8 @@ export type Splash = { x: number; y: number; strength: number; radius: number };
 const MAX_SPLASHES = 4;
 
 export const createFieldControls = (): FieldControls => ({
-  energy: 0,
-  zoom: 1,
   hue: 0,
   clip: null,
-  center: null,
   splashes: [],
 });
 
@@ -135,9 +127,9 @@ const DOT_FRAG = `#version 300 es
 precision highp float;
 uniform sampler2D uField;
 uniform ivec2 uCells;
-uniform vec2 uSize, uCenter;
+uniform vec2 uSize;
 uniform float uDpr, uTime, uGrid;
-uniform float uEnergy, uZoom, uHue;
+uniform float uHue;
 uniform vec4 uClip;
 uniform float uRadius;
 uniform vec3 uBg;
@@ -156,7 +148,7 @@ vec3 pal(float u) {
 
 // x = coverage, y = palette coordinate
 vec2 dotAt(vec2 p) {
-  vec2 z = (p - uCenter) / uZoom + uCenter;
+  vec2 z = p;
 
   // Water: the surface slope refracts the dots, its height swells them
   vec2 texel = 1.0 / vec2(uCells);
@@ -172,13 +164,13 @@ vec2 dotAt(vec2 p) {
   float v = texelFetch(uField, clamp(ivec2(c / uGrid), ivec2(0), uCells - 1), 0).r;
 
   float s = smoothstep(0.3, 0.78, v);
-  s = pow(s, mix(1.6, 0.6, uEnergy));
+  s = pow(s, 1.25);
 
   s = clamp(s + wh * 0.9, 0.0, 1.0);
 
   float r = uGrid * 0.62 * sqrt(s);
   float d = length(z - c);
-  float aa = 0.7 / uZoom;
+  float aa = 0.7;
   // Fade tiny dots by radius too, or r = 0 still leaves half-coverage specks
   float cov = (1.0 - smoothstep(r - aa, r + aa, d)) * smoothstep(0.0, aa, r);
 
@@ -395,7 +387,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.viewport(0, 0, cols, rows);
       gl.disable(gl.SCISSOR_TEST);
       gl.useProgram(fieldProg.prog);
-      gl.uniform1f(fieldProg.u("uTime"), ambient * 0.06 + k.energy * 0.02);
+      gl.uniform1f(fieldProg.u("uTime"), ambient * 0.06);
       gl.uniform1f(fieldProg.u("uGrid"), grid);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -420,12 +412,9 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.uniform1i(u("uField"), 0);
       gl.uniform2i(u("uCells"), cols, rows);
       gl.uniform2f(u("uSize"), w, h);
-      gl.uniform2f(u("uCenter"), k.center?.x ?? w / 2, k.center?.y ?? h / 2);
       gl.uniform1f(u("uDpr"), dpr);
       gl.uniform1f(u("uTime"), ambient);
       gl.uniform1f(u("uGrid"), grid);
-      gl.uniform1f(u("uEnergy"), k.energy);
-      gl.uniform1f(u("uZoom"), k.zoom);
       gl.uniform1f(u("uHue"), k.hue);
       gl.uniform4f(u("uClip"), clip.x, clip.y, clip.w, clip.h);
       gl.uniform1f(u("uRadius"), clip.r);
