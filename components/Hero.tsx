@@ -6,7 +6,7 @@ import { Github01Icon, Linkedin02Icon, Mail01Icon } from "hugeicons-react";
 import ScrambleIn from "./fancy/text/scramble-in";
 import CenterUnderline from "./fancy/text/underline-center";
 import HalftoneField, { createFieldControls } from "./HalftoneField";
-import { usePanelWater } from "@/hooks/use-panel-water";
+import { usePanelClip } from "@/hooks/use-panel-clip";
 
 const experiences = [
   {
@@ -69,7 +69,7 @@ export default function Hero() {
   const controls = useRef(createFieldControls());
   const sectionRef = useRef<HTMLElement>(null);
   const panelRef = useRef<HTMLDivElement>(null);
-  usePanelWater(controls, sectionRef, panelRef);
+  usePanelClip(controls, sectionRef, panelRef);
 
   return (
     <section
