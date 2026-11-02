@@ -54,13 +54,12 @@ export default function RootLayout({
     <html
       lang="en"
       className={modernist.variable}
-      data-intro="night"
       suppressHydrationWarning
     >
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
           <AnimatedThemeToggler
-            className="theme-toggle fixed top-6 z-50 cursor-pointer text-foreground"
+            className="fixed top-6 z-50 cursor-pointer text-foreground"
             style={{ right: "clamp(1.5rem, 12vw, 12rem)" }}
           />
           <main>{children}</main>

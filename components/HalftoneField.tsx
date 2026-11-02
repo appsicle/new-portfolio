@@ -5,9 +5,9 @@ import { useTheme } from "next-themes";
 
 /**
  * Generative halftone. No source image: a domain-warped noise field is
- * rendered at one texel per dot (pass 1), then pass 2 draws the dots, the
- * holographic color, and every effect the intro choreography drives through
- * `controls` (mutated in place each frame — no React renders involved).
+ * rendered at one texel per dot (pass 1), then pass 2 draws the dots and the
+ * holographic color. TrackPlayer drives the look through `controls` (mutated
+ * in place each frame — no React renders involved).
  *
  * Underneath the dots is a water surface: a height field stepped with the 2D
  * wave equation at one cell per dot. Splashes (beats) and the cursor's wake
@@ -20,32 +20,13 @@ export type FieldClip = { x: number; y: number; w: number; h: number; r: number 
 export type FieldControls = {
   /** 0..1 — dot size/contrast pump (usually bass) */
   energy: number;
-  /** 0..1 — field sucked into the center orb */
-  collapse: number;
-  /** center orb radius in css px */
-  orb: number;
-  /** seconds since the last shockwave (large = none) */
-  shock: number;
-  shockPower: number;
-  /** 0..1 white-out */
-  flash: number;
-  /** 0..1 RGB split + scanline tearing */
-  glitch: number;
   zoom: number;
-  /** 0..1 global dot scale */
-  reveal: number;
-  /** palette offset; bump it to hard-cut colors on a beat */
+  /** palette offset */
   hue: number;
-  /** 1 = forced black backdrop (intro), 0 = theme background */
-  night: number;
   /** visible region in css px relative to the canvas; null = everything */
   clip: FieldClip | null;
-  /** orb / shockwave / zoom origin in css px; null = canvas center */
+  /** zoom origin in css px; null = canvas center */
   center: { x: number; y: number } | null;
-  /** dot grid multiplier; >1 = chunky */
-  coarse: number;
-  /** a falling droplet (css px): head at x,y, radius r, streak of length tail above it */
-  bead: { x: number; y: number; r: number; tail: number } | null;
   /** drops into the water (css px); push to queue, the field drains up to MAX_SPLASHES a frame */
   splashes: Splash[];
 };
@@ -56,20 +37,10 @@ const MAX_SPLASHES = 4;
 
 export const createFieldControls = (): FieldControls => ({
   energy: 0,
-  collapse: 1,
-  orb: 0,
-  shock: 99,
-  shockPower: 0,
-  flash: 0,
-  glitch: 0,
   zoom: 1,
-  reveal: 1,
   hue: 0,
-  night: 1,
   clip: null,
   center: null,
-  coarse: 1,
-  bead: null,
   splashes: [],
 });
 
@@ -81,8 +52,8 @@ const BG_DARK = [0, 0, 0];
 const BG_LIGHT = [250 / 255, 250 / 255, 250 / 255];
 
 const hex = (h: string) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16) / 255);
-const PAL_DARK_RGB = PAL_DARK.map(hex);
-const PAL_LIGHT_RGB = PAL_LIGHT.map(hex);
+const PAL_DARK_RGB = new Float32Array(PAL_DARK.flatMap(hex));
+const PAL_LIGHT_RGB = new Float32Array(PAL_LIGHT.flatMap(hex));
 
 const VERT = `#version 300 es
 void main() {
@@ -159,16 +130,14 @@ void main() {
   o = vec4(n, st.r, 0.0, 1.0);
 }`;
 
-// Pass 2 — dots, color, effects.
+// Pass 2 — dots and color.
 const DOT_FRAG = `#version 300 es
 precision highp float;
 uniform sampler2D uField;
 uniform ivec2 uCells;
 uniform vec2 uSize, uCenter;
 uniform float uDpr, uTime, uGrid;
-uniform float uEnergy, uCollapse, uOrb, uShock, uShockPower, uFlash, uGlitch, uZoom, uReveal, uHue;
-uniform float uCoarse;
-uniform vec4 uBead;
+uniform float uEnergy, uZoom, uHue;
 uniform vec4 uClip;
 uniform float uRadius;
 uniform vec3 uBg;
@@ -176,12 +145,6 @@ uniform vec3 uPal[5];
 uniform sampler2D uWater;
 uniform float uWaterAmt;
 out vec4 o;
-
-float hash(vec2 p) {
-  p = fract(p * vec2(123.34, 456.21));
-  p += dot(p, p + 45.32);
-  return fract(p.x * p.y);
-}
 
 vec3 pal(float u) {
   u = fract(u) * 5.0;
@@ -193,8 +156,7 @@ vec3 pal(float u) {
 
 // x = coverage, y = palette coordinate
 vec2 dotAt(vec2 p) {
-  vec2 center = uCenter;
-  vec2 z = (p - center) / uZoom + center;
+  vec2 z = (p - uCenter) / uZoom + uCenter;
 
   // Water: the surface slope refracts the dots, its height swells them
   vec2 texel = 1.0 / vec2(uCells);
@@ -206,51 +168,19 @@ vec2 dotAt(vec2 p) {
   ) * uWaterAmt;
   z += slope * 26.0;
 
-  // Shockwave ring
-  vec2 fromC = z - center;
-  float dc = length(fromC);
-  // Alternating crests (+) and troughs (-) trailing the wavefront, so it
-  // reads as a water ripple even where the field is already dense
-  float ring = 0.0;
-  for (int i = 0; i < 4; i++) {
-    float rr = uShock * 1700.0 - float(i) * 70.0;
-    float sgn = mod(float(i), 2.0) < 0.5 ? 1.0 : -1.0;
-    ring += sgn * exp(-pow((dc - rr) / 40.0, 2.0)) * (1.0 - float(i) * 0.2) * step(0.0, rr);
-  }
-  ring *= uShockPower * exp(-uShock * 1.4);
-  z += fromC / max(dc, 1e-3) * ring * 34.0;
-
-  float g = uGrid * uCoarse;
-  vec2 c = (floor(z / g) + 0.5) * g;
+  vec2 c = (floor(z / uGrid) + 0.5) * uGrid;
   float v = texelFetch(uField, clamp(ivec2(c / uGrid), ivec2(0), uCells - 1), 0).r;
 
   float s = smoothstep(0.3, 0.78, v);
   s = pow(s, mix(1.6, 0.6, uEnergy));
 
-  // Collapse into the orb
-  float cd = length(c - center);
-  // Interpolate the mask width in log space so the collapse reads evenly
-  float diag = length(uSize);
-  float sig = diag * pow(uGrid * 0.6 / diag, uCollapse);
-  s *= exp(-cd * cd / (2.0 * sig * sig));
-  s = clamp(s + ring * 0.9 + wh * 0.9, 0.0, 1.0);
+  s = clamp(s + wh * 0.9, 0.0, 1.0);
 
-  float r = g * 0.62 * sqrt(s) * uReveal;
+  float r = uGrid * 0.62 * sqrt(s);
   float d = length(z - c);
   float aa = 0.7 / uZoom;
   // Fade tiny dots by radius too, or r = 0 still leaves half-coverage specks
   float cov = (1.0 - smoothstep(r - aa, r + aa, d)) * smoothstep(0.0, aa, r);
-
-  float od = length(p - center);
-  cov = max(cov, 1.0 - smoothstep(uOrb - 1.0, uOrb + 1.0, od));
-
-  // Falling droplet: a solid head with a thinning streak above it
-  if (uBead.z > 0.0) {
-    vec2 bq = p - uBead.xy;
-    float t = clamp(-bq.y / max(uBead.w, 1e-3), 0.0, 1.0);
-    float bd = length(bq - vec2(0.0, -uBead.w * t)) - uBead.z * (1.0 - t * 0.85);
-    cov = max(cov, (1.0 - smoothstep(-0.8, 0.8, bd)) * (1.0 - t * 0.6));
-  }
 
   float hue = dot(c, vec2(0.82, 0.57)) / length(uSize) + uTime * 0.02 + v * 0.7 + uHue + wh * 0.05;
   return vec2(cov, hue);
@@ -259,25 +189,8 @@ vec2 dotAt(vec2 p) {
 void main() {
   vec2 p = vec2(gl_FragCoord.x, uSize.y * uDpr - gl_FragCoord.y) / uDpr;
 
-  vec3 col;
-  if (uGlitch > 0.01) {
-    float tick = floor(uTime * 24.0);
-    float band = floor(p.y / 22.0);
-    float torn = step(0.72, hash(vec2(band * 1.7, tick)));
-    float tear = (hash(vec2(band, tick)) - 0.5) * 2.0 * torn * uGlitch * 70.0;
-    float split = uGlitch * 9.0;
-    vec2 pp = p + vec2(tear, 0.0);
-    vec2 a = dotAt(pp + vec2(split, 0.0));
-    vec2 b = dotAt(pp);
-    vec2 c = dotAt(pp - vec2(split, 0.0));
-    col = vec3(mix(uBg.r, pal(a.y).r, a.x),
-               mix(uBg.g, pal(b.y).g, b.x),
-               mix(uBg.b, pal(c.y).b, c.x));
-  } else {
-    vec2 a = dotAt(p);
-    col = mix(uBg, pal(a.y), a.x);
-  }
-  col = mix(col, vec3(1.0), uFlash);
+  vec2 a = dotAt(p);
+  vec3 col = mix(uBg, pal(a.y), a.x);
 
   // Rounded-rect clip (premultiplied alpha)
   vec2 hc = uClip.zw * 0.5;
@@ -418,8 +331,6 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
     let simClock = 0;
     const SIM_HZ = 120;
     let last = performance.now();
-    const bg = [0, 0, 0];
-    const palFlat = new Float32Array(15);
     const splashFlat = new Float32Array(MAX_SPLASHES * 4);
     const zeroSplash = new Float32Array(MAX_SPLASHES * 4);
 
@@ -432,15 +343,7 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
 
       const k = controls.current;
 
-      // Theme blend (intro forces night)
       const dark = darkRef.current;
-      const night = dark ? 1 : k.night;
-      const themeBg = dark ? BG_DARK : BG_LIGHT;
-      for (let i = 0; i < 3; i++) bg[i] = themeBg[i] + (BG_DARK[i] - themeBg[i]) * night;
-      for (let j = 0; j < 5; j++)
-        for (let i = 0; i < 3; i++)
-          palFlat[j * 3 + i] =
-            PAL_LIGHT_RGB[j][i] + (PAL_DARK_RGB[j][i] - PAL_LIGHT_RGB[j][i]) * night;
 
       // Water: fixed-rate steps so wave speed doesn't depend on frame rate.
       // Disturbances go in on the first step of the frame only.
@@ -522,21 +425,12 @@ export default function HalftoneField({ controls, grid = 7, className = "" }: Ha
       gl.uniform1f(u("uTime"), ambient);
       gl.uniform1f(u("uGrid"), grid);
       gl.uniform1f(u("uEnergy"), k.energy);
-      gl.uniform1f(u("uCollapse"), k.collapse);
-      gl.uniform1f(u("uOrb"), k.orb);
-      gl.uniform1f(u("uShock"), k.shock);
-      gl.uniform1f(u("uShockPower"), k.shockPower);
-      gl.uniform1f(u("uFlash"), k.flash);
-      gl.uniform1f(u("uGlitch"), k.glitch);
       gl.uniform1f(u("uZoom"), k.zoom);
-      gl.uniform1f(u("uReveal"), k.reveal);
       gl.uniform1f(u("uHue"), k.hue);
-      gl.uniform4f(u("uBead"), k.bead?.x ?? 0, k.bead?.y ?? 0, k.bead?.r ?? 0, k.bead?.tail ?? 0);
-      gl.uniform1f(u("uCoarse"), k.coarse);
       gl.uniform4f(u("uClip"), clip.x, clip.y, clip.w, clip.h);
       gl.uniform1f(u("uRadius"), clip.r);
-      gl.uniform3f(u("uBg"), bg[0], bg[1], bg[2]);
-      gl.uniform3fv(u("uPal"), palFlat);
+      gl.uniform3fv(u("uBg"), dark ? BG_DARK : BG_LIGHT);
+      gl.uniform3fv(u("uPal"), dark ? PAL_DARK_RGB : PAL_LIGHT_RGB);
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, waterOk ? water[wi] : null);
       gl.uniform1i(u("uWater"), 1);

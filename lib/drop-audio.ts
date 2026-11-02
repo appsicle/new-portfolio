@@ -1,4 +1,4 @@
-// Sample-accurate playback for the intro track. Visuals read `time()` every
+// Sample-accurate playback for the site's track. Visuals read `time()` every
 // frame, which is derived from the AudioContext clock (not <audio>.currentTime,
 // which updates in coarse steps), and corrected for output latency so cues
 // land when you *hear* them — including on Bluetooth headphones.
@@ -54,10 +54,6 @@ export class DropAudio {
     return !!this.buffer;
   }
 
-  get duration() {
-    return this.buffer?.duration ?? 0;
-  }
-
   /** Must be called from a user gesture the first time. */
   play(offset = 0, onEnded?: () => void) {
     const { ctx, buffer, gain } = this;
@@ -81,16 +77,6 @@ export class DropAudio {
     this.source = src;
     this.startAt = when - offset;
     this.playing = true;
-  }
-
-  fadeOut(seconds = 0.6) {
-    const { ctx, gain, source } = this;
-    if (!ctx || !gain || !source) return;
-    const now = ctx.currentTime;
-    gain.gain.cancelScheduledValues(now);
-    gain.gain.setValueAtTime(gain.gain.value, now);
-    gain.gain.linearRampToValueAtTime(0, now + seconds);
-    source.stop(now + seconds + 0.05);
   }
 
   stop() {
