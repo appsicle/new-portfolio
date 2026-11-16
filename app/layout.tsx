@@ -3,6 +3,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import { ThemeProvider } from "@/components/theme-provider";
 import { AnimatedThemeToggler } from "@/components/animated-theme-toggler";
+import SiteNav from "@/components/SiteNav";
 
 const modernist = localFont({
   src: "../public/fonts/Sk-Modernist-Regular.otf",
@@ -58,6 +59,7 @@ export default function RootLayout({
     >
       <body className="bg-background text-foreground">
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false}>
+          <SiteNav />
           <AnimatedThemeToggler
             className="fixed top-6 z-50 cursor-pointer text-foreground"
             style={{ right: "clamp(1.5rem, 12vw, 12rem)" }}
