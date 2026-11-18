@@ -386,8 +386,9 @@ export const ContributionGraphCalendar = ({
         height={height}
         viewBox={`0 0 ${width} ${height}`}
         width={width}
+        role="img"
+        aria-label="Contribution Graph"
       >
-        <title>Contribution Graph</title>
         {!hideMonthLabels && (
           <g className="fill-current">
             {monthLabels.map(({ label, weekIndex }) => (
